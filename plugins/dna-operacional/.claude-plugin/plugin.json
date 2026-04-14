@@ -1,0 +1,17 @@
+{
+  "name": "dna-operacional",
+  "version": "0.1.0",
+  "description": "Skills concatenadas pra criador, agência e inteligência competitiva BR. Setup → pesquisa → conteúdo → ads.",
+  "author": {
+    "name": "Flávio Rafael Montenegro",
+    "url": "https://github.com/flavioahoy",
+    "email": "flavio@ahoy.digital"
+  },
+  "homepage": "https://github.com/flavioahoy/dna-operacional",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flavioahoy/dna-operacional.git"
+  },
+  "license": "MIT",
+  "keywords": ["ahoy", "marketing", "conteudo", "ads", "agencia", "brasil", "pt-br", "criador", "infoprodutor"]
+}
