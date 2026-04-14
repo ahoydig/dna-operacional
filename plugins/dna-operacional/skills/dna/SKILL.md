@@ -62,7 +62,52 @@ Meta-skill do plugin. Não faz trabalho "real" — serve como **mapa** pras outr
 
 ### Modo 2: `/dna jornadas`
 
-Imprimir as 4 jornadas em boxes ASCII (detalhes no Step 7.1).
+Imprimir as 4 jornadas em boxes ASCII (abaixo).
+
+### Output de `/dna jornadas`
+
+```
+┌───────────────────────────────────────────────────────────┐
+│  🎬 JORNADA DO CRIADOR                                    │
+│                                                           │
+│  1. /setup-projeto       → configura teu perfil           │
+│  2. /voz                 → cria voz da marca              │
+│  3. /pesquisa-diaria     → radar matinal de temas BR      │
+│  4. /ideias-conteudo     → multiplica 1 ideia em 5 vídeos │
+│  5. /analisar-video      → eng. reversa de referências    │
+│  6. /roteiro-viral       → roteiros com adaptive_models   │
+│  7. (grava + publica)                                     │
+│  8. /analista-conteudo   → analisa o que bombou           │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
+│  🎨 JORNADA DO CARROSSEL                                  │
+│                                                           │
+│  1. /setup-projeto       → configura teu perfil           │
+│  2. /voz                 → cria voz da marca              │
+│  3. /ideias-conteudo     → 10 frameworks de hook          │
+│  4. /carrossel-instagram → gera .png via Playwright       │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
+│  🔬 JORNADA INTELIGÊNCIA COMPETITIVA                      │
+│                                                           │
+│  1. /setup-projeto            → configura projeto         │
+│  2. /pesquisa-concorrentes    → mapeia concorrentes IG    │
+│  3. (futuro v0.2: /coletar-anuncios) → popula ad_library  │
+│  4. /raio-x-ads-concorrentes  → briefing estratégico      │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
+│  🤖 JORNADA MANUTENÇÃO (transversal)                      │
+│                                                           │
+│  • /auto-melhoria  → detecta padrões durante uso          │
+│  • /voz (auto)     → evolui ao detectar novos padrões     │
+│  • /dna-melhoria   → refino em release prep               │
+└───────────────────────────────────────────────────────────┘
+
+💡 Ver detalhes completos:  cat ${PLUGIN_ROOT}/docs/JORNADAS.md
+```
 
 ### Modo 3: `/dna setup`
 
