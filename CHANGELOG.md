@@ -6,7 +6,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Previsto pra v0.1.0 final
 
-- Migração das 14 skills (`setup-projeto`, `voz`, `humanizer`, `pesquisa-diaria`, `pesquisa-concorrentes`, `raio-x-ads-concorrentes`, `ideias-conteudo`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`, `analista-conteudo`, `auto-melhoria`, `dna-melhoria`, `dna`)
+- Migração das 13 skills restantes (`setup-projeto`, `voz`, `humanizer`, `pesquisa-diaria`, `pesquisa-concorrentes`, `raio-x-ads-concorrentes`, `ideias-conteudo`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`, `analista-conteudo`, `auto-melhoria`, `dna-melhoria`) — totalizando 14 skills na v0.1.0 final junto com `/dna` já entregue
 - Storage layer com 3 adapters (Supabase / Google Sheets / Markdown local)
 - Skill `/voz` nova (criar / evoluir / mostrar / versões)
 - Skill `/dna-melhoria` nova (auto-refino do plugin)
