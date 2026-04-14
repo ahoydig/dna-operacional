@@ -8,10 +8,7 @@
     "email": "flavio@ahoy.digital"
   },
   "homepage": "https://github.com/flavioahoy/dna-operacional",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/flavioahoy/dna-operacional.git"
-  },
+  "repository": "https://github.com/flavioahoy/dna-operacional.git",
   "license": "MIT",
   "keywords": ["ahoy", "marketing", "conteudo", "ads", "agencia", "brasil", "pt-br", "criador", "infoprodutor"]
 }
