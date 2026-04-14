@@ -15,6 +15,64 @@ Meta-skill do plugin. Não faz trabalho "real" — serve como **mapa** pras outr
 | `/dna jornadas` | 4 jornadas completas (criador / carrossel / inteligência competitiva / manutenção) |
 | `/dna setup` | Alias explícito — roteia pra `/setup-projeto` |
 
+## Compatibilidade de terminal
+
+### Detecção
+
+Antes de renderizar banner ou menus, a skill detecta:
+
+1. **Largura do terminal:** `$COLUMNS` (ou `tput cols`). Se <72, usar versão compacta (sem box drawing, só indentação).
+2. **Suporte unicode:** `echo $LC_ALL` — se vazio ou `C`/`POSIX`, degradar pra ASCII puro.
+3. **Suporte a cor ANSI:** `$NO_COLOR` — se setado, strip escapes do banner.
+
+### Fallbacks
+
+**Box drawing heavy (`╔═╗║╚╝`)** → ASCII:
+```
++==================================================================+
+|  🧬 Comandos disponíveis (v0.1.0)                                |
++==================================================================+
+```
+
+**Divisores `━`** → ASCII `-`:
+```
+---------------------------------------
+>>> PROXIMOS PASSOS SUGERIDOS
+---------------------------------------
+```
+
+**Banner ANSI truecolor** → se `$NO_COLOR` setado OU renderer não suporta:
+```
+DNA OPS
+by @flavioahoy
+```
+(texto simples sem arte ASCII)
+
+### Pseudocódigo da detecção
+
+```bash
+WIDTH=${COLUMNS:-$(tput cols 2>/dev/null || echo 80)}
+UNICODE_OK=$([ -n "$LC_ALL" ] && [ "$LC_ALL" != "C" ] && [ "$LC_ALL" != "POSIX" ] && echo "yes" || echo "no")
+COLOR_OK=$([ -z "$NO_COLOR" ] && echo "yes" || echo "no")
+
+# Degrada em 3 níveis:
+# - narrow OR no-unicode → ASCII puro (sem box, sem cor)
+# - no-color mas unicode OK → box drawing sem cor (ANSI stripped)
+# - tudo OK → banner + box drawing colorido
+if [ "$WIDTH" -lt 72 ] || [ "$UNICODE_OK" = "no" ]; then
+  # render ASCII fallback (sem box drawing, sem cor)
+  echo "DNA OPS"
+  echo "by @flavioahoy"
+  # ... menu compacto com indentação
+elif [ "$COLOR_OK" = "no" ]; then
+  # render unicode box mas strip ANSI do banner
+  cat "$PLUGIN_ROOT/assets/banner.txt" | sed 's/\x1b\[[0-9;]*m//g'
+else
+  # render full (banner colorido + box drawing)
+  cat "$PLUGIN_ROOT/assets/banner.txt"
+fi
+```
+
 ## Comportamento
 
 ### Modo 1: `/dna` (sem args)
