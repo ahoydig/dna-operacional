@@ -1,0 +1,15 @@
+{
+  "name": "dna-operacional-marketplace",
+  "owner": {
+    "name": "Flávio Rafael Montenegro",
+    "email": "flavio@ahoy.digital",
+    "url": "https://github.com/flavioahoy"
+  },
+  "plugins": [
+    {
+      "name": "dna-operacional",
+      "source": "./plugins/dna-operacional",
+      "description": "O sistema operacional da Ahoy Digital"
+    }
+  ]
+}
