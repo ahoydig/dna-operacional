@@ -13,7 +13,6 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 ## v0.1.0 (próxima sessão) — 14 skills migradas
 
 - [ ] `/setup-projeto` (17 seções adaptativas, delega seção 13 pra `/voz`)
-- [ ] `/voz` (criar, evoluir, mostrar, versões — auto-observa pra sugerir evoluções)
 - [ ] `/humanizer` (limpa IA + aplica voz do projeto via `reference/voz-<handle>.md`)
 - [ ] `/pesquisa-diaria` (com `/schedule` nativo da Anthropic como agendamento default)
 - [ ] `/pesquisa-concorrentes` (Instagram-first)
@@ -24,7 +23,6 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 - [ ] `/carrossel-instagram` (visual final via Playwright)
 - [ ] `/analisar-video` (engenharia reversa → `adaptive_models` no Supabase)
 - [ ] `/roteiro-viral` (consome `adaptive_models`)
-- [ ] `/dna-melhoria` (auto-melhora as próprias skills do plugin)
 
 ## v0.1.0-alpha.3 (em release) — Storage layer entregue
 
@@ -38,6 +36,17 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 - [x] CONVENCOES §4 atualizada de stub pra conteúdo completo
 
 **Não incluído (fica pra Plans 4-5):** migração real das 13 skills pra usar storage layer.
+
+## v0.1.0-alpha.5 (em release) — Skills voz + dna-melhoria
+
+- [x] `commands/voz.md` — slash command com 7 modos (status/criar/mostrar/evoluir/versoes/silenciar/ativar)
+- [x] `lib/voz/SCHEMA.md` — fonte da verdade do `reference/voz-<handle>.md`
+- [x] `lib/voz/auto-observacao.md` — 4 sinais com thresholds + hooks pra Plans 4-5
+- [x] `commands/dna-melhoria.md` — slash command com 2 modos (dry-run/diff) + 5 heurísticas + scope safety
+- [x] CONVENCOES §5 Voz Dinâmica
+- [x] README blocos `/voz` e `/dna-melhoria`
+
+**Não incluído (Plans 4-5):** hooks reais de auto-obs nas skills consumidoras (humanizer, ideias-conteudo, analisar-video). Voz é entregue mas integração efetiva no humanizer vem em Plan 5. `--apply` do dna-melhoria também fica como follow-up futuro (alinhamento Spec §3.1).
 
 ## v0.2.0 — Skills de agência + ads (família grande)
 
