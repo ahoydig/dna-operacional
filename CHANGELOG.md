@@ -6,10 +6,56 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Previsto pra v0.1.0 final
 
-- Migração das 13 skills restantes (`setup-projeto`, `voz`, `humanizer`, `pesquisa-diaria`, `pesquisa-concorrentes`, `raio-x-ads-concorrentes`, `ideias-conteudo`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`, `analista-conteudo`, `auto-melhoria`, `dna-melhoria`) — totalizando 14 skills na v0.1.0 final junto com `/dna` já entregue
-- Skill `/voz` nova (criar / evoluir / mostrar / versões)
-- Skill `/dna-melhoria` nova (auto-refino do plugin)
-- Sanitização completa (20 padrões pessoais → placeholders)
+- Migração das 11 skills restantes (`setup-projeto`, `humanizer`, `pesquisa-diaria`, `pesquisa-concorrentes`, `raio-x-ads-concorrentes`, `ideias-conteudo`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`, `analista-conteudo`, `auto-melhoria`) — junto com `/dna`, `/voz` e `/dna-melhoria` já entregues
+- `/dna-melhoria --apply` com confirmação 1-a-1 (exigiria atualizar Spec §3.1 antes)
+- Hooks reais de auto-observação nas skills consumidoras (`humanizer`, `ideias-conteudo`, `analisar-video`) — Plans 4-5
+- Sanitização completa (20 padrões pessoais → placeholders) — em rolling audit a cada release
+
+---
+
+## [0.1.0-alpha.5] — 2026-04-15
+
+### Adicionado — Skills Novas
+
+- `commands/voz.md` — slash command com 7 modos:
+  - **Status** (sem args): versão atual + counts + histórico
+  - **Criar**: entrevista guiada 7 perguntas → v1
+  - **Mostrar**: exibe voz completa formatada
+  - **Evoluir** `<input>`: aceita URL/arquivo/áudio/vídeo/texto, propõe diff, cria v_N+1 com confirmação
+  - **Versoes**: lista snapshots + diff resumo
+  - **Versoes rollback v<N>**: restaura snapshot (snapshots posteriores preservados como audit trail)
+  - **Silenciar / Ativar**: controla auto-observação
+- `commands/dna-melhoria.md` — slash command com 2 modos (dry-run default / `--diff`), 5 heurísticas (description quality, argument-hint coerência, próximos passos, tool calls visíveis, sanitização) + scope safety com allowlist explícita. Alinhado com Spec §3.1 (só dry-run + diff, sem `--apply` em v0.1.0-alpha.5).
+- `lib/voz/SCHEMA.md` — fonte da verdade do `reference/voz-<handle>.md` (frontmatter + 7 seções)
+- `lib/voz/auto-observacao.md` — engine de auto-observação com 4 sinais e thresholds explícitos (Sinal 1 exige ≥2 sessões pra evitar falso positivo)
+
+### Mudado
+
+- `docs/CONVENCOES.md`: nova §5 "Voz Dinâmica por projeto" (§5 Sanitização renumerada pra §6)
+- `docs/ROADMAP.md`: novo milestone v0.1.0-alpha.5; linhas `/voz` e `/dna-melhoria` removidas da seção v0.1.0 (já entregues)
+- `README.md`: blocos "🎙 Voz Dinâmica" e "🧬 DNA-Melhoria" após "🗄️ Storage Layer"
+
+### Infra
+
+- Git tag `v0.1.0-alpha.5` anotada
+- `plugin.json.version` bumpado pra `0.1.0-alpha.5` (cache key correto)
+- Sanitization audit rodou com regex completo Spec §7.2 (20 padrões) + filtro pós-grep pras exceções públicas (`@flavioahoy`, `ahoy.digital`) — 1 leak real detectado e corrigido em `dna-melhoria.md` H5 (wording da heurística referenciava tokens literais do próprio regex); audit final 0 matches
+- `claude plugin validate` zero warnings
+
+### Validado em smoke
+
+- Marketplace update pulou de `0.1.0-alpha.4/` pra `0.1.0-alpha.5/`
+- `/reload-plugins` detectou 18 skills (era 16 — `/voz` + `/dna-melhoria` adicionadas)
+- `/dna` sem regressão
+- `/voz` (Modo Status sem args) orientou criar voz pra `@flavioahoy` (projeto novo sem `reference/voz-<handle>.md`)
+- `/dna-melhoria` (Modo Dry-Run) escaneou 13 arquivos e gerou 3 propostas reais (H3 voz próximos passos, H3 dna-melhoria static template, H1 dna description) — confirma heurísticas funcionando end-to-end
+
+### Não incluído (por design, fica pra Plans 4-5)
+
+- Hooks reais de auto-observação nas skills consumidoras (`humanizer`, `ideias-conteudo`, `analisar-video`) — Plan 3 entrega a engine documentada, integração vem em Plan 5
+- Humanizer real lendo voz dinâmica (Plan 5 implementa)
+- Migração das 11 skills restantes pra usar storage layer + voz dinâmica (Plan 4)
+- `/dna-melhoria --apply` (follow-up futuro; exigiria atualizar Spec §3.1)
 
 ---
 
