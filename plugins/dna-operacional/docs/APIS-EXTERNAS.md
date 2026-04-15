@@ -31,7 +31,7 @@ Usado pra scraping Instagram, TikTok, X (Twitter), Reddit, portais BR.
 ### 2. Obter API token
 
 1. Logado, vai em https://console.apify.com/account#/integrations
-2. Copia o **Personal API token** (começa com `apify_api_...`)
+2. Copia o **Personal API token** (começa com `apify_api_XXXX...`)
 
 ### 3. Configurar no sistema
 
