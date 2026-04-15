@@ -213,3 +213,12 @@ Se sem voz no projeto, adicionar:
 ---
 
 ✅ Texto humanizado entregue
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /voz mostrar       — ver voz aplicada
+  2. /voz evoluir <X>   — adicionar padrão se notar consistência
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
