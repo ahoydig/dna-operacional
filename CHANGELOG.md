@@ -7,10 +7,43 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 ### Previsto pra v0.1.0 final
 
 - Migração das 13 skills restantes (`setup-projeto`, `voz`, `humanizer`, `pesquisa-diaria`, `pesquisa-concorrentes`, `raio-x-ads-concorrentes`, `ideias-conteudo`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`, `analista-conteudo`, `auto-melhoria`, `dna-melhoria`) — totalizando 14 skills na v0.1.0 final junto com `/dna` já entregue
-- Storage layer com 3 adapters (Supabase / Google Sheets / Markdown local)
 - Skill `/voz` nova (criar / evoluir / mostrar / versões)
 - Skill `/dna-melhoria` nova (auto-refino do plugin)
 - Sanitização completa (20 padrões pessoais → placeholders)
+
+---
+
+## [0.1.0-alpha.3] — 2026-04-14
+
+### Adicionado — Storage Layer
+
+- `plugins/dna-operacional/lib/storage/` com 5 arquivos:
+  - `README.md` (overview + fluxo de consumo)
+  - `contract.md` (fonte da verdade: 7 tabelas, 7 operations, DSL de filtros, erros)
+  - `supabase.md` (adapter via MCP Supabase)
+  - `sheets.md` (adapter via skills `gws-sheets-*`)
+  - `markdown.md` (adapter via tools nativos Read/Write/Glob)
+- `plugins/dna-operacional/templates/` com 3 templates:
+  - `migrations-v0.1.0.sql` (Supabase: 7 tabelas + indexes + triggers de updated_at)
+  - `sheets-master-template.md` (Google Sheets: setup manual em 3 passos)
+  - `data-folder-structure.md` (Markdown: `mkdir data/*` + exemplos de record com frontmatter)
+
+### Mudado
+
+- `docs/CONVENCOES.md` §4 Storage: substituído stub por conteúdo completo com fluxo, DSL, regra ferro, templates
+- `docs/ROADMAP.md`: novo milestone "v0.1.0-alpha.3 — Storage layer entregue"
+- `README.md`: novo bloco "🗄️ Storage Layer" com comparativo de backends
+- `CLAUDE.md`: seção Storage Layer adicionada
+
+### Infra
+
+- Git tag `v0.1.0-alpha.3`
+- `plugin.json.version` bumpado pra `0.1.0-alpha.3` (cache key correto)
+
+### Não incluído (por design, fica pra Plans 4-5)
+
+- Migração das 13 skills pra usar o storage layer
+- Skill `/dna migrar-storage` (v0.2+)
 
 ---
 
