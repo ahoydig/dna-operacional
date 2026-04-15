@@ -193,6 +193,21 @@ Confirmar ao user: "Adicionei [N] variações no pipeline. Prontas pra roteiriza
 
 ---
 
+## Hook auto-obs: Sinal 2 (hook salvo no pipeline)
+
+Após user salvar uma das variações geradas no `content_pipeline` com `status` mudando pra `Roteirizado` ou `Gravado`:
+
+1. Verificar `reference/voz-<handle>.md` existe E `auto_observacao_ativa: true`.
+2. Extrair `hook_suggestion` do record salvo.
+3. **Threshold (Plan 3 §5.4):** **1 ocorrência (sinal forte)** — não precisa repetir.
+4. Trigger imediato:
+   > "Hook '<X>' que você roteirizou — quer adicionar em 'Hooks validados' da voz? (y/n)"
+5. Se y: instruir user a rodar `/voz evoluir "<hook literal>"`.
+
+Tracking (opcional, pra evitar sugerir 2× o mesmo): adicionar `hook_id` em `reference/.voz-tracking.json` campo `hooks_sugeridos`.
+
+---
+
 ✅ Variações geradas e salvas no pipeline
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
