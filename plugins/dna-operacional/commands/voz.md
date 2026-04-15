@@ -306,12 +306,59 @@ Quando user digita `/voz versoes rollback v<N>`.
 
 ## Modo Silenciar
 
-<!-- preenchido em Task 8 -->
+Quando user digita `/voz silenciar`.
+
+### Lógica
+
+1. Carregar canônico `reference/voz-<handle>.md`.
+2. Atualizar frontmatter: `auto_observacao_ativa: false`.
+3. **Sem snapshot novo** (mudança de config, não de conteúdo — versão `versao` NÃO incrementa).
+4. Imprime:
+
+```
+🔇 Auto-observação silenciada pra @<handle>
+
+  Não vou mais sugerir evoluções automáticas.
+  Pra reativar: /voz ativar
+```
 
 ## Modo Ativar
 
-<!-- preenchido em Task 8 -->
+Quando user digita `/voz ativar`.
+
+### Lógica
+
+1. Carregar canônico.
+2. Atualizar frontmatter: `auto_observacao_ativa: true`.
+3. Sem snapshot novo.
+4. Imprime:
+
+```
+✅ Auto-observação reativada pra @<handle>
+
+  Vou voltar a sugerir evoluções conforme detectar padrões.
+  Detalhes dos 4 sinais: lib/voz/auto-observacao.md
+```
+
+### Edge cases (Silenciar + Ativar)
+
+- **Voz não existe:** redirecionar pro Modo Status (sugere `/voz criar`).
+- **Já tá no estado pedido** (ex: `/voz silenciar` quando já silenciada): imprimir `ℹ️ Auto-observação já estava <silenciada|ativa>. Nada a fazer.`
 
 ## Modo Fallback
 
-<!-- preenchido em Task 8 -->
+Quando user digita `/voz <palavra-não-reconhecida>`.
+
+### Output
+
+```
+⚠️ Não reconheci "<palavra>". Modos disponíveis:
+
+  /voz                       → status (versão, counts, histórico)
+  /voz criar                 → cria voz nova (entrevista)
+  /voz mostrar               → exibe voz completa
+  /voz evoluir <input>       → URL/arquivo/texto pra adicionar padrões
+  /voz versoes               → lista versões
+  /voz versoes rollback v<N> → restaura snapshot
+  /voz silenciar | ativar    → controla auto-observação
+```
