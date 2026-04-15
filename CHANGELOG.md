@@ -13,6 +13,51 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.0-alpha.8] — 2026-04-15
+
+### Adicionado — Onboarding de APIs Externas
+
+- `docs/APIS-EXTERNAS.md` — guia autoritativo com setup passo-a-passo pra:
+  - **Apify** (`/pesquisa-diaria`, `/pesquisa-concorrentes`, `/analisar-video`)
+  - **Supabase** (`/analista-conteudo`, storage backend)
+  - **Modal** Whisper (`/analisar-video`)
+  - **Google Sheets** (storage backend alternativo)
+  - **`/schedule` Anthropic** (agendamento default pro `/pesquisa-diaria`)
+  - **GitHub Actions** (agendamento grátis alternativo)
+  - **launchd** (Mac local)
+- `docs/SPIKE-TOKENS.md` — medição real de tokens/custo `/pesquisa-diaria`
+- Pré-checks inline com instruções em 5 skills:
+  - `/pesquisa-diaria` — APIFY_TOKEN
+  - `/pesquisa-concorrentes` — APIFY_TOKEN
+  - `/analisar-video` — APIFY_TOKEN + MODAL_APP_NAME
+  - `/raio-x-ads-concorrentes` — APIFY_TOKEN + aviso `/coletar-anuncios` v0.2
+  - `/analista-conteudo` — Supabase backend
+
+### Mudado
+
+- `commands/setup-projeto.md` — orienta APIS-EXTERNAS.md após setup base
+- `README.md` — blocos "🔑 Setup de APIs" e "⏰ Agendamento"
+- `docs/ROADMAP.md` — milestone v0.1.0-alpha.8
+
+### Infra
+
+- Git tag `v0.1.0-alpha.8` anotada
+- `plugin.json.version` bumpado pra `0.1.0-alpha.8`
+- Audit Spec §7.2 com regex refinado (whitelisted `apify_api_XXXX` em instruções de doc)
+- `claude plugin validate` zero warnings
+
+### Não incluído (Plan 7)
+
+- Release v0.1.0 final (remove `-alpha`)
+- Testes integrados automatizados
+- Anúncio pros alunos do curso
+
+### Decisão de default de agendamento
+
+Ver `docs/SPIKE-TOKENS.md` pra medição real + regra. User escolhe conforme perfil no `APIS-EXTERNAS.md`.
+
+---
+
 ## [0.1.0-alpha.7] — 2026-04-15
 
 **Marco:** fecha as 14 skills planejadas pra v0.1.0. Próximos: spike tokens (Plan 6) + release final v0.1.0 (Plan 7).
