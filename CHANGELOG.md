@@ -31,7 +31,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Infra
 
-- Repo em `github.com/flavioahoy/dna-operacional`
+- Repo em `github.com/ahoydig/dna-operacional`
 - Git tag `v0.1.0-alpha`
 
 ### Notas conhecidas

@@ -23,7 +23,7 @@
 No Claude Code, digite:
 
 ```
-/plugin marketplace add flavioahoy/dna-operacional
+/plugin marketplace add ahoydig/dna-operacional
 /plugin install dna-operacional
 ```
 
@@ -84,7 +84,7 @@ Ver [JORNADAS.md](plugins/dna-operacional/docs/JORNADAS.md) pra passo-a-passo.
 ## 🛠️ Desenvolvimento local (pra contribuir)
 
 ```bash
-git clone https://github.com/flavioahoy/dna-operacional.git
+git clone https://github.com/ahoydig/dna-operacional.git
 cd ..
 claude plugin marketplace add ./dna-operacional
 /plugin install dna-operacional
@@ -102,7 +102,7 @@ Depois de editar arquivos:
 
 - **Curso Maestria IA:** [url quando lançar]
 - **Instagram:** [@flavioahoy](https://instagram.com/flavioahoy)
-- **Issues:** https://github.com/flavioahoy/dna-operacional/issues
+- **Issues:** https://github.com/ahoydig/dna-operacional/issues
 
 ---
 
