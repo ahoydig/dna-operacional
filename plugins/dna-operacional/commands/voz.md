@@ -189,7 +189,58 @@ E sufixado por:
 
 ## Modo Evoluir
 
-<!-- preenchido em Task 6 -->
+Quando user digita `/voz evoluir <input>`. Input pode ser:
+
+| Input | Detecção | Processamento |
+|---|---|---|
+| URL YouTube | Regex `youtube\.com/watch` ou `youtu\.be/` | Invoca skill `transcribe-audio` (global Flávio) com URL → texto |
+| URL Instagram / TikTok | Regex `instagram\.com/(p\|reel)` ou `tiktok\.com/@` | Idem (`transcribe-audio` aceita URLs de vídeo via download) |
+| Arquivo `.txt` ou `.md` | extensão | Lê direto via `Read` |
+| Arquivo `.mp3` / `.wav` / `.m4a` / `.mp4` | extensão | Invoca `transcribe-audio` com path |
+| URL genérica (não vídeo) | qualquer outra `http(s)://…` | `WebFetch` pra extrair texto da página |
+| Texto bruto > 30 chars | fallback | Usa direto como texto fonte |
+
+### Lógica
+
+1. **Parse do input** → gerar `texto_fonte` (transcrição ou conteúdo direto).
+2. **Carregar voz atual** (`reference/voz-<handle>.md`).
+3. **Analisar `texto_fonte`** buscando:
+   - Aberturas novas (frases dos primeiros 3 segundos equivalentes)
+   - Padrões "sempre" (gírias / construções recorrentes não listadas ainda)
+   - Padrões "nunca" (clichês detectados — sugerir adicionar à blocklist)
+   - Hooks validados novos (frases-tese que ressoaram)
+4. **Apresentar diff proposto** pro user em formato unified diff, agrupado por seção (§3-§7 do SCHEMA).
+5. **Pedir confirmação** antes de aplicar qualquer mudança (y/n).
+6. **Se confirmado:**
+   - Calcular nova versão `N+1`
+   - Criar `reference/voz-<handle>.v<N+1>.md` com mudanças aplicadas
+   - Atualizar canônico: `cp reference/voz-<handle>.v<N+1>.md reference/voz-<handle>.md`
+   - Atualizar frontmatter do canônico:
+     - `versao: N+1`
+     - `ultima_atualizacao: <hoje>`
+     - append em `fontes_evolucao`: `<hoje>: evoluiu via <input-encurtado>`
+   - **Audit trail:** salvar texto fonte original em `reference/voz-<handle>.v<N+1>.source.txt` pra rastreabilidade.
+7. **Output final:**
+
+```
+✅ Voz @<handle> evoluiu pra v<N+1>
+
+  <K> mudanças aplicadas (veja o diff acima)
+  Fonte: <input-encurtado>
+  Audit: reference/voz-<handle>.v<N+1>.source.txt
+
+💡 /voz mostrar                       → ver voz atualizada
+💡 /voz versoes rollback v<N>         → desfazer
+```
+
+### Constraints
+
+- **Mínimo 1 mudança proposta:** se análise não encontrou padrões novos vs voz atual, abortar com
+  > "Texto fonte não tem padrões novos vs voz atual. Tente outro input ou maior amostra."
+- **Limite de 10 mudanças por evolução:** se detectadas >10, escolher top 10 por confidence + avisar
+  > "Detectei X mudanças, propondo top 10 por confidence. Roda `/voz evoluir` de novo com o mesmo input pra ver o resto."
+- **User cancelou (n):** não cria snapshot, não toca canônico, NÃO salva `.source.txt` — nada persiste.
+- **Sem snapshot paralelo:** se outra evolução já tá em andamento (raro — single-user), seguir sequencial.
 
 ## Modo Versoes
 
