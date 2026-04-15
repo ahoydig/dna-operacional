@@ -72,13 +72,54 @@ Skills que começam com operação longa (ex: scraping, análise) podem abrir co
 
 Evitar verbosidade. Nunca mostrar banner no start (só `/dna` e `setup-projeto` primeira vez).
 
-## 4. Storage layer (contrato abstrato)
+## 4. Storage layer (contrato abstrato) — v0.1.0-alpha.3
 
-> **⚠️ v0.1.0-alpha:** scaffolding do plugin NÃO implementa storage layer ainda. Isso vem em plano subsequente (Plan 2). Esta seção é stub.
+Toda skill que persiste dado **DEVE** chamar funções abstratas do `lib/storage/contract.md` — **nunca escreve SQL inline** (exceção: `analista-conteudo` que é Supabase-only, documentada no próprio contract).
 
-Toda skill que persiste dado DEVE chamar funções abstratas do `lib/storage/` — NÃO escrever SQL inline (exceção: `analista-conteudo` que é Supabase-only, documentada).
+### Fluxo de consumo
 
-Ver Spec 2 §4 e §4.7 pros detalhes do contrato.
+1. Skill lê `CLAUDE.md` **do projeto do user** (não deste repo) procurando seção `## Storage Backend: <opção>`.
+2. Opções válidas: `supabase`, `sheets`, `markdown`.
+3. Skill carrega `lib/storage/<opção>.md` — encontra o mapeamento de cada operation pro runtime.
+4. Skill chama operations do contract (`storage.read_competitors(...)`, `storage.write_competitor(...)`, etc).
+5. Adapter traduz pra runtime nativo (MCP Supabase / gws-sheets / Read-Write-Glob) e retorna.
+
+### Operations disponíveis (7 por tabela × 7 tabelas = 49 operations)
+
+Tabelas: `competitors`, `competitor_posts`, `content_pipeline`, `my_content`, `ad_library`, `adaptive_models`, `generated_scripts`.
+
+Por tabela: `read`, `read_one`, `write`, `update`, `upsert`, `delete`, `count`.
+
+Extra Supabase-only: `execute_sql(query)` — usado apenas por `analista-conteudo`.
+
+### DSL de filtros (universal)
+
+- Equality: `{nicho: "fitness"}`
+- Comparison: `{followers_count: {op: "gte", value: 10000}}`
+- In list: `{formato: {op: "in", value: ["reel", "tiktok"]}}`
+- Like: `{name: {op: "like", value: "%Nike%"}}`
+- Combinações: `{_and: [...], _or: [...]}`
+
+### Regra ferro (code review)
+
+Grep obrigatório antes de merge de qualquer skill:
+
+```bash
+grep -rE "SELECT |INSERT |UPDATE |DELETE " plugins/dna-operacional/skills/*/SKILL.md
+```
+
+Expected: zero matches (exceto `analista-conteudo` que é exceção documentada).
+
+### Templates do user
+
+- **Supabase:** `templates/migrations-v0.1.0.sql` (roda 1 vez)
+- **Sheets:** `templates/sheets-master-template.md` (setup manual em 3 passos)
+- **Markdown:** `templates/data-folder-structure.md` (mkdir + CLAUDE.md)
+
+### Migração entre backends
+
+v0.1.0-alpha.3: escolha é persistente. Trocar = migração manual.
+v0.2+: skill `/dna migrar-storage <novo>` automatiza (Spec 2 §4.6).
 
 ## 5. Sanitização (IDs pessoais)
 
