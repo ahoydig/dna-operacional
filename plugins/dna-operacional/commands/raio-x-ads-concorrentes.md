@@ -42,12 +42,37 @@ Se essa seção não existir no CLAUDE.md: "Tu não tem a seção `## Raio-X Ads
 
 ## Fluxo
 
-1. Ler `CLAUDE.md` seção `## Raio-X Ads` → extrair `competitor_ids` de cada tier
-2. Verificar data atual em `America/Sao_Paulo` + checar janela sazonal BR ativa
-3. Checar se `ad_library` tem dados dos competitor_ids do user — se vazia, retornar aviso (acima)
-4. Rodar as 10 seções SQL em sequência
-5. Montar briefing humanizado
-6. Salvar em `pesquisa/briefings/raio-x-ads-{YYYY-MM-DD}.md`
+1. Ler `CLAUDE.md` seção `## Storage Backend` — se ausente, abortar pedindo `/setup-projeto`
+2. Ler `CLAUDE.md` seção `## Raio-X Ads` → extrair `competitor_ids` de cada tier
+3. Verificar data atual em `America/Sao_Paulo` + checar janela sazonal BR ativa
+4. Carregar dados do backend via storage layer (ver "Carregamento de dados" abaixo) — se vazio, aviso humanizado
+5. **Agregar em memória** pra montar as 10 seções (group by, count, filter, string_agg equivalente)
+6. Montar briefing humanizado
+7. Salvar em `pesquisa/briefings/raio-x-ads-{YYYY-MM-DD}.md`
+
+## Carregamento de dados (uma vez, no início)
+
+```
+competitor_ids = [...]  # extraídos de CLAUDE.md (todos os tiers)
+
+competitors = storage.read_competitors({
+  id: {op: "in", value: competitor_ids}
+})
+
+ads = storage.read_ad_library({
+  _and: [
+    {competitor_id: {op: "in", value: competitor_ids}},
+    {language: "pt"},
+    {country: "BR"}
+  ]
+})
+
+if len(ads) == 0:
+  # aviso humanizado ad_library vazia — ver Pré-requisitos acima
+  abort()
+```
+
+A partir daqui, todo agrupamento/contagem é **in-memory** sobre as listas `competitors` e `ads`. **Nunca escrever SQL inline** — regra ferro do contract (exceção documentada só pra `/analista-conteudo`).
 
 ---
 
@@ -66,49 +91,31 @@ Sem achado com número = não entra no sumário.
 
 ### Seção 2: Visão Geral do Mercado
 
-```sql
--- Quem gasta mais e por quanto tempo
-SELECT
-  c.name AS concorrente,
-  COUNT(al.id) AS total_ads,
-  COUNT(CASE WHEN al.is_active THEN 1 END) AS ads_ativos,
-  ROUND(AVG(al.longevidade_dias)::numeric, 0) AS media_longevidade_dias,
-  SUM(al.spend_estimated_min) AS spend_min_estimado_brl,
-  SUM(al.spend_estimated_max) AS spend_max_estimado_brl,
-  COUNT(CASE WHEN al.longevidade_dias >= 30 THEN 1 END) AS runners_30d,
-  COUNT(CASE WHEN al.longevidade_dias >= 60 THEN 1 END) AS runners_60d
-FROM public.competitors c
-JOIN public.ad_library al ON al.competitor_id = c.id
-WHERE al.language = 'pt' AND al.country = 'BR'
-  AND c.id IN ({competitor_ids_do_user})
-GROUP BY c.id, c.name
-ORDER BY spend_max_estimado_brl DESC;
-```
+Agregar in-memory sobre `ads` + `competitors`. Por concorrente:
+
+- `total_ads` — count de ads
+- `ads_ativos` — count onde `is_active = true`
+- `media_longevidade_dias` — média de `longevidade_dias`
+- `spend_min_estimado_brl` / `spend_max_estimado_brl` — sum de `spend_estimated_min`/`max`
+- `runners_30d` — count onde `longevidade_dias >= 30`
+- `runners_60d` — count onde `longevidade_dias >= 60`
+
+Ordenar por `spend_max_estimado_brl` desc.
 
 Complementar com:
-- Tabela Ângulo × Longevidade (quais ângulos têm mais long-runners)
-- Tabela Formato × Longevidade (vídeo vs imagem vs carrossel)
+- Tabela Ângulo × Longevidade (agrupar por `angulo`, contar long-runners 60d+)
+- Tabela Formato × Longevidade (agrupar por `formato`, comparar vídeo vs imagem vs carrossel)
 
 ### Seção 3: Tier Direto
 
-Análise focada no tier que vende a mesma coisa pro mesmo público.
+Filtrar `ads` onde `competitor_id ∈ tier_direto_ids` e `is_active = true`. Agrupar por (concorrente × angulo):
 
-```sql
-SELECT
-  c.name, al.angulo, COUNT(*) AS total,
-  ROUND(AVG(al.longevidade_dias)::numeric, 0) AS media_longevidade,
-  COUNT(CASE WHEN al.longevidade_dias >= 60 THEN 1 END) AS long_runners_60d,
-  STRING_AGG(
-    CASE WHEN al.longevidade_dias >= 60 THEN al.hook ELSE NULL END,
-    ' | ' ORDER BY al.longevidade_dias DESC
-  ) AS hooks_vencedores
-FROM public.competitors c
-JOIN public.ad_library al ON al.competitor_id = c.id
-WHERE al.language = 'pt' AND al.country = 'BR' AND al.is_active = true
-  AND c.id IN ({competitor_ids_tier_direto})
-GROUP BY c.id, c.name, al.angulo
-ORDER BY long_runners_60d DESC;
-```
+- `total` — count
+- `media_longevidade` — média dias
+- `long_runners_60d` — count onde `longevidade_dias >= 60`
+- `hooks_vencedores` — concat dos `hook` onde `longevidade_dias >= 60`, ordenado por `longevidade_dias` desc
+
+Ordenar por `long_runners_60d` desc.
 
 "A história": oceano azul (ninguém testa certo ângulo) vs oceano vermelho (todo mundo usa o mesmo).
 
@@ -168,7 +175,7 @@ Sinalizar quais concorrentes entraram na janela com que hooks e quais ficaram de
 - **Evergreen:** longevidade_dias >= 60
 - **Taxa de corte:** excluídos ads com `is_active = false` exceto pra análise histórica explícita
 - **Exclusão DCO:** ads dinâmicos podem inflar contagem — agregar por `angulo` em vez de contar individualmente
-- **Filtros obrigatórios:** `language = 'pt' AND country = 'BR'` em todas as queries
+- **Filtros obrigatórios:** `language = 'pt' AND country = 'BR'` aplicados na `storage.read_ad_library` do carregamento inicial
 
 ---
 
@@ -182,7 +189,8 @@ Sinalizar quais concorrentes entraram na janela com que hooks e quais ficaram de
 6. **Valores em R$** — CPM R$ 8-15, CTR 1-2%, tickets em R$, spend estimado em BRL
 7. **Output via `/humanizer`** se disponível (plugin v0.2+)
 8. **Timezone:** data do arquivo e datas de análise em `America/Sao_Paulo`
-9. **Se ad_library vazia**, retornar aviso humanizado — nunca deixar SQL error aparecer pro user
+9. **Se ad_library vazia**, retornar aviso humanizado recomendando `/pesquisa-concorrentes` — nunca deixar erro técnico aparecer pro user
+10. **Nunca escrever SQL inline** — usar sempre `storage.read_*()` do contract; agregação fica in-memory (exceção só pra `/analista-conteudo`)
 
 ## Salvar relatório
 
