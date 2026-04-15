@@ -13,6 +13,60 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.0] — 2026-04-15
+
+🎉 **RELEASE OFICIAL — Sai do alpha.**
+
+8 alphas em 2 dias consolidados num marco. Plugin pronto pra uso real em projetos de criador e agência.
+
+### 14 skills disponíveis
+
+🎯 **SETUP:** `/setup-projeto`, `/voz`
+🔍 **PESQUISA:** `/pesquisa-diaria`, `/pesquisa-concorrentes`, `/raio-x-ads-concorrentes`
+🎬 **CONTEÚDO:** `/ideias-conteudo`, `/analisar-video`, `/roteiro-viral`, `/carrossel-instagram`, `/analista-conteudo`, `/humanizer`
+🤖 **META:** `/auto-melhoria`, `/dna-melhoria`, `/dna`
+
+### Features principais
+
+- **Storage layer 3 backends** — Supabase, Google Sheets, Markdown local. User escolhe conforme escala.
+- **Voz dinâmica por projeto** — cada projeto tem sua voz em `reference/voz-<handle>.md`. Humanizer aplica em runtime.
+- **Auto-observação** — 4 sinais detectam padrões (expressão recorrente, hook validado, edição manual, vídeo do criador) e sugerem evoluções da voz.
+- **APIs externas documentadas** — guia passo-a-passo pra configurar Apify, Supabase, Modal, Google Sheets, agendamento.
+- **3 opções de agendamento** — `/schedule` Anthropic, GitHub Actions, launchd Mac. User escolhe.
+- **Zero tokens hardcoded** — sanitização completa (audit Spec §7.2 regex 20 padrões + word boundary).
+
+### Instalação
+
+```
+/plugin marketplace add ahoydig/dna-operacional
+/plugin install dna-operacional
+```
+
+### Jornadas
+
+- 🎬 Criador (8 skills)
+- 🎨 Carrossel (4 skills)
+- 🔬 Inteligência Competitiva (4 skills)
+- 🤖 Manutenção (3 transversais)
+
+### Infra
+
+- Git tag `v0.1.0` (release final, NÃO prerelease)
+- `plugin.json.version` = `0.1.0`
+- Audit sanitização zero matches
+- `claude plugin validate` zero warnings
+- Repo público: https://github.com/ahoydig/dna-operacional
+
+### Obrigado
+
+Pros alunos do curso Maestria IA que inspiraram cada decisão. Feedback via [issues](https://github.com/ahoydig/dna-operacional/issues).
+
+### Próximo (v0.2.0)
+
+Skills de agência + ads (onboarding-cliente, pedido-anuncios, responder-leads UAZAPI, família meta-ads 7 skills, `/coletar-anuncios` pra desbloquear raio-x, `/dna migrar-storage`, etc). Ver [ROADMAP](plugins/dna-operacional/docs/ROADMAP.md).
+
+---
+
 ## [0.1.0-alpha.8] — 2026-04-15
 
 ### Adicionado — Onboarding de APIs Externas
