@@ -222,6 +222,85 @@ Skills não cascateiam — cada slash é invocação explícita do user.
 
 ---
 
+## Hook auto-obs: Sinal 4 (vídeo do criador analisado)
+
+Após análise concluída e persistência via storage (Etapa 9), disparar hook de auto-observação conforme padrão em `CLAUDE.md` §Auto-Obs Hooks e `lib/voz/auto-observacao.md` §Sinal 4.
+
+### 1. Verificar se engine está ativa
+
+Ler frontmatter de `reference/voz-<handle>.md` do projeto atual (handle resolvido pelo CLAUDE.md `## Handle: @<x>`).
+
+- Arquivo não existe OU `auto_observacao_ativa: false` → **skip hook silenciosamente** (sem log, sem aviso).
+- `auto_observacao_ativa: true` → prosseguir.
+
+### 2. Extrair handle do URL do vídeo analisado
+
+Identificar handle do criador do vídeo conforme plataforma:
+
+| Plataforma | Método |
+|------------|--------|
+| **Instagram** (`instagram.com/p/...` ou `/reel/...`) | Metadata da página via WebFetch / Playwright — buscar `username` no OG tag ou scraping da página do post |
+| **TikTok** (`tiktok.com/@<handle>/video/...`) | Handle direto do path da URL (segmento após `@`) |
+| **YouTube** (`youtube.com/watch?v=...` ou `youtu.be/...`) | Scrape da página pelo channel handle (`@channel` no canto da página) ou `channel_url` do metadata yt-dlp |
+
+Se não conseguir extrair (URL mal formada, vídeo privado, scrape falhou): **skip hook** — não propaga erro ao user.
+
+### 3. Comparar com handle da voz + aplicar threshold
+
+Carregar `handle` do frontmatter de `reference/voz-<handle>.md`.
+
+**Threshold (Spec §5.4 / lib/voz/auto-observacao.md §Sinal 4):**
+
+- **Handle do vídeo == handle da voz do projeto:** **1 ocorrência basta** (sinal forte — é o próprio criador se auto-observando).
+- **Handle terceiro (criador externo):** exige **3 ocorrências com mesmo padrão de abertura** em vídeos diferentes pra disparar (evita ruído de inspiração aleatória).
+
+Para o caso de terceiros, manter contador em `reference/.voz-tracking.json` (chave `sinal_4.aberturas_terceiros`) — ver schema em `lib/voz/auto-observacao.md`. Incrementar contador no `frame_analysis_json` + abertura detectada + handle.
+
+### 4. Detectar "aberturas típicas" novas
+
+Do modelo adaptativo recém-gerado, extrair candidatos a abertura típica:
+
+- **Primeiros 3s falados** do `transcript` (hook verbal).
+- **Primeiros 3s visuais** do `frame_analysis_json` (enquadramento + texto na tela + expressão).
+
+Comparar com a seção **"5. Aberturas típicas"** do `reference/voz-<handle>.md`:
+
+- Se a abertura detectada já está listada → **skip** (não propor duplicata).
+- Se for nova → candidata a evolução.
+
+### 5. Propor evolução ao user
+
+Se threshold atingido + pelo menos 1 abertura nova detectada:
+
+```
+🧬 Auto-observação (Sinal 4)
+
+Detectei novas aberturas que você usa nos vídeos:
+- "<abertura 1>"
+- "<abertura 2>"
+
+Adiciona em "Aberturas típicas" da sua voz? (y/n)
+```
+
+Se user responder **y**: instruir explicitamente (skills não cascateiam):
+
+> "Pra aplicar, rode:
+> `/voz evoluir <abertura>`
+>
+> Ou pra adicionar todas de uma vez: `/voz evoluir --batch` (cole a lista)."
+
+Se **n**: marcar a(s) abertura(s) como "rejected" no tracking pra não propor de novo.
+
+### 6. Privacy (crítico)
+
+⚠️ **Scraping do handle é SOMENTE pra match com voz local do projeto. NADA sai upstream.**
+
+- `.voz-tracking.json` fica no filesystem do projeto do user (gitignore recomendado — `setup-projeto` cuida).
+- Plugin nunca envia dados do tracking pra Anthropic ou terceiros.
+- Handle do criador de vídeos terceiros fica armazenado APENAS pra contagem de threshold — não é usado pra outros fins.
+
+---
+
 ## Regras
 
 1. **Zero SQL inline** — toda persistência via `storage.write_adaptive_model(...)` (CONVENCOES §4)
@@ -231,6 +310,7 @@ Skills não cascateiam — cada slash é invocação explícita do user.
 5. **Path do Whisper nunca hardcodado** — usa env ou skill global `transcribe-audio`
 6. **Frame analysis pode ser pesado** — avisar user antes de salvar em sheets/markdown
 7. **Retornar id do adaptive_model** pra user encadear com `/roteiro-viral`
+8. **Auto-obs Sinal 4** — disparar apenas se `auto_observacao_ativa: true`. Scrape de handle só pra match local. Nada upstream.
 
 ---
 
