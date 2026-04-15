@@ -418,3 +418,15 @@ Se qualquer resposta for "não", corrigir ANTES de apresentar.
 9. **PT-BR em tudo** — screenshots traduzidos, valores em R$
 10. **Flexbox, não position absolute** — exceto Crankdat, handle, background
 
+---
+
+✅ Carrossel renderizado e pronto pra postar
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /ideias-conteudo  — próximo carrossel da série
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
