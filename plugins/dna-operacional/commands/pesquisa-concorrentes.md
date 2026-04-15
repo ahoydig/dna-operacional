@@ -232,3 +232,35 @@ Se `/humanizer` instalado (plugin v0.2+), humanize antes de apresentar:
 8. **Output final via `/humanizer`** se disponível
 9. **Detectar B2B antes de qualquer scraping** — salva tempo e Apify credits
 10. **Nunca escrever SQL inline** — sempre via `storage.<op>_<table>()` do contract
+
+---
+
+## Fim da execução — bloco "Próximos Passos"
+
+Após upsert concluído, apresentar:
+
+```
+✅ Pesquisa de concorrentes finalizada: {N} competitors + {N_posts} posts no {backend}.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /raio-x-ads-concorrentes — briefing dos ads (precisa /coletar-anuncios v0.2)
+  2. /analista-conteudo        — calibra benchmarks vs tua performance
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Fallback ASCII** (terminais sem unicode):
+
+```
+----------------------------------------
+>>> PROXIMOS PASSOS SUGERIDOS
+----------------------------------------
+  1. /raio-x-ads-concorrentes - briefing ads (v0.2)
+  2. /analista-conteudo        - calibra benchmarks
+
+  >>> /dna pra ver todas
+----------------------------------------
+```
