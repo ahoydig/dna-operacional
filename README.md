@@ -80,11 +80,9 @@ Heurísticas: descriptions de auto-discovery, argument-hints, próximos passos, 
 
 ---
 
-## ⚠️ Status atual: v0.1.0-alpha (scaffolding)
+## ⚠️ Status atual: v0.1.0-alpha.6
 
-Esta versão entrega **apenas** a estrutura do plugin + slash command `/dna`.
-
-As 14 skills reais (`setup-projeto`, `pesquisa-diaria`, etc) chegam na **v0.1.0 final** (próxima sessão de migração).
+Esta versão entrega **10 skills** (3 de scaffolding + 7 migradas de globais). Faltam 4 skills (`humanizer`, `carrossel-instagram`, `analisar-video`, `roteiro-viral`) que chegam na **v0.1.0 final** (Plan 5).
 
 Se você tá usando skills globais do criador, continue usando — o plugin **não** substitui as globais, ele adiciona uma cópia adaptada e sanitizada.
 
@@ -118,15 +116,24 @@ Ver [JORNADAS.md](plugins/dna-operacional/docs/JORNADAS.md) pra passo-a-passo.
 
 ## 📦 Skills incluídas
 
-### v0.1.0-alpha (atual)
+### v0.1.0-alpha.6 (atual) — 10 skills
 
 | Skill | O que faz |
 |---|---|
 | `/dna` | Menu central do plugin + jornadas |
+| `/voz` | Mantém voz escrita do projeto (7 modos) |
+| `/dna-melhoria` | Auto-refino das skills do plugin (mantenedores) |
+| `/setup-projeto` | Configura projeto com CLAUDE.md rico; delega §13 pra `/voz criar` |
+| `/pesquisa-diaria` | Radar diário BR → alimenta `content_pipeline` |
+| `/pesquisa-concorrentes` | Mapeia concorrentes IG → `competitors` + `competitor_posts` |
+| `/raio-x-ads-concorrentes` | Briefing de ads a partir de `ad_library` + `competitors` |
+| `/ideias-conteudo` | Multiplica ideias do pipeline em 5 vídeos |
+| `/analista-conteudo` | Análise SQL 14 seções (Supabase-only) |
+| `/auto-melhoria` | Orquestradora metacognitiva; delega padrões de voz pra `/voz` |
 
-### v0.1.0 (próxima)
+### v0.1.0 (próxima) — 4 skills restantes
 
-14 skills completas. Ver [ROADMAP.md](plugins/dna-operacional/docs/ROADMAP.md).
+`humanizer`, `carrossel-instagram`, `analisar-video`, `roteiro-viral` — Plan 5. Ver [ROADMAP.md](plugins/dna-operacional/docs/ROADMAP.md).
 
 ---
 
