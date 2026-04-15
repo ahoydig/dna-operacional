@@ -32,7 +32,11 @@ fi
 Ler `CLAUDE.md` do projeto:
 - `nicho` + `sub_nicho` (pra focar a busca)
 - Seção `## Handles Multi-Plataforma` — handles próprios do user (pra **nunca se auto-adicionar** como concorrente)
+- `## Storage Backend` (pra persistir depois)
 - Sazonalidade do nicho — se há janela ativa, priorizar concorrentes que publicam nela
+
+Se `## Storage Backend` ausente, abortar com:
+> "⚠️ Backend de storage não configurado. Rode `/setup-projeto` pra escolher (Supabase / Google Sheets / Markdown)."
 
 ## Passo 2: Detectar intenção
 
@@ -91,9 +95,19 @@ Pra cada concorrente seed, chamar Apify Instagram Profile Scraper e extrair o ca
 
 ---
 
+## Passo 4.5: Dedup via storage (antes de validar)
+
+Antes de tentar adicionar, consultar o backend pra evitar reprocessamento:
+
+```
+existentes = storage.read_competitors({nicho: '<nicho do CLAUDE.md>'})
+handles_ja_registrados = [c.instagram_username for c in existentes]
+candidatos_novos = [h for h in descobertos if h not in handles_ja_registrados]
+```
+
 ## Passo 5: Validação e priorização BR
 
-Pra cada candidato descoberto:
+Pra cada candidato novo:
 1. `WebSearch` confirma o @ oficial (ex: "instagram [nome]" pra pegar o @ exato)
 2. Verifica **localidade BR**: bio tem cidade BR / usa R$ / posta em PT-BR
 3. **Prioridade:** concorrentes BR entram primeiro; internacionais só se o nicho é global
@@ -116,27 +130,27 @@ Extrair de cada perfil:
 
 **LGPD:** não salvar email, telefone, endereço físico nem CPF — só dados públicos de perfil.
 
-## Passo 7: INSERT em competitors
+## Passo 7: Upsert em competitors
 
-```sql
-INSERT INTO public.competitors (
-  name, instagram_username, instagram_profile_url,
-  followers_count, foto, nicho, sub_nicho
-) VALUES (
-  '[nome da marca ou criador]',
-  '[@handle sem @]',
-  '[URL verificada]',
-  [número],
-  '[URL da foto de perfil]',
-  '[nicho do CLAUDE.md]',
-  '[sub_nicho deduzido da bio]'
-)
-ON CONFLICT (instagram_username) DO UPDATE SET
-  followers_count = EXCLUDED.followers_count,
-  foto = EXCLUDED.foto,
-  sub_nicho = EXCLUDED.sub_nicho,
-  updated_at = now();
+Pra cada perfil enriquecido, chamar o storage layer (`lib/storage/contract.md`):
+
 ```
+storage.upsert_competitor({
+  name: '[nome da marca ou criador]',
+  instagram_username: '[@handle sem @]',
+  instagram_profile_url: '[URL verificada]',
+  followers_count: <número>,
+  foto: '[URL da foto de perfil]',
+  nicho: '[nicho do CLAUDE.md]',
+  sub_nicho: '[sub_nicho deduzido da bio]'
+}, key='instagram_username')
+```
+
+O `upsert` com `key='instagram_username'` garante que re-rodadas atualizam em vez de duplicar. Adapter (`supabase.md`/`sheets.md`/`markdown.md`) traduz pro runtime nativo. **Nunca escrever SQL inline aqui** — regra ferro do contract.
+
+**Erros possíveis:**
+- `StorageBackendUnavailable` → avisar: "Backend configurado ({backend}) não tá acessível. Verifica credenciais no `CLAUDE.md`."
+- `StorageQuotaExceeded` → sugerir `/dna migrar-storage` (v0.2+)
 
 ## Passo 8: Scraping de posts (opcional — confirmar custo)
 
@@ -161,31 +175,29 @@ Pra cada post, fazer análise agêntica — **NUNCA traduzir, manter literal PT-
 - `categoria` — formato de conteúdo (ex: "lista", "comparação", "antes e depois")
 - `formato` — Reel / Carrossel / Foto
 
-INSERT em `competitor_posts`:
+Upsert em `competitor_posts`:
 
-```sql
-INSERT INTO public.competitor_posts (
-  competitor_id, platform, post_url, post_code,
-  published_at, video_views, likes, comments,
-  transcription, hook, hook_visual, angulo, pilar, categoria, formato
-) VALUES (
-  [id do competitor],
-  'instagram',
-  '[URL do post]',
-  '[shortcode do post]',
-  '[timestamp em UTC]',
-  [views],
-  [likes],
-  [comments],
-  '[transcrição se vídeo]',
-  '[hook literal PT-BR]',
-  '[descrição visual]',
-  '[angulo]',
-  '[pilar]',
-  '[categoria]',
-  '[formato]'
-);
 ```
+storage.upsert_competitor_post({
+  competitor_id: <id retornado do upsert_competitor>,
+  platform: 'instagram',
+  post_url: '[URL do post]',
+  post_code: '[shortcode do post]',
+  published_at: '[timestamp UTC]',
+  likes: <likes>,
+  comments: <comments>,
+  video_views: <views, se vídeo>,
+  transcription: '[transcrição se vídeo]',
+  hook: '[hook literal PT-BR]',
+  hook_visual: '[descrição visual]',
+  angulo: '[angulo]',
+  pilar: '[pilar]',
+  categoria: '[categoria]',
+  formato: '[Reel|Carrossel|Foto]'
+}, key=['competitor_id', 'post_code'])
+```
+
+A chave composta `['competitor_id', 'post_code']` garante dedup — mesmo post do mesmo concorrente nunca duplica.
 
 ## Passo 9: Resumo final
 
@@ -216,6 +228,7 @@ Se `/humanizer` instalado (plugin v0.2+), humanize antes de apresentar:
 4. **Hooks literais PT-BR** — nunca traduzir, copiar exatamente como aparece
 5. **LGPD-aware** — nunca salva endereço físico, telefone, email de PF, CPF
 6. **Confirmar custo Apify** antes de scraping de posts (Passo 8)
-7. **ON CONFLICT ativo** — re-run da skill atualiza dados em vez de duplicar
+7. **Upsert ativo** — re-run da skill atualiza em vez de duplicar (key em `instagram_username` e `['competitor_id','post_code']`)
 8. **Output final via `/humanizer`** se disponível
 9. **Detectar B2B antes de qualquer scraping** — salva tempo e Apify credits
+10. **Nunca escrever SQL inline** — sempre via `storage.<op>_<table>()` do contract
