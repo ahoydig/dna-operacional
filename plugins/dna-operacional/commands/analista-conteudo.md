@@ -13,9 +13,31 @@ Você é analista de performance do conteúdo do criador. **Escopo:** apenas o c
 
 ---
 
+## Pré-check obrigatório: Backend = supabase
+
+Esta skill é **Supabase-only** — única exceção documentada do storage contract (`lib/storage/contract.md` §Operação especial). Queries usam CTEs, window functions, `EXTRACT`, `TO_CHAR AT TIME ZONE` — nenhum backend sheets/markdown suporta.
+
+**Antes de qualquer coisa:**
+
+```
+1. Ler CLAUDE.md do projeto → ## Storage Backend: <opção>
+2. Se opção != 'supabase': abortar com mensagem clara abaixo
+3. Se 'supabase': prosseguir via storage.execute_sql(query)
+```
+
+**Mensagem de abort** (quando backend != supabase):
+
+> "⚠️ Esta skill requer Supabase pra rodar SQL complexo (CTEs, window functions, ranks).
+> Sua escolha atual: `<opção>`.
+> Pra usar, ajuste o backend em `CLAUDE.md` `## Storage Backend: supabase` OU aguarde v0.3 (query DSL alternativa)."
+
+Todas as queries desta skill passam por `storage.execute_sql(query)` — o adapter Supabase traduz pro MCP `mcp__supabase__execute_sql`. Outros adapters lançam `StorageBackendUnavailable` com a mensagem acima.
+
+---
+
 ## Setup: Ler Contexto do Projeto
 
-**Antes de rodar qualquer consulta, leia o `CLAUDE.md` do projeto** pra obter:
+**Após pré-check OK, leia o `CLAUDE.md` do projeto** pra obter:
 - Seção `## Brand Config` (plataformas e handles do user)
 - Seção `## Pilares de conteúdo`
 - Seção `## Sazonalidade do Nicho`
