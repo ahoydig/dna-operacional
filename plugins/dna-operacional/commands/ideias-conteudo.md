@@ -18,16 +18,18 @@ Usuário invocou `/ideias-conteudo` com argumento: `$ARGUMENTS`
 
 ## Passo 0: Puxar Pipeline
 
-Consultar Supabase do projeto (project ID em `CLAUDE.md` → `## Storage Backend: supabase` → `project_id: ${SUPABASE_PROJECT_ID}`) via `mcp__supabase__execute_sql`:
+Ler backend de storage em `CLAUDE.md` do projeto (`## Storage Backend: <opção>`). Opções: `supabase`, `sheets`, `markdown`. Contract: `lib/storage/contract.md`.
 
-```sql
-SELECT id, title, topic, angulo, hook_suggestion, motivo_video, archetype, created_at
-FROM public.content_pipeline
-WHERE status = 'Ideia'
-ORDER BY created_at DESC;
+Se backend ausente:
+> "Configure backend em CLAUDE.md `## Storage Backend: <opção>` — opções: supabase / sheets / markdown."
+
+Puxar ideias pendentes via contract abstrato:
+
+```
+storage.read_content_pipeline({status: "Ideia"})
 ```
 
-Se `$ARGUMENTS` trouxer `topic-id` (número), filtrar só esse registro.
+Se `$ARGUMENTS` trouxer `topic-id` (número), usar `storage.read_one_content_pipeline(id)` pra esse registro só.
 
 Apresentar lista numerada via `AskUserQuestion`:
 
@@ -136,38 +138,42 @@ Hook (PT-BR literal): "Vou te mostrar como [X] em 60 segundos"
 
 ## Passo 5: Salvar escolhas no pipeline
 
-Pra cada variação escolhida, **antes do INSERT**, buscar o research_brief do registro original:
+Pra cada variação escolhida, **antes de gravar**, buscar o `research_brief` do registro original:
 
-```sql
-SELECT research_brief FROM public.content_pipeline WHERE id = {id_do_original};
+```
+original = storage.read_one_content_pipeline(id_do_original)
 ```
 
-Montar o `research_brief` final como aditivo (concatenar, nunca sobrescrever).
+Montar o `research_brief` final como aditivo (concatenar, nunca sobrescrever):
+- Se `original.research_brief` não for NULL: `{original.research_brief}\n\n---\n\n{brief_novo}`
+- Se NULL: usar só o brief novo
 
-Depois fazer o INSERT:
+Gravar cada variação via contract:
 
-```sql
-INSERT INTO public.content_pipeline (
-  title, status, source, source_url, topic, angulo, hook_suggestion,
-  motivo_video, research_brief, format, archetype, platform, variant_of
-) VALUES (
-  '[título da variação]',
-  'Ideia',
-  'ideias-conteudo',
-  NULL,
-  '[tópico original]',
-  '[enquadramento]',
-  '[hook literal PT-BR]',
-  '[por que esse enquadramento funciona]',
-  '[brief aditivo montado acima]',
-  '[Short/Long/Carrossel]',
-  '[número do framework 1-10]',
-  '[plataforma alvo]',
-  {id_do_original}
-);
+```
+storage.write_content_pipeline({
+  title: "[título da variação]",
+  status: "Ideia",
+  source: "ideias-conteudo",
+  topic: "[tópico original]",
+  angulo: "[enquadramento — Contrário, Tutorial, Revelação, etc]",
+  hook_suggestion: "[hook literal PT-BR]",
+  motivo_video: "[por que esse enquadramento funciona pra esse tópico]",
+  research_brief: "[brief aditivo montado acima]",
+  format: "[Short/Long/Carrossel]",
+  archetype: "[número do framework 1-10]",
+  platform: "[instagram/tiktok/youtube]",
+  variant_of: id_do_original
+})
 ```
 
-Confirmar ao user: "Adicionei [N] variações no pipeline."
+Após gravar todas as variantes, promover o registro original:
+
+```
+storage.update_content_pipeline(id_do_original, {status: "Roteirizado"})
+```
+
+Confirmar ao user: "Adicionei [N] variações no pipeline. Prontas pra roteirizar quando quiser."
 
 ---
 
@@ -183,3 +189,4 @@ Confirmar ao user: "Adicionei [N] variações no pipeline."
 8. **Cada variação = registro próprio** com `variant_of`
 9. **Sazonalidade é oportunidade**
 10. **Output humanizado** via skill `humanizer`
+11. **Zero SQL inline** — tudo via `storage.*` do contract (Spec 2 §4, CONVENCOES §4)
