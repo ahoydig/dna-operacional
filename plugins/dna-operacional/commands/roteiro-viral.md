@@ -306,3 +306,17 @@ Após entregar, oferecer:
 10. **Sem dados → avisar** — nunca inventar `engagement_coefficient` ou métrica.
 11. **Humor/ironia máx 20%** do tempo, nunca no hook (a menos que vídeo inteiro seja satírico).
 12. **Output humanizado via delegação** ao `/humanizer`.
+
+---
+
+✅ Roteiro gerado e salvo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /humanizer <texto>      — aplica voz dinâmica do projeto
+  2. /carrossel-instagram    — versão visual do mesmo roteiro
+  3. /analista-conteudo      — após publicar, valida resultado
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
