@@ -25,7 +25,19 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 - [ ] `/analisar-video` (engenharia reversa → `adaptive_models` no Supabase)
 - [ ] `/roteiro-viral` (consome `adaptive_models`)
 - [ ] `/dna-melhoria` (auto-melhora as próprias skills do plugin)
-- [ ] Storage layer com 3 adapters (Supabase / Sheets / MD local)
+
+## v0.1.0-alpha.3 (em release) — Storage layer entregue
+
+- [x] `lib/storage/contract.md` — API, DSL, errors (fonte da verdade)
+- [x] `lib/storage/supabase.md` — adapter Supabase via MCP
+- [x] `lib/storage/sheets.md` — adapter Google Sheets via gws-sheets
+- [x] `lib/storage/markdown.md` — adapter Markdown local via Read/Write/Glob
+- [x] `templates/migrations-v0.1.0.sql` — Supabase (7 tabelas + indexes + triggers)
+- [x] `templates/sheets-master-template.md` — setup manual Google Sheets
+- [x] `templates/data-folder-structure.md` — setup Markdown local
+- [x] CONVENCOES §4 atualizada de stub pra conteúdo completo
+
+**Não incluído (fica pra Plans 4-5):** migração real das 13 skills pra usar storage layer.
 
 ## v0.2.0 — Skills de agência + ads (família grande)
 
