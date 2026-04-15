@@ -6,10 +6,51 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Previsto pra v0.1.0 final
 
-- Migração das 4 skills restantes (`humanizer`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`) — Plan 5
 - `/dna-melhoria --apply` com confirmação 1-a-1 (exigiria atualizar Spec §3.1 antes)
-- Hooks reais de auto-observação nas skills consumidoras (`humanizer`, `ideias-conteudo`, `analisar-video`) — Plan 5
 - Sanitização completa (20 padrões pessoais → placeholders) — em rolling audit a cada release
+- Spike de tokens `/schedule` (estimativa real $ por execução de pesquisa-diaria automática) — Plan 6
+- Release v0.1.0 final (remove `-alpha`) — Plan 7
+
+---
+
+## [0.1.0-alpha.7] — 2026-04-15
+
+**Marco:** fecha as 14 skills planejadas pra v0.1.0. Próximos: spike tokens (Plan 6) + release final v0.1.0 (Plan 7).
+
+### Adicionado — 4 Skills Migradas (globais → plugin)
+
+- `commands/humanizer.md` — humaniza textos lendo voz dinâmica `reference/voz-<handle>.md`. Sem voz definida, cai pra regras genéricas anti-IA. Skip pra blocos de código.
+- `commands/carrossel-instagram.md` — Playwright HTML-to-Image, moodboard agent-browser, output em `carrossel-out/`.
+- `commands/analisar-video.md` — engenharia reversa completa via Apify + transcribe-audio (Whisper). Storage: writes `adaptive_models`.
+- `commands/roteiro-viral.md` — consome `adaptive_models`, escreve `generated_scripts`, delega humanizer no fim.
+
+### Adicionado — Hooks de Auto-Observação (3 sinais reais)
+
+- **Sinal 1** (humanizer): expressão recorrente — threshold ≥3 ocorrências em ≥2 e ≤5 sessões. Tracking `reference/.voz-tracking.json`.
+- **Sinal 2** (ideias-conteudo): hook salvo no pipeline com status=Roteirizado/Gravado — threshold 1 ocorrência (sinal forte).
+- **Sinal 3** (humanizer): edição manual repetida 2× — tracking `reference/.humanizer-edits.json`. Best-effort em context window.
+- **Sinal 4** (analisar-video): vídeo do criador (handle bate via scrape do URL) — threshold 1 ocorrência se handle == voz, 3 se terceiro.
+
+Engine completa documentada em `lib/voz/auto-observacao.md` (Plan 3).
+
+### Mudado
+
+- `CLAUDE.md`: nova seção "Auto-Obs Hooks pattern (Plan 5)"
+- `README.md`: tabela skills atualizada pra 14 (fecha alpha planejado)
+- `docs/ROADMAP.md`: milestone v0.1.0-alpha.7 (alpha completion)
+
+### Infra
+
+- Git tag `v0.1.0-alpha.7` anotada
+- `plugin.json.version` bumpado pra `0.1.0-alpha.7`
+- Audit Spec §7.2 (regex completo + filtro pós-grep): 0 matches
+- `claude plugin validate`: zero warnings
+
+### Não incluído (Plans 6+7)
+
+- Spike de tokens `/schedule` (estimativa real $ por execução de pesquisa-diaria automática) — Plan 6
+- Release v0.1.0 final (remove `-alpha`) — Plan 7
+- Skill `/dna migrar-storage <backend>` (v0.2+)
 
 ---
 
