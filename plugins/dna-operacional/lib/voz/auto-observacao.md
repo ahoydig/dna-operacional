@@ -55,6 +55,14 @@ Se `y`: disparar `/voz evoluir` programático com diff `+ "X"` em §3 Padrões "
 
 > "Hook 'H' que você roteirizou — quer adicionar em 'Hooks validados' da voz? (y/n)"
 
+**Dedup opcional (Plan 5 / v0.1.0-alpha.7):** pra evitar sugerir o mesmo hook 2× (caso user responda `n` e depois rodar novamente), `/ideias-conteudo` pode append-only registrar `hook_id` em `reference/.voz-tracking.json` campo `hooks_sugeridos`. Antes de disparar trigger, checar se `hook_id` já está lá — se sim, skip. Append-only (nunca remove) e escopo é o handle atual.
+
+```json
+{
+  "hooks_sugeridos": ["42", "87", "123"]
+}
+```
+
 ### Sinal 3 — Edição manual repetida do humanizer
 
 **Detecção:** user editou manualmente output do humanizer e a edição foi a **MESMA TRANSFORMAÇÃO** (ex: trocar "vamos" por "bora").
