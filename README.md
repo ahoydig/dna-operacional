@@ -1,37 +1,40 @@
-<pre>
-██████╗ ███╗   ██╗ █████╗      ██████╗ ██████╗ ███████╗
-██╔══██╗████╗  ██║██╔══██╗    ██╔═══██╗██╔══██╗██╔════╝
-██║  ██║██╔██╗ ██║███████║    ██║   ██║██████╔╝███████╗
-██║  ██║██║╚██╗██║██╔══██║    ██║   ██║██╔═══╝ ╚════██║
-██████╔╝██║ ╚████║██║  ██║    ╚██████╔╝██║     ███████║
-╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═════╝ ╚═╝     ╚══════╝
+# DNA Operacional 🧬
 
-                 by @flavioahoy
-</pre>
+**O sistema operacional da Ahoy Digital — do setup ao lançamento.**
 
-> **O sistema operacional da Ahoy Digital — do setup ao lançamento.**
+14 skills Claude Code pra criador, agência e inteligência competitiva BR. Instala em 2 comandos, funciona em qualquer projeto.
 
-🧬 **DNA Operacional** é um plugin do Claude Code com skills concatenadas pra:
-- 🎬 Criar conteúdo (criador/infoprodutor)
-- 🏢 Tocar uma agência (clientes de todo tipo)
-- 🔬 Inteligência competitiva
-
----
-
-## 🚀 Instalação (3 segundos)
-
-No Claude Code, digite:
+## 🚀 Instalação
 
 ```
 /plugin marketplace add ahoydig/dna-operacional
 /plugin install dna-operacional
 ```
 
-Pronto. Verifica com `/dna`.
+Pronto. Digita `/dna` pra ver tudo que dá pra fazer.
+
+## O que tu ganha (14 skills)
+
+| Skill | O que faz |
+|---|---|
+| `/setup-projeto` | Configura qualquer projeto (teu ou cliente) em 17 seções |
+| `/voz` | Cria/evolui/versiona a voz escrita do projeto |
+| `/humanizer` | Remove cara de IA + aplica voz do projeto |
+| `/pesquisa-diaria` | Radar matinal BR (X, Reddit, portais, GitHub) |
+| `/pesquisa-concorrentes` | Mapeia concorrentes Instagram |
+| `/raio-x-ads-concorrentes` | Briefing de ads competidores |
+| `/ideias-conteudo` | 10 frameworks de hook + multiplica ideias |
+| `/analisar-video` | Eng. reversa de Reels/TikTok → adaptive_models |
+| `/roteiro-viral` | Roteiros baseados em adaptive_models |
+| `/carrossel-instagram` | Carrosséis Instagram via Playwright |
+| `/analista-conteudo` | Análise SQL do teu feed (KPIs BR) |
+| `/auto-melhoria` | Detecta padrões + propõe edits ao CLAUDE.md |
+| `/dna-melhoria` | Auto-refino das skills do plugin (mantenedor) |
+| `/dna` | Menu central + jornadas |
 
 ---
 
-## 🗄️ Storage Layer (v0.1.0-alpha.3)
+## 🗄️ Storage Layer
 
 Plugin abstrai persistência — tu escolhe onde guardar os dados das skills:
 
@@ -47,7 +50,7 @@ Detalhes completos em [`lib/storage/`](plugins/dna-operacional/lib/storage/) e [
 
 ---
 
-## 🎙 Voz Dinâmica (v0.1.0-alpha.5)
+## 🎙 Voz Dinâmica
 
 Plugin tem skill `/voz` que mantém a voz escrita do teu projeto. Cada projeto tem sua voz em `reference/voz-<handle>.md`.
 
@@ -65,15 +68,18 @@ Modos:
 
 Detalhes em [`lib/voz/SCHEMA.md`](plugins/dna-operacional/lib/voz/SCHEMA.md) e [`lib/voz/auto-observacao.md`](plugins/dna-operacional/lib/voz/auto-observacao.md).
 
-## 🔑 Setup de APIs externas
+---
 
-Skills do plugin dependem de tokens/APIs externas (Apify, Supabase, Modal, Google). Guia completo passo-a-passo:
+## 🔑 Antes de rodar: configure as APIs
 
+Algumas skills precisam de chaves externas (Apify, Supabase, Modal). **Zero hardcoded — cada aluno configura a sua.**
+
+Guia completo passo-a-passo:
 ```
-cat ~/.claude/plugins/cache/dna-operacional-marketplace/dna-operacional/<versão>/docs/APIS-EXTERNAS.md
+cat ~/.claude/plugins/cache/dna-operacional-marketplace/dna-operacional/0.1.0/docs/APIS-EXTERNAS.md
 ```
 
-Ou veja [`docs/APIS-EXTERNAS.md`](plugins/dna-operacional/docs/APIS-EXTERNAS.md) direto no repo.
+Ou veja [`docs/APIS-EXTERNAS.md`](plugins/dna-operacional/docs/APIS-EXTERNAS.md) no repo.
 
 **Resumo:**
 
@@ -86,6 +92,8 @@ Ou veja [`docs/APIS-EXTERNAS.md`](plugins/dna-operacional/docs/APIS-EXTERNAS.md)
 
 Cada skill faz pré-check no início — se falta config, mostra passo-a-passo pra fix.
 
+---
+
 ## ⏰ Agendamento `/pesquisa-diaria`
 
 3 opções (user escolhe no `APIS-EXTERNAS.md`):
@@ -94,7 +102,9 @@ Cada skill faz pré-check no início — se falta config, mostra passo-a-passo p
 - **GitHub Actions** — grátis em repo público
 - **launchd (Mac)** — grátis, só com Mac ligado
 
-## 🧬 DNA-Melhoria (v0.1.0-alpha.5, mantenedores)
+---
+
+## 🧬 DNA-Melhoria (mantenedores)
 
 Skill `/dna-melhoria` faz auto-refino das próprias skills do plugin. Pra mantenedores (não pro aluno final).
 
@@ -103,70 +113,28 @@ Skill `/dna-melhoria` faz auto-refino das próprias skills do plugin. Pra manten
 /dna-melhoria --diff       → mostra diff completo (copia/cola manual)
 ```
 
-Em v0.1.0-alpha.5 a skill é **só dry-run + diff** (alinhado com Spec §3.1). `--apply` com confirmação 1-a-1 fica como follow-up futuro.
+A skill é **só dry-run + diff** (alinhado com Spec §3.1). `--apply` com confirmação 1-a-1 fica como follow-up futuro.
 
 Heurísticas: descriptions de auto-discovery, argument-hints, próximos passos, tool calls visíveis, sanitização. Detalhes em [`commands/dna-melhoria.md`](plugins/dna-operacional/commands/dna-melhoria.md).
 
 ---
 
-## ⚠️ Status atual: v0.1.0-alpha.7 (alpha completion)
-
-Esta versão fecha as **14 skills planejadas pra v0.1.0** (3 de scaffolding + 11 migradas de globais). Plus 3 hooks reais de auto-observação (Sinais 1, 2, 3, 4) nas skills consumidoras (humanizer, ideias-conteudo, analisar-video).
-
-Continua marcada como alpha porque ainda faltam Plan 6 (spike tokens `/schedule`) + Plan 7 (release v0.1.0 final sem `-alpha`).
-
-Se você tá usando skills globais do criador, continue usando — o plugin **não** substitui as globais, ele adiciona uma cópia adaptada e sanitizada.
-
-Veja [ROADMAP.md](plugins/dna-operacional/docs/ROADMAP.md) pra plano completo.
-
----
-
-## 🎯 Começa por aqui
-
-No Claude Code:
+## Começa por aqui
 
 ```
-/dna                 # menu central
-/dna jornadas        # 4 caminhos completos (criador, carrossel, IC, manutenção)
+/setup-projeto
 ```
 
----
+Ele te entrevista, monta teu `CLAUDE.md`, define público-alvo e delega a voz pro `/voz`. A partir daí, cada skill te orienta pro próximo passo.
 
-## 🗺️ Jornadas disponíveis
+## Jornadas
 
-| Jornada | Skills | Pra quem |
-|---|---|---|
-| 🎬 Criador | 8 skills | Quem posta Reels/TikTok/Shorts e quer ciclo completo |
-| 🎨 Carrossel | 4 skills | Quem quer carrossel Instagram rápido |
-| 🔬 Inteligência Competitiva | 4 skills | Quem precisa mapear concorrência + ads |
-| 🤖 Manutenção | 3 skills (transversais) | Evolui voz + skills automaticamente |
+- 🎬 **Criador** (8 skills) — setup → voz → pesquisa → ideias → análise → roteiro → publica → analisa
+- 🎨 **Carrossel** (4 skills) — setup → voz → ideias → carrossel
+- 🔬 **Inteligência Competitiva** (4 skills) — setup → concorrentes → (v0.2 ads) → raio-x
+- 🤖 **Manutenção** (3 transversais) — auto-melhoria + voz auto-observa + dna-melhoria
 
-Ver [JORNADAS.md](plugins/dna-operacional/docs/JORNADAS.md) pra passo-a-passo.
-
----
-
-## 📦 Skills incluídas
-
-### v0.1.0-alpha.7 (atual) — 14 skills
-
-| Skill | O que faz |
-|---|---|
-| `/dna` | Menu central do plugin + jornadas |
-| `/voz` | Mantém voz escrita do projeto (7 modos) |
-| `/dna-melhoria` | Auto-refino das skills do plugin (mantenedores) |
-| `/setup-projeto` | Configura projeto com CLAUDE.md rico; delega §13 pra `/voz criar` |
-| `/pesquisa-diaria` | Radar diário BR → alimenta `content_pipeline` |
-| `/pesquisa-concorrentes` | Mapeia concorrentes IG → `competitors` + `competitor_posts` |
-| `/raio-x-ads-concorrentes` | Briefing de ads a partir de `ad_library` + `competitors` |
-| `/ideias-conteudo` | Multiplica ideias do pipeline em 5 vídeos — hook Sinal 2 (auto-obs) |
-| `/analista-conteudo` | Análise SQL 14 seções (Supabase-only) |
-| `/auto-melhoria` | Orquestradora metacognitiva; delega padrões de voz pra `/voz` |
-| `/humanizer` | Remove vícios de IA + aplica voz dinâmica (`reference/voz-<handle>.md`) — hooks Sinais 1+3 |
-| `/carrossel-instagram` | Gera carrosséis profissionais via Playwright (HTML→PNG) |
-| `/analisar-video` | Engenharia reversa Reels/TikTok → `adaptive_models` — hook Sinal 4 |
-| `/roteiro-viral` | Roteiros consumindo `adaptive_models` → `generated_scripts`; delega humanizer |
-
-**Marco:** alpha.7 fecha as 14 skills planejadas pra v0.1.0. Falta Plan 6 (spike tokens `/schedule`) + Plan 7 (release v0.1.0 final). Ver [ROADMAP.md](plugins/dna-operacional/docs/ROADMAP.md).
+Detalhes em `/dna jornadas`.
 
 ---
 
@@ -187,14 +155,16 @@ Depois de editar arquivos:
 
 ---
 
-## 🔗 Links
+## Links
 
-- **Curso Maestria IA:** [url quando lançar]
-- **Instagram:** [@flavioahoy](https://instagram.com/flavioahoy)
-- **Issues:** https://github.com/ahoydig/dna-operacional/issues
+- 📺 Curso Maestria IA Claude Code: [url quando lançar]
+- 📸 Instagram: [@flavioahoy](https://instagram.com/flavioahoy)
+- 🐛 Bugs/feedback: [issues](https://github.com/ahoydig/dna-operacional/issues)
+
+## Licença
+
+MIT. Use, forke, aprenda.
 
 ---
 
-## 📄 Licença
-
-MIT — veja [LICENSE](LICENSE).
+Feito com 🧬 por [@flavioahoy](https://instagram.com/flavioahoy). Pra alunos do curso Maestria IA.
