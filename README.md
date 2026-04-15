@@ -31,6 +31,22 @@ Pronto. Verifica com `/dna`.
 
 ---
 
+## 🗄️ Storage Layer (v0.1.0-alpha.3)
+
+Plugin abstrai persistência — tu escolhe onde guardar os dados das skills:
+
+| Backend | Pra quem | Setup |
+|---|---|---|
+| **Supabase** | Power user / agência / escala | Médio (criar projeto + rodar migration) |
+| **Google Sheets** | Maioria dos casos | Fácil (copiar planilha + colar ID) |
+| **Markdown local** | Iniciante / pessoal | Trivial (`mkdir data/`) |
+
+Sem lock-in. Trocar backend = passar pela skill `/dna migrar-storage` (v0.2+) ou migração manual.
+
+Detalhes completos em [`lib/storage/`](plugins/dna-operacional/lib/storage/) e [`templates/`](plugins/dna-operacional/templates/).
+
+---
+
 ## ⚠️ Status atual: v0.1.0-alpha (scaffolding)
 
 Esta versão entrega **apenas** a estrutura do plugin + slash command `/dna`.
