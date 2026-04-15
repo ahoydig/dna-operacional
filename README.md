@@ -33,7 +33,7 @@ Pronto. Verifica com `/dna`.
 
 ## ⚠️ Status atual: v0.1.0-alpha (scaffolding)
 
-Esta versão entrega **apenas** a estrutura do plugin + meta-skill `/dna`.
+Esta versão entrega **apenas** a estrutura do plugin + slash command `/dna`.
 
 As 14 skills reais (`setup-projeto`, `pesquisa-diaria`, etc) chegam na **v0.1.0 final** (próxima sessão de migração).
 

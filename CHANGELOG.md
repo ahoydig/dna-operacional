@@ -21,7 +21,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 - Estrutura de repo: marketplace na root + plugin nested em `plugins/dna-operacional/`
 - `.claude-plugin/marketplace.json` apontando pro plugin nested
 - `plugins/dna-operacional/.claude-plugin/plugin.json` com metadata v0.1.0
-- Skill meta `/dna` com 3 modos (`/dna`, `/dna jornadas`, `/dna setup`)
+- Slash command `/dna` (em `commands/dna.md`) com 3 modos (`/dna`, `/dna jornadas`, `/dna setup`)
 - Banner ASCII sunset colorido em `assets/banner.txt` (ANSI truecolor, 18 linhas)
 - `docs/CONVENCOES.md` — padrão "Próximos Passos" obrigatório
 - `docs/JORNADAS.md` — 4 jornadas detalhadas
@@ -36,7 +36,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Notas conhecidas
 
-- Banner ANSI pode não renderizar com cor em todos os terminais — fallback documentado em SKILL.md
+- Banner ANSI pode não renderizar com cor em todos os terminais — fallback documentado em `commands/dna.md`
 - `/dna setup` redireciona pra `/setup-projeto` global do user (skill ainda não migrada pro plugin nesta versão)
 - Nenhuma skill produtiva ainda — apenas scaffolding
 
