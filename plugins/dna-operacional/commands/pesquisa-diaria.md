@@ -361,3 +361,37 @@ O que quer fazer com os tópicos de hoje?
 8. **Output do Top 10 via `/humanizer`** se disponível (v0.2+ do plugin)
 9. **Timezone obrigatória:** `America/Sao_Paulo` — nunca UTC pra cálculo de "hoje/ontem"
 10. **LGPD:** não persiste dados pessoais de autores dos tweets/posts — só URL pública e conteúdo público
+
+---
+
+## Fim da execução — bloco "Próximos Passos"
+
+Após salvar log + escolhas, apresentar:
+
+```
+✅ Radar do dia pronto: {N} tópicos salvos no pipeline. Log em research-logs/{DATA_BR}.md.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /ideias-conteudo   — multiplica os tópicos top em 5 vídeos cada
+  2. /analista-conteudo — analisa o que tu já publicou pra calibrar escolha
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Fallback ASCII** (terminais sem unicode — detectar via `$LC_ALL`):
+
+```
+----------------------------------------
+>>> PROXIMOS PASSOS SUGERIDOS
+----------------------------------------
+  1. /ideias-conteudo   - multiplica os tópicos top em 5 vídeos cada
+  2. /analista-conteudo - analisa o que tu já publicou
+
+  >>> /dna pra ver todas
+----------------------------------------
+```
+
+Se o user escolheu "nenhum" no Passo 5 (não salvou nada), **pular** o bloco e só mostrar o log salvo.
