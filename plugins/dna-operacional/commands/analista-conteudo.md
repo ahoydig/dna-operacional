@@ -363,3 +363,16 @@ ORDER BY janela_sazonal, mes_br
 ## Após Análise: Salvar Relatório
 
 Perguntar: "Quer que eu salve essa análise? Posso criar `analises/analise-YYYY-MM-DD.md` no projeto atual — histórico pra comparar meses."
+
+---
+
+✅ Análise completa (14 seções) concluída
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /ideias-conteudo   — gera ideias com insights da análise (calibra hipóteses)
+  2. /pesquisa-diaria   — temas frescos do dia pra somar com aprendizado
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
