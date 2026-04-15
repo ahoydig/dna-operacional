@@ -13,6 +13,34 @@ argument-hint: "[nicho?]"
 
 ---
 
+## Pré-check: APIs necessárias
+
+Antes de executar, verificar tokens/configs obrigatórios:
+
+### APIFY_TOKEN
+
+Se `$APIFY_TOKEN` ausente:
+
+```
+❌ APIFY_TOKEN não configurado.
+
+Pra configurar (3 passos):
+
+1. Acessa https://console.apify.com/account#/integrations e copia teu Personal API token
+2. Adiciona em ~/.zshrc:
+     export APIFY_TOKEN='apify_api_XXXX...'
+3. Reload shell:
+     source ~/.zshrc
+
+Depois rode a skill de novo. Guia completo: docs/APIS-EXTERNAS.md#apify
+```
+
+Abortar execução até fix.
+
+> ℹ️ A skill `/coletar-anuncios` (que popula `ad_library`) entra em v0.2 e também usará `APIFY_TOKEN`. Por ora, `ad_library` precisa ser populada manualmente (ver Pré-requisitos abaixo).
+
+---
+
 ## Pré-requisitos
 
 ### 1. Tabela ad_library
