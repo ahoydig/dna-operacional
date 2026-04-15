@@ -121,7 +121,45 @@ Expected: zero matches (exceto `analista-conteudo` que é exceção documentada)
 v0.1.0-alpha.3: escolha é persistente. Trocar = migração manual.
 v0.2+: skill `/dna migrar-storage <novo>` automatiza (Spec 2 §4.6).
 
-## 5. Sanitização (IDs pessoais)
+## 5. Voz Dinâmica por projeto (v0.1.0-alpha.5)
+
+Skill `/voz` mantém a voz escrita do projeto/criador em `reference/voz-<handle>.md`. **Toda skill que produz texto final pro user** invoca o humanizer (Plan 5), que lê voz dinâmica do projeto atual.
+
+### Schema
+
+Ver `lib/voz/SCHEMA.md` — fonte da verdade do formato.
+
+### Modos disponíveis
+
+```
+/voz                       → status (v atual, counts, histórico)
+/voz criar                 → entrevista 7 perguntas → v1
+/voz mostrar               → exibe voz completa
+/voz evoluir <input>       → URL/arquivo/texto, propõe diff, cria v_N+1
+/voz versoes               → lista snapshots + diff
+/voz versoes rollback v<N> → restaura snapshot
+/voz silenciar | ativar    → controla auto-observação
+```
+
+### Auto-observação
+
+Engine documentada em `lib/voz/auto-observacao.md`. 4 sinais com thresholds, sempre pede confirmação. User pode silenciar via `/voz silenciar`.
+
+### Como skills devem consumir
+
+- **Quem produz copy:** invoca humanizer no fim, que lê voz dinâmica
+- **Quem detecta padrões:** dispara hooks de auto-obs (Plans 4-5 implementam)
+- **Quem precisa de handle:** lê CLAUDE.md `## Handle: @<nome>` do projeto do user
+- **Sem voz definida:** humanizer cai pra regras genéricas anti-IA
+
+### Versionamento
+
+- Sempre cópia, nunca symlink
+- Snapshot `.v<N>.md` é imutável (audit trail)
+- Canônico `voz-<handle>.md` é cópia do snapshot mais recente
+- Rollback é cópia de snapshot antigo pro canônico — snapshots posteriores ficam preservados
+
+## 6. Sanitização (IDs pessoais)
 
 Antes de qualquer skill entrar no plugin, passa por audit com grep dos 20 padrões listados no Spec 2 §7.1. Placeholders substituem dados pessoais.
 
