@@ -10,16 +10,9 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 - [x] `CONVENCOES.md`, `JORNADAS.md`, `ROADMAP.md`
 - [x] README, CHANGELOG, LICENSE
 
-## v0.1.0 (próxima sessão) — 14 skills migradas
+## v0.1.0 (próxima sessão) — 4 skills restantes (Plan 5)
 
-- [ ] `/setup-projeto` (17 seções adaptativas, delega seção 13 pra `/voz`)
 - [ ] `/humanizer` (limpa IA + aplica voz do projeto via `reference/voz-<handle>.md`)
-- [ ] `/pesquisa-diaria` (com `/schedule` nativo da Anthropic como agendamento default)
-- [ ] `/pesquisa-concorrentes` (Instagram-first)
-- [ ] `/raio-x-ads-concorrentes` (briefing 10 seções)
-- [ ] `/ideias-conteudo` (10 frameworks de hook)
-- [ ] `/analista-conteudo` (14 seções SQL com KPIs BR)
-- [ ] `/auto-melhoria` (orquestradora metacognitiva; delega pra `/voz` quando padrão de voz)
 - [ ] `/carrossel-instagram` (visual final via Playwright)
 - [ ] `/analisar-video` (engenharia reversa → `adaptive_models` no Supabase)
 - [ ] `/roteiro-viral` (consome `adaptive_models`)
@@ -47,6 +40,18 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 - [x] README blocos `/voz` e `/dna-melhoria`
 
 **Não incluído (Plans 4-5):** hooks reais de auto-obs nas skills consumidoras (humanizer, ideias-conteudo, analisar-video). Voz é entregue mas integração efetiva no humanizer vem em Plan 5. `--apply` do dna-melhoria também fica como follow-up futuro (alinhamento Spec §3.1).
+
+## v0.1.0-alpha.6 (em release) — 7 skills migradas
+
+- [x] `/setup-projeto` (delega §13 pra `/voz criar`)
+- [x] `/pesquisa-diaria` (storage layer)
+- [x] `/pesquisa-concorrentes` (storage layer)
+- [x] `/raio-x-ads-concorrentes` (storage layer + aviso ad_library vazia)
+- [x] `/ideias-conteudo` (storage layer)
+- [x] `/analista-conteudo` (Supabase-only — exceção documentada)
+- [x] `/auto-melhoria` (delega padrões de voz pra `/voz`)
+
+**Não incluído (Plan 5):** humanizer, carrossel-instagram, analisar-video, roteiro-viral (skills globais → plugin).
 
 ## v0.2.0 — Skills de agência + ads (família grande)
 
