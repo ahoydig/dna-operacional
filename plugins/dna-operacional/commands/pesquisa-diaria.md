@@ -7,6 +7,30 @@ argument-hint: "[fast|full]"
 
 > Público: empreendedor brasileiro. Zero jargão de dev. PT-BR sempre.
 
+## Pré-check: APIs necessárias
+
+Antes de executar, verificar tokens/configs obrigatórios:
+
+### APIFY_TOKEN
+
+Se `$APIFY_TOKEN` ausente:
+
+```
+❌ APIFY_TOKEN não configurado.
+
+Pra configurar (3 passos):
+
+1. Acessa https://console.apify.com/account#/integrations e copia teu Personal API token
+2. Adiciona em ~/.zshrc:
+     export APIFY_TOKEN='apify_api_XXXX...'
+3. Reload shell:
+     source ~/.zshrc
+
+Depois rode a skill de novo. Guia completo: docs/APIS-EXTERNAS.md#apify
+```
+
+Abortar execução até fix.
+
 ## Padrão de autenticação Apify (documentado UMA vez — outras skills referenciam)
 
 As 3 skills de scraping (`pesquisa-diaria`, `pesquisa-concorrentes`, `raio-x-ads-concorrentes`) usam `${APIFY_TOKEN}` via curl direto (sem MCP). Ordem de carregamento (compatível com zsh/bash no macOS):
