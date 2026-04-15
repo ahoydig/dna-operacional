@@ -6,10 +6,47 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ### Previsto pra v0.1.0 final
 
-- Migração das 11 skills restantes (`setup-projeto`, `humanizer`, `pesquisa-diaria`, `pesquisa-concorrentes`, `raio-x-ads-concorrentes`, `ideias-conteudo`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`, `analista-conteudo`, `auto-melhoria`) — junto com `/dna`, `/voz` e `/dna-melhoria` já entregues
+- Migração das 4 skills restantes (`humanizer`, `analisar-video`, `roteiro-viral`, `carrossel-instagram`) — Plan 5
 - `/dna-melhoria --apply` com confirmação 1-a-1 (exigiria atualizar Spec §3.1 antes)
-- Hooks reais de auto-observação nas skills consumidoras (`humanizer`, `ideias-conteudo`, `analisar-video`) — Plans 4-5
+- Hooks reais de auto-observação nas skills consumidoras (`humanizer`, `ideias-conteudo`, `analisar-video`) — Plan 5
 - Sanitização completa (20 padrões pessoais → placeholders) — em rolling audit a cada release
+
+---
+
+## [0.1.0-alpha.6] — 2026-04-15
+
+### Adicionado — 7 Skills Migradas
+
+- `commands/setup-projeto.md` — configura projeto com CLAUDE.md rico, delega §13 pra `/voz criar`
+- `commands/pesquisa-diaria.md` — radar diário BR (storage: writes `content_pipeline`)
+- `commands/pesquisa-concorrentes.md` — mapeia concorrentes IG (storage: upserts `competitors` + `competitor_posts`)
+- `commands/raio-x-ads-concorrentes.md` — briefing de ads (storage: reads `ad_library` + `competitors`; aviso quando `ad_library` vazia)
+- `commands/ideias-conteudo.md` — multiplica ideias do pipeline em 5 vídeos (storage: read/update `content_pipeline`)
+- `commands/analista-conteudo.md` — análise SQL 14 seções (Supabase-only via `storage.execute_sql`, pré-check abortando se backend != supabase)
+- `commands/auto-melhoria.md` — orquestradora metacognitiva (delega padrões de voz pra `/voz`)
+
+### Mudado
+
+- `README.md`: tabela "Skills incluídas" atualizada pra 10 (era 3)
+- `docs/ROADMAP.md`: milestone v0.1.0-alpha.6
+- `CLAUDE.md`: skill migration checklist documentado
+- Cross-cutting: terminologia `avatar` → `publico-alvo` nas 7 skills migradas (alinhamento com vocabulário do curso MaestrIA — marketeiros BR, não devs)
+
+### Infra
+
+- Git tag `v0.1.0-alpha.6` anotada
+- `plugin.json.version` bumpado pra `0.1.0-alpha.6`
+- Audit Spec §7.2 (regex completo + filtro pós-grep): 0 matches
+- `claude plugin validate`: zero warnings
+
+### Notas conhecidas
+
+- `raio-x-ads-concorrentes` pode ter degradação de performance quando `ad_library` estiver populada em escala (centenas+ de ads). Refator de paginação/batching previsto pra v0.2+.
+
+### Não incluído (Plan 5)
+
+- Skills globais → plugin: `humanizer`, `carrossel-instagram`, `analisar-video`, `roteiro-viral`
+- Hooks reais de auto-observação nas skills consumidoras (`humanizer`, `ideias-conteudo`, `analisar-video`)
 
 ---
 
