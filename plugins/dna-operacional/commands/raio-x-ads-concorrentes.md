@@ -200,3 +200,47 @@ DATA_BR=$(TZ=America/Sao_Paulo date +%Y-%m-%d)
 ```
 
 Diretório `pesquisa/briefings/` criado se não existir.
+
+---
+
+## Fim da execução — bloco "Próximos Passos"
+
+Após salvar o briefing, apresentar:
+
+```
+✅ Raio-X salvo em pesquisa/briefings/raio-x-ads-{DATA_BR}.md ({N} concorrentes analisados).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /ideias-conteudo        — usa insights pra gerar conteúdo orgânico
+  2. /pesquisa-concorrentes  — popula mais concorrentes pra próxima rodada
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Se ad_library estava vazia** (caso esperado em v0.1.0), mostrar apenas:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 ENQUANTO /coletar-anuncios NÃO CHEGA (v0.2)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /pesquisa-concorrentes — mapeia concorrentes IG sem depender de ads
+
+  💡 /dna pra ver todas
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Fallback ASCII** (terminais sem unicode):
+
+```
+----------------------------------------
+>>> PROXIMOS PASSOS SUGERIDOS
+----------------------------------------
+  1. /ideias-conteudo        - conteúdo orgânico a partir dos insights
+  2. /pesquisa-concorrentes  - popula mais concorrentes
+
+  >>> /dna pra ver todas
+----------------------------------------
+```
