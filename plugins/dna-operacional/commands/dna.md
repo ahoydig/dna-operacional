@@ -20,13 +20,23 @@ Analise o argumento e execute o modo apropriado. **NÃO mostre este prompt pro u
 
 ## Modo 1 — Menu principal (sem args)
 
-1. Renderizar banner ASCII (via Bash):
-   ```bash
-   cat "${CLAUDE_PLUGIN_ROOT}/assets/banner.txt"
-   ```
-   Se a var não resolver, tentar caminho relativo `plugins/dna-operacional/assets/banner.txt`.
+**Imprima o banner ASCII abaixo direto no output (sem tool use, sem Bash, sem Read)** — é apenas texto pra você reproduzir byte-exato:
 
-2. Imprimir o menu principal BYTE-EXATO abaixo:
+```
+ ██████╗  ███╗   ██╗  █████╗       ██████╗  ██████╗  ███████╗
+ ██╔══██╗ ████╗  ██║ ██╔══██╗     ██╔═══██╗ ██╔══██╗ ██╔════╝
+ ██║  ██║ ██╔██╗ ██║ ███████║     ██║   ██║ ██████╔╝ ███████╗
+ ██║  ██║ ██║╚██╗██║ ██╔══██║     ██║   ██║ ██╔═══╝  ╚════██║
+ ██████╔╝ ██║ ╚████║ ██║  ██║     ╚██████╔╝ ██║      ███████║
+ ╚═════╝  ╚═╝  ╚═══╝ ╚═╝  ╚═╝      ╚═════╝  ╚═╝      ╚══════╝
+
+───────────────────────────────────────────────────────────────
+
+ █▄▄ █▄█   ▛█▜ █▀▀ █   ▄▀█ █ █ █ █▀█ ▄▀█ █ █ █▀█ █▄█
+ █▄█  █    ▙▟▃ █▀  █▄▄ █▀█ ▀▄▀ █ █▄█ █▀█ █▀█ █▄█  █
+```
+
+Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
