@@ -529,3 +529,35 @@ Gerar seguindo schema exato (criar o diretório `reference/` se não existir):
 - **Cadência real > cadência declarada** — se o scrape revelou frequência de posts diferente do que o user disse, anotar ambos no CLAUDE.md: "Cadência declarada: X | Cadência real (Instagram): Y"
 - Ao final, perguntar: "Quer que eu já adicione os concorrentes seed via `/pesquisa-concorrentes`?" — se sim, instruir user a rodar a skill.
 - Se `/humanizer` estiver instalado (plugin DNA Operacional v0.2+), humanize o resumo final "Pronto! Gerei teus arquivos." antes de apresentar.
+
+## Fim da execução — bloco "Próximos Passos"
+
+Após gerar os 2 arquivos, apresente:
+
+```
+✅ Projeto configurado: CLAUDE.md + reference/publico-alvo.md gerados. Storage backend: [opção escolhida].
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /voz criar              — captura voz do projeto (entrevista 7 perguntas)
+  2. /pesquisa-concorrentes  — mapeia concorrentes do nicho
+  3. /pesquisa-diaria        — radar matinal de temas BR
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Fallback ASCII** (terminais sem unicode — detectar via `$LC_ALL`):
+
+```
+----------------------------------------
+>>> PROXIMOS PASSOS SUGERIDOS
+----------------------------------------
+  1. /voz criar              - captura voz do projeto
+  2. /pesquisa-concorrentes  - mapeia concorrentes do nicho
+  3. /pesquisa-diaria        - radar matinal de temas BR
+
+  >>> /dna pra ver todas
+----------------------------------------
+```
