@@ -10,6 +10,16 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 - [x] `CONVENCOES.md`, `JORNADAS.md`, `ROADMAP.md`
 - [x] README, CHANGELOG, LICENSE
 
+## v0.1.0-alpha.8 (em release) — APIs Externas + Agendamento
+
+- [x] `docs/APIS-EXTERNAS.md` — guia passo-a-passo pra 7 integrações (Apify/Supabase/Modal/Sheets/schedule/GitHub Actions/launchd)
+- [x] `docs/SPIKE-TOKENS.md` — medição real custo `/pesquisa-diaria` + decisão de default agendamento
+- [x] Pré-checks inline em 5 skills afetadas (pesquisa-diaria, pesquisa-concorrentes, analisar-video, raio-x-ads, analista-conteudo) — instruções passo-a-passo se falta config
+- [x] setup-projeto orienta APIS-EXTERNAS.md após config base
+- [x] README com bloco "🔑 Setup de APIs" + "⏰ Agendamento"
+
+**Próximo:** Plan 7 — release v0.1.0 final (remove `-alpha`).
+
 ## v0.1.0-alpha.7 (em release) — 4 skills globais migradas + 3 hooks auto-obs
 
 Marco: **fecha as 14 skills planejadas pra v0.1.0**.
