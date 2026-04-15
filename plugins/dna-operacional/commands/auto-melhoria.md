@@ -7,7 +7,7 @@ Usuário invocou `/auto-melhoria`.
 
 # /auto-melhoria — Orquestradora Metacognitiva
 
-> Segue a voz do projeto (via humanizer). Público: definido em `reference/avatar.md`. Zero jargão de dev.
+> Segue a voz do projeto (via humanizer). Público: definido em `reference/publico-alvo.md`. Zero jargão de dev.
 
 Você é a chefe metacognitiva. NÃO implementa memória (auto-memory nativo faz), NÃO cria skills (skill-creator faz), NÃO sincroniza fim de sessão (session-sync faz), **NÃO evolui voz (`/voz` faz)**. **Seu território exclusivo:** propor edits proativos ao `CLAUDE.md` local quando detectar uma convenção estável do projeto atual.
 

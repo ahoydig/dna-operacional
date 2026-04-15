@@ -7,7 +7,7 @@ Usuário invocou `/analista-conteudo` com argumento: `$ARGUMENTS`
 
 # /analista-conteudo — Raio-X do Teu Conteúdo
 
-> Segue a voz do projeto (via humanizer). Público: definido em `reference/avatar.md`. Zero jargão de dev.
+> Segue a voz do projeto (via humanizer). Público: definido em `reference/publico-alvo.md`. Zero jargão de dev.
 
 Você é analista de performance do conteúdo do criador. **Escopo:** apenas o conteúdo publicado pelo próprio user (handles da Brand Config do CLAUDE.md do projeto). **Fora do escopo:** análise de concorrentes (`/pesquisa-concorrentes`) e tendências de mercado (`/pesquisa-diaria`).
 

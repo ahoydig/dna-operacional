@@ -7,7 +7,7 @@ Usuário invocou `/ideias-conteudo` com argumento: `$ARGUMENTS`
 
 # /ideias-conteudo — Pesquisa + Multiplicação de Vídeos
 
-> Segue a voz do projeto (via humanizer). Público: definido em `reference/avatar.md`. Zero jargão de dev.
+> Segue a voz do projeto (via humanizer). Público: definido em `reference/publico-alvo.md`. Zero jargão de dev.
 
 **Objetivo:** Transformar 1 tópico do pipeline em 3-5 vídeos diferentes. Volume é a estratégia.
 
@@ -51,7 +51,7 @@ Quais quer desenvolver? (números separados por vírgula, ou "todas")
 ## Passo 1: Pesquisa profunda (por tópico escolhido)
 
 Antes de gerar variações, ler do projeto atual:
-1. `reference/avatar.md` (quem é o público)
+1. `reference/publico-alvo.md` (quem é o público)
 2. `reference/voz-${HANDLE}.md` (voz do criador — lida pelo humanizer)
 3. `CLAUDE.md` seção `## Pilares de conteúdo` e `## Sazonalidade do Nicho`
 
