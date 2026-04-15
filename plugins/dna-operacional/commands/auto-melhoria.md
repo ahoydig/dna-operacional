@@ -112,3 +112,15 @@ Quando user roda `/auto-melhoria` ou pede "se observa" / "melhora seu entendimen
 5. **Correções do user sempre prevalecem** — se user corrigiu, orienta auto-memory a atualizar AGORA
 6. **Nunca persiste segredo** — tokens, senhas, chaves nunca vão pra memória nem CLAUDE.md
 7. **Output final humanizado** — qualquer texto pro user passa pela skill `humanizer`
+
+---
+
+✅ Observação concluída
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  (nenhum forçado — auto-melhoria é transversal, contextual)
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
