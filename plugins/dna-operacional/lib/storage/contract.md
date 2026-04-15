@@ -70,7 +70,7 @@ Sete estruturas definidas. Cada adapter armazena no formato apropriado (tabela S
 
 ### `my_content`
 
-> Estrutura herdada da Rodada 1 (skills já existentes do Flávio).
+> Estrutura herdada da Rodada 1 (skills pré-existentes do criador).
 
 Campos canônicos: `id, post_url, post_code, platform, published_at, likes, comments, saves, shares, video_views, reach, impressions, hook, topic, pilar, formato, archetype, transcript, created_at, updated_at`.
 
