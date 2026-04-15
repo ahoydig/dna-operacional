@@ -530,6 +530,23 @@ Gerar seguindo schema exato (criar o diretório `reference/` se não existir):
 - Ao final, perguntar: "Quer que eu já adicione os concorrentes seed via `/pesquisa-concorrentes`?" — se sim, instruir user a rodar a skill.
 - Se `/humanizer` estiver instalado (plugin DNA Operacional v0.2+), humanize o resumo final "Pronto! Gerei teus arquivos." antes de apresentar.
 
+## Setup final — APIs externas
+
+Projeto configurado. Antes de rodar skills, configure as APIs que vai usar:
+
+- **Apify** (scraping) — obrigatório pra `/pesquisa-diaria`, `/pesquisa-concorrentes`, `/analisar-video`
+- **Supabase** (SQL) — obrigatório SE backend = supabase OU pra `/analista-conteudo`
+- **Modal** (Whisper) — obrigatório pra `/analisar-video`
+- **Google Sheets** — SE backend = sheets
+- **Agendamento** (`/schedule` / GitHub Actions / launchd) — opcional, pra `/pesquisa-diaria` rodar automático
+
+**Guia completo passo-a-passo:**
+```
+cat ~/.claude/plugins/cache/dna-operacional-marketplace/dna-operacional/<versão>/docs/APIS-EXTERNAS.md
+```
+
+Pula as que não vai usar agora. Cada skill faz pré-check no início — te avisa se faltou algo.
+
 ## Fim da execução — bloco "Próximos Passos"
 
 Após gerar os 2 arquivos, apresente:
