@@ -1,5 +1,5 @@
 ---
-description: Auto-refino das skills do plugin DNA Operacional. Escaneia SKILL.md/commands/*.md, detecta inconsistências e propõe melhorias (descriptions, argument-hints, próximos passos, inlining, sanitização). Sempre dry-run — nunca aplica direto sem aprovação. Use quando o usuário digitar "/dna-melhoria", "melhora as skills", "refina o plugin", "audita as skills do dna".
+description: Auto-refino das skills do plugin DNA Operacional. Escaneia commands/*.md e SKILL.md, detecta inconsistências (descriptions, argument-hints, próximos passos, inlining, sanitização). Sempre dry-run. Use quando usuário digitar "/dna-melhoria", "melhora as skills", "refina o plugin".
 argument-hint: "[--dry-run|--diff]"
 ---
 
