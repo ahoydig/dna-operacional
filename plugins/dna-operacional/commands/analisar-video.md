@@ -231,3 +231,15 @@ Skills não cascateiam — cada slash é invocação explícita do user.
 5. **Path do Whisper nunca hardcodado** — usa env ou skill global `transcribe-audio`
 6. **Frame analysis pode ser pesado** — avisar user antes de salvar em sheets/markdown
 7. **Retornar id do adaptive_model** pra user encadear com `/roteiro-viral`
+
+---
+
+✅ Modelo adaptativo gerado e persistido
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /roteiro-viral   — gera roteiro consumindo o adaptive_model criado
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
