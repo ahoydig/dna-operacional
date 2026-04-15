@@ -14,6 +14,22 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.0-alpha.2] — 2026-04-14
+
+### Corrigido
+
+- Bump `plugin.json.version` de `0.1.0` pra `0.1.0-alpha.2`. Claude Code usa `plugin.json.version` como cache path key — sem bump, `/plugin marketplace update` não baixa nova versão mesmo com tag nova no GitHub. A alpha.1 tinha o fix do banner inline no código, mas o manifest não bumpado impedia o download pelos users. Esta release resolve cache staleness e entrega efetivamente o fix da alpha.1 + bump de manifest.
+
+### Infra
+
+- Git tag `v0.1.0-alpha.2`
+
+### Aprendizado
+
+- Em hotfixes futuros: "tag version ↔ `plugin.json.version` match" é check obrigatório no release-engineer antes de abrir GitHub release. Sem isso, release é doc-only pro user.
+
+---
+
 ## [0.1.0-alpha.1] — 2026-04-14
 
 ### Corrigido
