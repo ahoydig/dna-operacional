@@ -152,7 +152,40 @@ Quando user digita só `/voz` sem argumento.
 
 ## Modo Mostrar
 
-<!-- preenchido em Task 5 -->
+Quando user digita `/voz mostrar`.
+
+### Lógica
+
+1. Localizar handle + arquivo canônico (ver "Pré-requisito comum").
+2. Ler `reference/voz-<handle>.md`.
+3. **Reproduzir o body BYTE-EXATO inline no output** — sem mostrar tool call visível (`Read`, `Bash cat`, etc). Aprendizado herdado do Plan 1 (hotfix de tool calls visíveis na UX de skills do plugin).
+4. Renderizar como markdown, prefixado e sufixado pelos separadores abaixo.
+
+### Output
+
+Imprime o body do `reference/voz-<handle>.md` completo, prefixado por:
+
+```
+🎙  Voz de @<handle> (v<N>, atualizada <YYYY-MM-DD>)
+
+──────────────────────────────────────────────
+```
+
+E sufixado por:
+
+```
+──────────────────────────────────────────────
+
+💡 /voz evoluir <url|arquivo|texto>  → adicionar padrões
+💡 /voz versoes                       → ver histórico
+```
+
+### Edge cases
+
+- **Voz não existe:** redireciona pro Modo Status (que mostra orientação de `/voz criar`).
+- **Frontmatter corrompido:** imprimir
+  > "⚠️ Arquivo corrompido em `reference/voz-<handle>.md`. Backup em `.v<N>.bak.md`? Quer fazer rollback pra última versão válida? (Use `/voz versoes rollback v<N>`.)"
+- **Arquivo muito longo (>300 linhas):** imprimir integral mesmo assim (comportamento esperado — user pediu "mostrar").
 
 ## Modo Evoluir
 
