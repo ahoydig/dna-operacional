@@ -65,6 +65,35 @@ Modos:
 
 Detalhes em [`lib/voz/SCHEMA.md`](plugins/dna-operacional/lib/voz/SCHEMA.md) e [`lib/voz/auto-observacao.md`](plugins/dna-operacional/lib/voz/auto-observacao.md).
 
+## 🔑 Setup de APIs externas
+
+Skills do plugin dependem de tokens/APIs externas (Apify, Supabase, Modal, Google). Guia completo passo-a-passo:
+
+```
+cat ~/.claude/plugins/cache/dna-operacional-marketplace/dna-operacional/<versão>/docs/APIS-EXTERNAS.md
+```
+
+Ou veja [`docs/APIS-EXTERNAS.md`](plugins/dna-operacional/docs/APIS-EXTERNAS.md) direto no repo.
+
+**Resumo:**
+
+| API | Pra quê | Free tier |
+|---|---|---|
+| Apify | Scraping (pesquisas, video download) | $5/mês de créditos |
+| Supabase | SQL analytics (`/analista-conteudo`) + storage | 500MB DB grátis |
+| Modal | Whisper transcrição (`/analisar-video`) | $30/mês crédito |
+| Google Sheets | Storage backend alternativo | Grátis |
+
+Cada skill faz pré-check no início — se falta config, mostra passo-a-passo pra fix.
+
+## ⏰ Agendamento `/pesquisa-diaria`
+
+3 opções (user escolhe no `APIS-EXTERNAS.md`):
+
+- **`/schedule` Anthropic** — zero infra, paga tokens. Medido: ~$<X>/mês (ver `docs/SPIKE-TOKENS.md`)
+- **GitHub Actions** — grátis em repo público
+- **launchd (Mac)** — grátis, só com Mac ligado
+
 ## 🧬 DNA-Melhoria (v0.1.0-alpha.5, mantenedores)
 
 Skill `/dna-melhoria` faz auto-refino das próprias skills do plugin. Pra mantenedores (não pro aluno final).
