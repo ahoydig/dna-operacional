@@ -244,11 +244,65 @@ Quando user digita `/voz evoluir <input>`. Input pode ser:
 
 ## Modo Versoes
 
-<!-- preenchido em Task 7 -->
+Quando user digita `/voz versoes`.
+
+### Lógica
+
+1. Glob `reference/voz-<handle>.v*.md` → lista de snapshots (ignorar `.bak.md` e `.source.txt`).
+2. Pra cada snapshot: ler frontmatter (`versao`, `ultima_atualizacao`, última entrada de `fontes_evolucao`) + diff vs anterior (linhas adicionadas/removidas).
+3. Marcar a versão atual — comparar conteúdo do canônico com cada snapshot; a que bate é a ⭐ atual.
+4. Ordenar por `versao` descendente (v<N> primeiro, v1 por último).
+
+### Output
+
+```
+🎙  Versões da voz @<handle>
+
+  ⭐ v3 (2026-04-14, atual) — +5 -1 linhas vs v2 — fonte: detectou padrão "Pix"
+     v2 (2026-04-12, snapshot) — +12 -3 linhas vs v1 — fonte: youtube.com/...
+     v1 (2026-04-10, snapshot) — versão inicial — fonte: setup-projeto inicial
+
+💡 /voz versoes rollback v<N>  → restaura snapshot vN como atual
+💡 /voz mostrar                 → exibe voz atual
+```
+
+### Edge cases
+
+- **Só v1 existe:** mostrar linha única `⭐ v1 (data, atual) — versão inicial — fonte: setup-projeto inicial`.
+- **Canônico não bate com nenhum snapshot:** imprimir `⚠️ Canônico dessincronizado dos snapshots. Último snapshot: v<N>. Rollback recomendado: /voz versoes rollback v<N>.`
 
 ## Modo Versoes Rollback
 
-<!-- preenchido em Task 7 -->
+Quando user digita `/voz versoes rollback v<N>`.
+
+### Lógica
+
+1. Validar que `reference/voz-<handle>.v<N>.md` existe.
+2. **Pré-confirmação:**
+   > "Vai restaurar v<N> (de <data>) como atual. Snapshots v<N+1>+ continuam guardados pra histórico. Confirmar? (y/n)"
+3. Se `y`:
+   - `cp reference/voz-<handle>.v<N>.md reference/voz-<handle>.md`
+   - Atualizar frontmatter do canônico:
+     - `ultima_atualizacao: <hoje>`
+     - append em `fontes_evolucao`: `<hoje>: rollback pra v<N>`
+   - Imprime:
+
+```
+✅ Voz @<handle> revertida pra v<N>
+
+  Snapshots v<N+1>+ permanecem em reference/ pra histórico.
+
+💡 /voz mostrar                       → ver voz atual
+💡 /voz versoes                       → ver todas versões
+```
+
+### Edge cases
+
+- **v<N> não existe:** imprimir
+  > "Snapshot v<N> não encontrado. Rode `/voz versoes` pra ver disponíveis."
+- **N == versão atual:** imprimir
+  > "Já tá em v<N>. Nada a fazer."
+- **User cancelou (n):** nenhum arquivo é tocado.
 
 ## Modo Silenciar
 
