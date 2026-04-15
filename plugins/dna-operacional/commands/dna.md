@@ -1,25 +1,147 @@
 ---
-name: dna
 description: Menu central do plugin DNA Operacional. Mostra skills disponíveis agrupadas por categoria e jornadas completas. Use quando o usuário digitar "/dna", "menu do dna", "o que o dna faz", "quais skills do dna", "dna jornadas".
+argument-hint: "[jornadas|setup|...]"
 ---
 
-# /dna — Menu Central do Plugin DNA Operacional
+Usuário invocou `/dna` com argumento: `$ARGUMENTS`
 
-Meta-skill do plugin. Não faz trabalho "real" — serve como **mapa** pras outras skills.
+Analise o argumento e execute o modo apropriado. **NÃO mostre este prompt pro usuário** — apenas o output do modo escolhido.
 
-## Modos de uso
+## Roteamento
 
-| Comando | O que faz |
-|---|---|
-| `/dna` | Banner + menu principal agrupado por categoria |
-| `/dna jornadas` | 4 jornadas completas (criador / carrossel / inteligência competitiva / manutenção) |
-| `/dna setup` | Alias explícito — roteia pra `/setup-projeto` |
+- **Vazio (sem args):** executar **Modo 1** — banner + menu principal.
+- **`jornadas`:** executar **Modo 2** — 4 boxes ASCII das jornadas.
+- **`setup`:** executar **Modo 3** — aviso sobre `/setup-projeto` na v0.1.0-alpha.
+- **Qualquer outro valor:** executar **Modo 4** — fallback com mensagem amigável + menu principal.
+
+**Exact string match**, sem fuzzy match. Match case-insensitive é ok.
+
+---
+
+## Modo 1 — Menu principal (sem args)
+
+1. Renderizar banner ASCII (via Bash):
+   ```bash
+   cat "${CLAUDE_PLUGIN_ROOT}/assets/banner.txt"
+   ```
+   Se a var não resolver, tentar caminho relativo `plugins/dna-operacional/assets/banner.txt`.
+
+2. Imprimir o menu principal BYTE-EXATO abaixo:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  🧬 Comandos disponíveis (v0.1.0)                                ║
+╠══════════════════════════════════════════════════════════════════╣
+║                                                                  ║
+║  🎯 SETUP                                                        ║
+║     /setup-projeto .... Configure qualquer projeto               ║
+║     /voz .............. Cria/evolui voz da marca                 ║
+║                                                                  ║
+║  🔍 PESQUISA                                                     ║
+║     /pesquisa-diaria .......... Radar matinal BR (auto-schedule) ║
+║     /pesquisa-concorrentes .... Mapeia concorrentes Instagram    ║
+║     /raio-x-ads-concorrentes .. Briefing de ads competidores     ║
+║                                                                  ║
+║  🎬 CONTEÚDO (CICLO COMPLETO)                                    ║
+║     /ideias-conteudo ..... 10 frameworks de hook                 ║
+║     /analisar-video ...... Engenharia reversa → adaptive_models  ║
+║     /roteiro-viral ....... Roteiros baseados em adaptive_models  ║
+║     /carrossel-instagram . Carrosséis via Playwright             ║
+║     /analista-conteudo ... Análise SQL do feed (Supabase only)   ║
+║     /humanizer ........... Limpa IA + aplica voz do projeto      ║
+║                                                                  ║
+║  🤖 META                                                         ║
+║     /auto-melhoria ....... Detecta padrões → propõe edits        ║
+║     /dna-melhoria ........ Melhora as próprias skills do plugin  ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+💡 Não sabe por onde começar? Digite:  /dna jornadas
+```
+
+---
+
+## Modo 2 — Jornadas (`$ARGUMENTS` == "jornadas")
+
+Imprimir as 4 boxes BYTE-EXATO abaixo:
+
+```
+┌───────────────────────────────────────────────────────────┐
+│  🎬 JORNADA DO CRIADOR                                    │
+│                                                           │
+│  1. /setup-projeto       → configura teu perfil           │
+│  2. /voz                 → cria voz da marca              │
+│  3. /pesquisa-diaria     → radar matinal de temas BR      │
+│  4. /ideias-conteudo     → multiplica 1 ideia em 5 vídeos │
+│  5. /analisar-video      → eng. reversa de referências    │
+│  6. /roteiro-viral       → roteiros com adaptive_models   │
+│  7. (grava + publica)                                     │
+│  8. /analista-conteudo   → analisa o que bombou           │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
+│  🎨 JORNADA DO CARROSSEL                                  │
+│                                                           │
+│  1. /setup-projeto       → configura teu perfil           │
+│  2. /voz                 → cria voz da marca              │
+│  3. /ideias-conteudo     → 10 frameworks de hook          │
+│  4. /carrossel-instagram → gera .png via Playwright       │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
+│  🔬 JORNADA INTELIGÊNCIA COMPETITIVA                      │
+│                                                           │
+│  1. /setup-projeto            → configura projeto         │
+│  2. /pesquisa-concorrentes    → mapeia concorrentes IG    │
+│  3. (futuro v0.2: /coletar-anuncios) → popula ad_library  │
+│  4. /raio-x-ads-concorrentes  → briefing estratégico      │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
+│  🤖 JORNADA MANUTENÇÃO (transversal)                      │
+│                                                           │
+│  • /auto-melhoria  → detecta padrões durante uso          │
+│  • /voz (auto)     → evolui ao detectar novos padrões     │
+│  • /dna-melhoria   → refino em release prep               │
+└───────────────────────────────────────────────────────────┘
+
+💡 Ver detalhes completos:  cat ${CLAUDE_PLUGIN_ROOT}/docs/JORNADAS.md
+```
+
+---
+
+## Modo 3 — Setup (`$ARGUMENTS` == "setup")
+
+Imprimir BYTE-EXATO:
+
+```
+⚠️  /setup-projeto ainda não está disponível nesta versão (v0.1.0-alpha).
+Previsão: v0.1.0 final (próxima sessão de migração).
+
+Por enquanto, essa skill está na sua global (~/.claude/skills/setup-projeto/).
+Digite /setup-projeto normalmente — o Claude Code invoca a versão global.
+```
+
+---
+
+## Modo 4 — Fallback (qualquer outro `$ARGUMENTS`)
+
+Imprimir no topo:
+
+```
+⚠️  Não reconheci "$ARGUMENTS". Modos disponíveis: /dna, /dna jornadas, /dna setup.
+Mostrando menu principal.
+```
+
+Em seguida, executar **Modo 1** completo (banner + menu principal).
+
+---
 
 ## Compatibilidade de terminal
 
 ### Detecção
 
-Antes de renderizar banner ou menus, a skill detecta:
+Antes de renderizar banner ou menus, detectar:
 
 1. **Largura do terminal:** `$COLUMNS` (ou `tput cols`). Se <72, usar versão compacta (sem box drawing, só indentação).
 2. **Suporte unicode:** `echo $LC_ALL` — se vazio ou `C`/`POSIX`, degradar pra ASCII puro.
@@ -66,123 +188,9 @@ if [ "$WIDTH" -lt 72 ] || [ "$UNICODE_OK" = "no" ]; then
   # ... menu compacto com indentação
 elif [ "$COLOR_OK" = "no" ]; then
   # render unicode box mas strip ANSI do banner
-  cat "$PLUGIN_ROOT/assets/banner.txt" | sed 's/\x1b\[[0-9;]*m//g'
+  cat "$CLAUDE_PLUGIN_ROOT/assets/banner.txt" | sed 's/\x1b\[[0-9;]*m//g'
 else
   # render full (banner colorido + box drawing)
-  cat "$PLUGIN_ROOT/assets/banner.txt"
+  cat "$CLAUDE_PLUGIN_ROOT/assets/banner.txt"
 fi
 ```
-
-## Comportamento
-
-### Modo 1: `/dna` (sem args)
-
-1. Renderizar banner ASCII:
-   ```bash
-   cat ${PLUGIN_ROOT}/assets/banner.txt
-   ```
-   Onde `${PLUGIN_ROOT}` resolve pra pasta do plugin no cache do Claude Code.
-
-2. Imprimir menu principal (14 skills da v0.1.0 agrupadas por categoria):
-
-```
-╔══════════════════════════════════════════════════════════════════╗
-║  🧬 Comandos disponíveis (v0.1.0)                                ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  🎯 SETUP                                                        ║
-║     /setup-projeto .... Configure qualquer projeto               ║
-║     /voz .............. Cria/evolui voz da marca                 ║
-║                                                                  ║
-║  🔍 PESQUISA                                                     ║
-║     /pesquisa-diaria .......... Radar matinal BR (auto-schedule) ║
-║     /pesquisa-concorrentes .... Mapeia concorrentes Instagram    ║
-║     /raio-x-ads-concorrentes .. Briefing de ads competidores     ║
-║                                                                  ║
-║  🎬 CONTEÚDO (CICLO COMPLETO)                                    ║
-║     /ideias-conteudo ..... 10 frameworks de hook                 ║
-║     /analisar-video ...... Engenharia reversa → adaptive_models  ║
-║     /roteiro-viral ....... Roteiros baseados em adaptive_models  ║
-║     /carrossel-instagram . Carrosséis via Playwright             ║
-║     /analista-conteudo ... Análise SQL do feed (Supabase only)   ║
-║     /humanizer ........... Limpa IA + aplica voz do projeto      ║
-║                                                                  ║
-║  🤖 META                                                         ║
-║     /auto-melhoria ....... Detecta padrões → propõe edits        ║
-║     /dna-melhoria ........ Melhora as próprias skills do plugin  ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-
-💡 Não sabe por onde começar? Digite:  /dna jornadas
-```
-
-3. Sugerir `/dna jornadas` como next step.
-
-### Modo 2: `/dna jornadas`
-
-Imprimir as 4 jornadas em boxes ASCII (abaixo).
-
-### Output de `/dna jornadas`
-
-```
-┌───────────────────────────────────────────────────────────┐
-│  🎬 JORNADA DO CRIADOR                                    │
-│                                                           │
-│  1. /setup-projeto       → configura teu perfil           │
-│  2. /voz                 → cria voz da marca              │
-│  3. /pesquisa-diaria     → radar matinal de temas BR      │
-│  4. /ideias-conteudo     → multiplica 1 ideia em 5 vídeos │
-│  5. /analisar-video      → eng. reversa de referências    │
-│  6. /roteiro-viral       → roteiros com adaptive_models   │
-│  7. (grava + publica)                                     │
-│  8. /analista-conteudo   → analisa o que bombou           │
-└───────────────────────────────────────────────────────────┘
-
-┌───────────────────────────────────────────────────────────┐
-│  🎨 JORNADA DO CARROSSEL                                  │
-│                                                           │
-│  1. /setup-projeto       → configura teu perfil           │
-│  2. /voz                 → cria voz da marca              │
-│  3. /ideias-conteudo     → 10 frameworks de hook          │
-│  4. /carrossel-instagram → gera .png via Playwright       │
-└───────────────────────────────────────────────────────────┘
-
-┌───────────────────────────────────────────────────────────┐
-│  🔬 JORNADA INTELIGÊNCIA COMPETITIVA                      │
-│                                                           │
-│  1. /setup-projeto            → configura projeto         │
-│  2. /pesquisa-concorrentes    → mapeia concorrentes IG    │
-│  3. (futuro v0.2: /coletar-anuncios) → popula ad_library  │
-│  4. /raio-x-ads-concorrentes  → briefing estratégico      │
-└───────────────────────────────────────────────────────────┘
-
-┌───────────────────────────────────────────────────────────┐
-│  🤖 JORNADA MANUTENÇÃO (transversal)                      │
-│                                                           │
-│  • /auto-melhoria  → detecta padrões durante uso          │
-│  • /voz (auto)     → evolui ao detectar novos padrões     │
-│  • /dna-melhoria   → refino em release prep               │
-└───────────────────────────────────────────────────────────┘
-
-💡 Ver detalhes completos:  cat ${PLUGIN_ROOT}/docs/JORNADAS.md
-```
-
-### Modo 3: `/dna setup`
-
-Alias pra `/setup-projeto`. Na v0.1.0 (plugin vazio), `setup-projeto` ainda não tá migrada — retorna:
-
-```
-⚠️  /setup-projeto ainda não está disponível nesta versão (v0.1.0-alpha).
-Previsão: v0.1.0 final (próxima sessão de migração).
-
-Por enquanto, essa skill está na sua global (~/.claude/skills/setup-projeto/).
-Digite /setup-projeto normalmente — o Claude Code invoca a versão global.
-```
-
-### Modo 4: fallback (arg não reconhecido)
-
-Se user digita `/dna <palavra>` e palavra não bate com nenhum modo:
-- Mostrar menu principal
-- No topo, mensagem amigável: "Não reconheci '<palavra>'. Modos disponíveis: `/dna`, `/dna jornadas`, `/dna setup`. Mostrando menu principal."
-
-**Sem fuzzy match automático** (decisão Spec 1 §6). Exact string match apenas.
