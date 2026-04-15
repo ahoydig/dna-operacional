@@ -16,6 +16,53 @@ Usuário invocou `/analisar-video` com argumento: `$ARGUMENTS`
 
 ---
 
+## Pré-check: APIs necessárias
+
+Antes de executar, verificar tokens/configs obrigatórios:
+
+### APIFY_TOKEN
+
+Se `$APIFY_TOKEN` ausente:
+
+```
+❌ APIFY_TOKEN não configurado.
+
+Pra configurar (3 passos):
+
+1. Acessa https://console.apify.com/account#/integrations e copia teu Personal API token
+2. Adiciona em ~/.zshrc:
+     export APIFY_TOKEN='apify_api_XXXX...'
+3. Reload shell:
+     source ~/.zshrc
+
+Depois rode a skill de novo. Guia completo: docs/APIS-EXTERNAS.md#apify
+```
+
+Abortar execução até fix.
+
+### MODAL_APP_NAME
+
+Se CLAUDE.md não tem `## Modal App: app_name: ...`:
+
+```
+❌ Modal app pra transcrição Whisper não configurado.
+
+Pra configurar (4 passos):
+
+1. Cria conta em https://modal.com/signup
+2. Instala CLI: pip install modal && modal setup
+3. Deploy app Whisper: baixa template de https://github.com/modal-labs/examples/blob/main/06_gpu_and_ml/openai_whisper.py + modal deploy
+4. Adiciona em CLAUDE.md do teu projeto:
+     ## Modal App
+     - app_name: <teu-user>/whisper-app
+
+Guia completo: docs/APIS-EXTERNAS.md#modal
+```
+
+Abortar execução até fix.
+
+---
+
 ## Passo 0: Pré-requisitos + Backend
 
 ### Dependências do sistema
