@@ -12,7 +12,7 @@ Engine que detecta sinais durante uso de outras skills do plugin e **propõe** e
 
 ### Sinal 1 — Expressão repetida em outputs
 
-**Detecção:** user escreveu / aprovou outputs de skills que continham a mesma expressão `X` em **3 ocorrências distintas em até 5 sessões**.
+**Detecção:** user escreveu / aprovou outputs de skills que continham a mesma expressão `X` em **3 ocorrências distintas espalhadas em pelo menos 2 e até 5 sessões**.
 
 **Tracking:** lib mantém contador em `reference/.voz-tracking.json`:
 
@@ -35,7 +35,7 @@ Engine que detecta sinais durante uso de outras skills do plugin e **propõe** e
 }
 ```
 
-**Trigger:** quando `count >= 3` E `sessoes_analisadas` cobre entre 1 e 5 datas (inclusive).
+**Trigger:** quando `count >= 3` E `sessoes_analisadas` cobre **entre 2 e 5 datas distintas** (inclusive). O piso de 2 sessões evita falso positivo de brainstorm de 1 dia (ex: user escreveu "X" 3 vezes num único sprint — não reflete uso longitudinal).
 
 **Ação:**
 
