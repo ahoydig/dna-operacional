@@ -53,7 +53,7 @@ Esta versão entrega **apenas** a estrutura do plugin + slash command `/dna`.
 
 As 14 skills reais (`setup-projeto`, `pesquisa-diaria`, etc) chegam na **v0.1.0 final** (próxima sessão de migração).
 
-Se você tá usando skills globais do Flávio, continue usando — o plugin **não** substitui as globais, ele adiciona uma cópia adaptada e sanitizada.
+Se você tá usando skills globais do criador, continue usando — o plugin **não** substitui as globais, ele adiciona uma cópia adaptada e sanitizada.
 
 Veja [ROADMAP.md](plugins/dna-operacional/docs/ROADMAP.md) pra plano completo.
 

@@ -73,7 +73,7 @@ Pronto. Skills de dados vão escrever/ler desta planilha.
 
 ## Dica: template público (futuro)
 
-Se o Flávio publicar um template oficial copiável, este arquivo será atualizado com o link "File → Make a copy". Por enquanto, setup manual acima é a forma canônica.
+Se o criador publicar um template oficial copiável, este arquivo será atualizado com o link "File → Make a copy". Por enquanto, setup manual acima é a forma canônica.
 
 ## Limites a ter em mente
 

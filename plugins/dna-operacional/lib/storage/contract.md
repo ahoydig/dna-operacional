@@ -192,7 +192,7 @@ storage.read_competitors({
 |---|---|---|
 | `StorageNotFound` | `read_one_*(id)` ou `update_*(id, ...)` onde id não existe | Mensagem amigável ao user: "Registro {id} não encontrado" |
 | `StorageBackendUnavailable` | Supabase offline, Sheets sem permissão, MD pasta não existe | Orientar: "Verifique o backend configurado no CLAUDE.md" |
-| `StorageQuotaExceeded` | Sheets 10k rows/aba, MD 100+ items por pasta (soft warning) | Sugerir migração: "Backend atingiu limite. Considere /dna migrar-storage (v0.2+)" |
+| `StorageQuotaExceeded` | Sheets 10k rows/aba, MD 500+ items por pasta (soft warning em 100+, hard raise em 500) | Sugerir migração: "Backend atingiu limite. Considere /dna migrar-storage (v0.2+)" |
 | `StorageReadOnly` | Backend em modo read-only (ex: planilha sem permissão write) | "Backend em modo leitura. Ajuste permissões." |
 
 ## Type aliases (reference)

@@ -10,7 +10,7 @@ Plugin precisa ser portável. Aluno escolhe onde guardar dados das skills (pesqu
 - **Google Sheets:** maioria dos casos, visualização fácil, zero dev ops
 - **Markdown local:** iniciante, zero infra, projeto pessoal
 
-Sem esta camada, skills só funcionariam no Supabase pessoal do Flávio.
+Sem esta camada, skills só funcionariam no Supabase pessoal do criador.
 
 ## Como skills consomem
 
