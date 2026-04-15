@@ -282,6 +282,28 @@ Pra cada ferramenta mencionada, pergunte o ID/URL se relevante. Exemplos por tip
 
 **Nunca perguntar** plataforma de infoproduto se o negócio não é infoprodutor. **Nunca hardcode** Supabase project_id (perguntar se tem).
 
+### Seção 11.5: Storage backend (OBRIGATÓRIA — decide onde as skills persistem dados)
+
+Pergunte via `AskUserQuestion`:
+> "Onde tu quer guardar os dados que as skills produzem (concorrentes, pipeline de conteúdo, análises)?"
+> 1. **Supabase** — banco real, SQL — power user / agência / escala
+> 2. **Google Sheets** — planilhas, fácil de visualizar — recomendado pra maioria
+> 3. **Markdown local** — zero infra — recomendado pra começar
+
+Guardar a resposta como `STORAGE_BACKEND`. Dependendo da opção, perguntar o identificador:
+
+**Se Supabase:**
+23. Qual é o Supabase project_id do projeto? (cola aqui — ex: `abcdefghijklmnop`. Se ainda não criou, pula — skill futura `/dna storage-setup` cria pra ti em v0.2)
+
+**Se Google Sheets:**
+23. Qual é a URL da planilha mestre? (cola aqui — se ainda não criou, pede pro user copiar o template em `templates/sheets-master-template.md` do plugin)
+
+**Se Markdown local:**
+23. Onde tu quer a pasta `data/`? (default: `./data/` na raiz do projeto — é só dar enter)
+
+**Aviso obrigatório depois da resposta:**
+> "⚠️ Sua escolha de backend é **persistente até v0.2** — a skill `/dna migrar-storage` que move dados entre backends chega depois. Se tiver dúvida, comece em **Google Sheets** (mais fácil de migrar manualmente pra Supabase depois). Markdown é ok pra projeto pessoal/inicial mas exporta chato quando cresce."
+
 ### Seção 12: Avatar
 
 23. **Avatar Macro (70%):** Quem é a pessoa comum que compra/acompanha? Idade, situação, o que faz no dia a dia?
@@ -361,6 +383,16 @@ Template (preencher com respostas REAIS, sem placeholders):
 ---
 
 ## Handle: @[handle-principal]
+
+## Storage Backend: [supabase | sheets | markdown]
+
+[Dependendo da opção, preencher o identificador correspondente:]
+
+- Se `supabase`: `project_id: [id cola aqui]`
+- Se `sheets`: `master_sheet_url: [URL]`
+- Se `markdown`: `data_path: ./data/` (ou custom)
+
+> ⚠️ Escolha persistente até v0.2. Pra migrar, aguardar skill `/dna migrar-storage`.
 
 ## Configuração do Negócio
 
