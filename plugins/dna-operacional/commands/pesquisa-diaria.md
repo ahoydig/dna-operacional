@@ -274,26 +274,36 @@ Escolhe os números que quer salvar no pipeline (ex: "1, 3, 5"), "todos" ou "nen
 
 ## Passo 5: Salvar escolhas no content_pipeline
 
-Pra cada item escolhido pelo user, rodar:
+**Pré-check (obrigatório):** Ler `CLAUDE.md` do projeto atual. Se não tiver seção `## Storage Backend: <opção>`, abortar com:
 
 ```
-INSERT INTO public.content_pipeline (
-  title, status, source, source_url, topic, angulo, hook_suggestion,
-  motivo_video, format, archetype, platform
-) VALUES (
-  '[título do tópico]',
-  'Ideia',
-  '[X|Reddit|GitHub|Portais_BR|Web]',
-  '[URL real do item]',
-  '[tópico resumido em 1-3 palavras]',
-  '[enquadramento — ex: contrário, tutorial, vitrine]',
-  '[hook PT-BR literal sugerido]',
-  '[por que esse tópico é um bom vídeo — 1 frase]',
-  'Short',
-  '[número do arquétipo: 1-10]',
-  'instagram'
-);
+⚠️ Backend de storage não configurado. Rode /setup-projeto pra escolher
+   (Supabase / Google Sheets / Markdown) antes de persistir escolhas.
 ```
+
+Se tem backend, pra cada item escolhido pelo user, chamar operação abstrata do storage layer (`lib/storage/contract.md`):
+
+```
+storage.write_content_pipeline({
+  title: '[título do tópico]',
+  status: 'Ideia',
+  source: 'pesquisa-diaria',
+  source_url: '[URL real do item]',
+  topic: '[tópico resumido em 1-3 palavras]',
+  angulo: '[enquadramento — ex: contrário, tutorial, vitrine]',
+  hook_suggestion: '[hook PT-BR literal sugerido]',
+  motivo_video: '[por que esse tópico é um bom vídeo — 1 frase]',
+  format: 'Short',
+  archetype: '[número do arquétipo: 1-10]',
+  platform: 'instagram'
+})
+```
+
+O adapter (`supabase.md` / `sheets.md` / `markdown.md`) traduz a chamada pro runtime nativo. **Nunca escrever SQL inline aqui** — regra ferro do contract (§4.7).
+
+**Erros possíveis:**
+- `StorageBackendUnavailable` → avisar: "Backend configurado ({backend}) não tá acessível. Verifica as credenciais no `CLAUDE.md`."
+- `StorageQuotaExceeded` (Sheets 10k rows ou MD 500+ items) → sugerir `/dna migrar-storage` (v0.2+)
 
 ## Passo 6: Salvar log de pesquisa
 
