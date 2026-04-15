@@ -106,9 +106,14 @@ Facilita ter histórico de mudanças nos records. Se houver info sensível (lead
 
 ## Quando crescer muito
 
-Soft limit: ~100 items por pasta. Além disso, Glob fica lento e navegação manual fica chata. Considere:
+Dois thresholds:
+
+- **100 items — soft warning:** adapter apenas avisa (não bloqueia). Glob começa a ficar lento, editor fica cansativo de navegar.
+- **500 items — hard limit:** adapter raise `StorageQuotaExceeded`. Glob degrada muito; é hora de migrar antes de continuar escrevendo.
+
+Caminhos:
 - `/dna migrar-storage sheets` (skill futura, v0.2+) — automático
-- Exportação manual: ler todos .md, converter pra CSV, importar em planilha
+- Manual: ler todos .md, converter pra CSV, importar em planilha
 
 ## Troubleshooting
 

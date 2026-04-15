@@ -182,7 +182,8 @@ Mesmo pseudocódigo do adapter Sheets (ambos fazem filter em memória).
 | Pasta `<data_dir>/<table>` não existe | `StorageBackendUnavailable("Pasta {dir} não existe. Rode o template data-folder-structure.md ou crie manualmente.")` |
 | Glob retorna 0 arquivos em `read_one` | `StorageNotFound` |
 | Write falha (permissão) | `StorageReadOnly("Permissão negada em {path}")` |
-| Pasta > 100 arquivos | `StorageQuotaExceeded("Pasta {table} tem {n} arquivos (soft limit: 100). Considere migrar pra Sheets/Supabase via /dna migrar-storage (v0.2+).")` |
+| Pasta > 100 arquivos | **Não raise** — apenas soft warning em log/retorno da skill: `"Pasta {table} tem {n} arquivos. Começa a ficar lento a partir de 100. Considere /dna migrar-storage (v0.2+)."` |
+| Pasta > 500 arquivos | `StorageQuotaExceeded("Pasta {table} tem {n} arquivos (hard limit: 500 — Glob degrada muito). Migre pra Sheets/Supabase via /dna migrar-storage (v0.2+).")` |
 | YAML frontmatter inválido | `StorageBackendUnavailable("YAML inválido em {path}: {erro}")` |
 
 ## Dicas de manutenção
@@ -193,7 +194,11 @@ Mesmo pseudocódigo do adapter Sheets (ambos fazem filter em memória).
 
 ## Quando migrar pra Sheets/Supabase
 
-Soft limit: **~100 items por pasta**. Acima disso:
-- Glob fica lento (lista todos arquivos)
-- Navegação manual via editor vira dor
-- Recomendação: `/dna migrar-storage sheets` (v0.2+) ou manual: exporta pra CSV, importa em planilha.
+Dois thresholds, comportamentos diferentes:
+
+- **Soft warning — 100 items:** Glob começa a ficar lento, navegação manual via editor vira dor. Adapter **apenas loga aviso** (não raise). Skill deve sugerir migração ao user sem bloquear.
+- **Hard limit — 500 items:** Glob degrada muito (lista todos os arquivos a cada operation). Adapter **raise `StorageQuotaExceeded`** forçando ação — user precisa migrar antes de continuar escrevendo.
+
+Caminhos de migração:
+- `/dna migrar-storage sheets` (skill futura, v0.2+) — automático
+- Manual: ler todos .md → converter pra CSV → importar em planilha/Supabase
