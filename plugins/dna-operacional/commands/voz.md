@@ -107,7 +107,48 @@ Entrevista o user em ordem específica. Usado quando:
 
 ## Modo Status (default, sem args)
 
-<!-- preenchido em Task 4 -->
+Quando user digita só `/voz` sem argumento.
+
+### Lógica
+
+1. Determinar handle (CLAUDE.md ou perguntar — ver "Pré-requisito comum").
+2. Verificar `reference/voz-<handle>.md`:
+   - **Se NÃO existe:** imprimir
+     > "Voz pra @<handle> ainda não foi criada. Rode `/voz criar` pra começar (ou rode `/setup-projeto` pra workflow completo)."
+   - **Se existe:** seguir pro output.
+3. Ler frontmatter (YAML) + contar items de cada seção body (§3-§7).
+
+### Output (voz existente)
+
+```
+🎙  Voz de @<handle>
+
+  Versão atual: v<N>
+  Última atualização: <YYYY-MM-DD>
+  Auto-observação: ✅ ativa | 🔇 silenciada
+
+  Padrões "sempre": <count>
+  Padrões "nunca": <count>
+  Aberturas típicas: <count>
+  Fechamentos típicos: <count>
+  Hooks validados: <count>
+
+  Histórico (3 últimas evoluções):
+    • <data>: <descrição>
+    • <data>: <descrição>
+    • <data>: <descrição>
+
+💡 Comandos disponíveis:
+  /voz mostrar              → exibe voz completa
+  /voz evoluir <input>      → adiciona padrão de URL/arquivo/texto
+  /voz versoes              → lista todas versões
+  /voz silenciar | ativar   → controla auto-observação
+```
+
+### Edge cases
+
+- **Menos de 3 evoluções:** imprime só o que existe (1 ou 2 linhas). Não preencher com placeholders.
+- **Frontmatter sem `auto_observacao_ativa`:** tratar como `true` (default seguro) + sugerir rodar `/voz mostrar` pra ver.
 
 ## Modo Mostrar
 
