@@ -14,6 +14,18 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.0-alpha.1] — 2026-04-14
+
+### Corrigido
+
+- `/dna` e `/dna <arg desconhecido>` não mostram mais "Read 1 file" no terminal — banner ASCII agora é bloco markdown inline em `commands/dna.md` (byte-exato vs `assets/banner.txt`), sem dependência de tool call.
+
+### Infra
+
+- Git tag `v0.1.0-alpha.1`
+
+---
+
 ## [0.1.0-alpha] — 2026-04-14
 
 ### Adicionado (scaffolding)
