@@ -166,9 +166,28 @@ Compilar tudo num documento estruturado:
 - [cenários ideais]
 ```
 
-### Etapa 9 — Persistir adaptive_model
+### Etapa 9 — Persistir via storage layer
 
-Salvar o modelo adaptativo na estrutura `adaptive_models` (ver `lib/storage/contract.md`). Implementação via storage layer definida em Sub-task B.
+Após gerar o modelo adaptativo, salvar na estrutura `adaptive_models` via storage abstraction (CONVENCOES §4 — zero SQL inline):
+
+```
+storage.write_adaptive_model({
+  source_video_url: "<url do vídeo>",
+  hook_visual: "<descrição primeiros 3s — enquadramento, cores, texto na tela>",
+  hook_falado: "<transcrição primeiros 3s>",
+  structure_json: <estrutura narrativa em JSON — beats, tempos, funções>,
+  arquetipo: "<arquétipo detectado — ex: tutorial, revelação, contrário>",
+  formato: "<'reel' | 'tiktok' | 'short'>",
+  duracao: <segundos>,
+  transcript: "<transcrição completa>",
+  frame_analysis_json: <análise frame-by-frame em JSON>
+})
+```
+
+Retorna `id` do novo registro. Confirmar ao user:
+> "Modelo adaptativo salvo como `adaptive_models.id={id}`. Pronto pra `/roteiro-viral` consumir."
+
+**Aviso específico quando backend != supabase:** `frame_analysis_json` pode gerar arquivo/linha pesada (~50KB). Em `markdown` backend vira frontmatter grande; em `sheets` satura célula. Se user prosseguiu após aviso do Passo 0, proceder mesmo assim.
 
 ---
 
