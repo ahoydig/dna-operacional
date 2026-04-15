@@ -7,6 +7,30 @@ argument-hint: "[seed-handle?]"
 
 > Público: empreendedor brasileiro. Zero jargão de dev. PT-BR sempre.
 
+## Pré-check: APIs necessárias
+
+Antes de executar, verificar tokens/configs obrigatórios:
+
+### APIFY_TOKEN
+
+Se `$APIFY_TOKEN` ausente:
+
+```
+❌ APIFY_TOKEN não configurado.
+
+Pra configurar (3 passos):
+
+1. Acessa https://console.apify.com/account#/integrations e copia teu Personal API token
+2. Adiciona em ~/.zshrc:
+     export APIFY_TOKEN='apify_api_XXXX...'
+3. Reload shell:
+     source ~/.zshrc
+
+Depois rode a skill de novo. Guia completo: docs/APIS-EXTERNAS.md#apify
+```
+
+Abortar execução até fix.
+
 ## ⚠️ Escopo: conteúdo orgânico, não prospecção B2B
 
 Esta skill descobre **criadores e marcas do teu nicho pra estudar hooks, ângulos e pilares** — inteligência de conteúdo. Não é pra montar lista fria B2B (CNPJ, Google Maps, cold outreach).
