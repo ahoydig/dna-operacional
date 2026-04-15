@@ -90,7 +90,7 @@ Cada skill faz pré-check no início — se falta config, mostra passo-a-passo p
 
 3 opções (user escolhe no `APIS-EXTERNAS.md`):
 
-- **`/schedule` Anthropic** — zero infra, paga tokens. Medido: ~$<X>/mês (ver `docs/SPIKE-TOKENS.md`)
+- **`/schedule` Anthropic** — zero infra, paga tokens. Medido: ~$18-36/mês com Sonnet (estimativa teórica; ver `docs/SPIKE-TOKENS.md`)
 - **GitHub Actions** — grátis em repo público
 - **launchd (Mac)** — grátis, só com Mac ligado
 
