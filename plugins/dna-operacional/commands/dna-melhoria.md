@@ -119,6 +119,39 @@ Heurística: H1 (description triggers)
 💡 Copia/cola as propostas que aprovar. v0.1.0-alpha.5 não tem --apply automático.
 ```
 
+## Scope Safety — paths permitidos pra PROPOSTAS
+
+Em v0.1.0-alpha.5 nada é escrito (só dry-run + diff). Mesmo assim, allowlist define quais arquivos podem APARECER nas propostas:
+
+**Allowlist (pode propor edits):**
+
+```
+${PLUGIN_ROOT}/commands/*.md
+${PLUGIN_ROOT}/skills/**/SKILL.md
+${PLUGIN_ROOT}/lib/**/*.md
+${PLUGIN_ROOT}/docs/*.md
+```
+
+**Blocklist (READ-ONLY pra scan, IGNORADO pra propostas):**
+
+- ❌ `${PLUGIN_ROOT}/.claude-plugin/*.json` — manifests intocáveis (plugin.json é cache key)
+- ❌ `${PLUGIN_ROOT}/assets/*` — banner + binários intocáveis
+- ❌ `${PLUGIN_ROOT}/templates/*` — templates de release
+- ❌ `${USER_PROJECT}/**` — TUDO no projeto do user (CLAUDE.md, reference/, data/)
+- ❌ `${PLUGIN_ROOT}/CHANGELOG.md` — versionamento manual
+- ❌ `${PLUGIN_ROOT}/CLAUDE.md` — config do repo
+
+**Behavioral directive pro modelo executando `/dna-melhoria`:**
+
+> Antes de adicionar qualquer arquivo ao output de propostas, verificar:
+>
+> 1. O caminho começa com `${PLUGIN_ROOT}` (via env var ou caminho absoluto do plugin instalado em `~/.claude/plugins/cache/`)?
+> 2. O caminho bate com algum padrão da allowlist acima?
+>
+> Se **NÃO** pra qualquer um: silenciosamente skip aquele arquivo (não menciona no output de propostas).
+>
+> Se for descoberta importante fora da allowlist (ex: data leak em manifest), reporta numa seção separada **"⚠️ Achados fora do escopo de propostas"** — mas ainda sem propor edit. User decide o que fazer manualmente.
+
 ## Constraints (sempre)
 
 - **Nunca aplica nada sem intervenção manual do user** (alinhamento Spec §3.1 — só dry-run + diff em v0.1.0-alpha.5).
