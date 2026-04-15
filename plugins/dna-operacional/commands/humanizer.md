@@ -263,6 +263,59 @@ Após gerar o texto humanizado, rodar verificação de Sinal 1 (Plan 3 §5.4 + `
 
 ---
 
+## Hook auto-obs: Sinal 3 (edição manual repetida)
+
+Quando o user edita o output do humanizer e a edição segue padrão consistente (mesma transformação repetida):
+
+1. **Pré-checks** (mesmo do Sinal 1): voz existe + `auto_observacao_ativa: true`. Caso contrário: skip silencioso.
+
+2. **Detectar transformações:** comparar (quando possível dentro da context window) o output original que o humanizer gerou com o texto final que o user salvou/usou em seguida. Identificar pares `from → to` consistentes (mesma palavra/frase trocada pra mesma alternativa).
+
+3. **Atualizar `reference/.humanizer-edits.json`** (criar se não existir):
+
+   ```json
+   {
+     "transformacoes": {
+       "vamos->bora": {
+         "count": N,
+         "primeira_em": "YYYY-MM-DD",
+         "ultima_em": "YYYY-MM-DD"
+       }
+     }
+   }
+   ```
+
+   - Chave canônica: `<from>-><to>` (lowercase, sem acento variacional irrelevante).
+   - Incrementar `count` por ocorrência distinta.
+
+4. **Threshold (Plan 3 §5.4):** `count >= 2` pra MESMA transformação.
+
+5. **Se threshold atingido** (e ainda não sugerido nesta versão da voz — rastrear `sugestoes_feitas`):
+
+   > "Vi que você corrige '<from>' pra '<to>' sempre. Atualizo a voz?
+   >  - Adicionar '<to>' em 'Padrões sempre'
+   >  - Adicionar '<from>' em 'Padrões nunca'
+   > (y/n)"
+
+6. **Se `y`:** instruir user a rodar `/voz evoluir` manualmente com as 2 mudanças — **skills não cascateiam**. Registrar em `sugestoes_feitas`.
+
+7. **Se `n`:** manter tracking, registrar recusa pra não sugerir de novo nesta versão.
+
+### ⚠️ Limitação técnica documentada
+
+Claude Code **não** tem hook formal de runtime pra detectar edições do user em texto já entregue. Essa detecção é **best-effort**:
+
+- **Funciona:** quando user edita no chat/prompt seguinte dentro da mesma sessão (humanizer vê o diff em context window).
+- **Não funciona:** quando user edita em editor externo (VSCode, Obsidian, etc) sem trazer de volta pro chat. Sinal fica cego nesse fluxo.
+
+**Follow-up v0.2+:** se quisermos detector mais robusto, precisa hook formal (watcher de filesystem ou plugin de editor externo). Por ora, best-effort é aceitável — Sinal 3 é complementar aos outros (1, 2, 4 pegam casos distintos).
+
+### Privacidade
+
+`reference/.humanizer-edits.json` fica SOMENTE no projeto do user. Nunca envia upstream. Recomendado em `.gitignore`.
+
+---
+
 ✅ Texto humanizado entregue
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
