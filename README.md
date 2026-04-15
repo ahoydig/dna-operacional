@@ -47,6 +47,39 @@ Detalhes completos em [`lib/storage/`](plugins/dna-operacional/lib/storage/) e [
 
 ---
 
+## 🎙 Voz Dinâmica (v0.1.0-alpha.5)
+
+Plugin tem skill `/voz` que mantém a voz escrita do teu projeto. Cada projeto tem sua voz em `reference/voz-<handle>.md`.
+
+Modos:
+```
+/voz                       → status da voz atual
+/voz criar                 → entrevista guiada (cria v1)
+/voz mostrar               → exibe voz completa
+/voz evoluir <input>       → URL/arquivo/texto pra adicionar padrões
+/voz versoes               → lista versões + rollback
+/voz silenciar | ativar    → controla auto-observação
+```
+
+**Auto-observação:** quando você usa o plugin, ele detecta padrões de voz e sugere evoluções (com confirmação). Pra desligar: `/voz silenciar`.
+
+Detalhes em [`lib/voz/SCHEMA.md`](plugins/dna-operacional/lib/voz/SCHEMA.md) e [`lib/voz/auto-observacao.md`](plugins/dna-operacional/lib/voz/auto-observacao.md).
+
+## 🧬 DNA-Melhoria (v0.1.0-alpha.5, mantenedores)
+
+Skill `/dna-melhoria` faz auto-refino das próprias skills do plugin. Pra mantenedores (não pro aluno final).
+
+```
+/dna-melhoria              → análise dry-run (default)
+/dna-melhoria --diff       → mostra diff completo (copia/cola manual)
+```
+
+Em v0.1.0-alpha.5 a skill é **só dry-run + diff** (alinhado com Spec §3.1). `--apply` com confirmação 1-a-1 fica como follow-up futuro.
+
+Heurísticas: descriptions de auto-discovery, argument-hints, próximos passos, tool calls visíveis, sanitização. Detalhes em [`commands/dna-melhoria.md`](plugins/dna-operacional/commands/dna-melhoria.md).
+
+---
+
 ## ⚠️ Status atual: v0.1.0-alpha (scaffolding)
 
 Esta versão entrega **apenas** a estrutura do plugin + slash command `/dna`.
