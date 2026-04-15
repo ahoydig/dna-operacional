@@ -182,7 +182,7 @@ Mesmo pseudocódigo do adapter Sheets (ambos fazem filter em memória).
 | Pasta `<data_dir>/<table>` não existe | `StorageBackendUnavailable("Pasta {dir} não existe. Rode o template data-folder-structure.md ou crie manualmente.")` |
 | Glob retorna 0 arquivos em `read_one` | `StorageNotFound` |
 | Write falha (permissão) | `StorageReadOnly("Permissão negada em {path}")` |
-| Pasta > 500 arquivos | `StorageQuotaExceeded("Pasta {table} tem {n} arquivos (limite prático: 500). Considere migrar pra Sheets/Supabase via /dna migrar-storage (v0.2+).")` |
+| Pasta > 100 arquivos | `StorageQuotaExceeded("Pasta {table} tem {n} arquivos (soft limit: 100). Considere migrar pra Sheets/Supabase via /dna migrar-storage (v0.2+).")` |
 | YAML frontmatter inválido | `StorageBackendUnavailable("YAML inválido em {path}: {erro}")` |
 
 ## Dicas de manutenção
