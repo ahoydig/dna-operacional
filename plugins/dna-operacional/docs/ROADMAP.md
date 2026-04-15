@@ -10,12 +10,19 @@ Plugin instalável mas **vazio** (só com `/dna`). Propósito: validar arquitetu
 - [x] `CONVENCOES.md`, `JORNADAS.md`, `ROADMAP.md`
 - [x] README, CHANGELOG, LICENSE
 
-## v0.1.0 (próxima sessão) — 4 skills restantes (Plan 5)
+## v0.1.0-alpha.7 (em release) — 4 skills globais migradas + 3 hooks auto-obs
 
-- [ ] `/humanizer` (limpa IA + aplica voz do projeto via `reference/voz-<handle>.md`)
-- [ ] `/carrossel-instagram` (visual final via Playwright)
-- [ ] `/analisar-video` (engenharia reversa → `adaptive_models` no Supabase)
-- [ ] `/roteiro-viral` (consome `adaptive_models`)
+Marco: **fecha as 14 skills planejadas pra v0.1.0**.
+
+- [x] `/humanizer` (lê voz dinâmica + Sinais 1 e 3 de auto-obs)
+- [x] `/carrossel-instagram` (Playwright, sem storage)
+- [x] `/analisar-video` (storage.write_adaptive_model + Sinal 4)
+- [x] `/roteiro-viral` (storage.read_adaptive_models + write_generated_scripts + delega humanizer)
+- [x] Hook Sinal 2 em `/ideias-conteudo` (já migrada em alpha.6)
+
+**Próximos:** v0.1.0 final precisa Plan 6 (spike tokens `/schedule`) + Plan 7 (release sem alpha).
+
+**Debt / follow-up pra v0.2:** `carrossel-instagram` introduziu `references/carrossel-instagram/` (1216 linhas de refs visuais) — primeiro precedente de subdir de refs por skill. Padronizar convenção de `references/<skill>/` (quando criar, quando colocar inline na skill, tamanho máximo) antes que outras skills façam o mesmo com critério divergente.
 
 ## v0.1.0-alpha.3 (em release) — Storage layer entregue
 
