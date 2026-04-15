@@ -72,7 +72,7 @@ Arquivos escaneados:
 
 ### H5 — Sanitização
 
-**Verifica:** aplica regex Spec 2 §7.2 (`/Users/flavioahoy`, `apify_api_`, etc) com `--include='*.md'`.
+**Verifica:** aplica regex Spec 2 §7.2 (20 padrões — caminhos pessoais, tokens de API, IDs de ferramentas privadas, etc) com `--include='*.md'`.
 
 **Exceções permitidas:** `@flavioahoy` (handle público) e `ahoy.digital` (domínio agência).
 
