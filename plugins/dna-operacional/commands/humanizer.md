@@ -212,6 +212,57 @@ Se sem voz no projeto, adicionar:
 
 ---
 
+## Hook auto-obs: Sinal 1 (expressão recorrente)
+
+Após gerar o texto humanizado, rodar verificação de Sinal 1 (Plan 3 §5.4 + `lib/voz/auto-observacao.md`):
+
+1. **Pré-checks:**
+   - `reference/voz-<handle>.md` existe.
+   - Frontmatter tem `auto_observacao_ativa: true`.
+   - Se qualquer falhar: skip todo o hook (silencioso).
+
+2. **Identificar expressões "marcadoras"** no texto humanizado produzido nesta sessão:
+   - Substantivos próprios (ex: "Pix", "Nubank", "WhatsApp").
+   - Adjetivos atípicos ou gírias (ex: "bagulho", "chavão", "virou moda").
+   - Heurística simples: palavras com >3 chars que NÃO estão em lista de stopwords PT-BR nem em lista de palavras já consagradas (§3 `sempre` da voz atual).
+   - Ignorar palavras que já aparecem em `Padrões "sempre"` da voz — já foram consolidadas.
+
+3. **Atualizar `reference/.voz-tracking.json`** (criar se não existir):
+
+   ```json
+   {
+     "expressoes_observadas": {
+       "<expressao>": {
+         "count": N,
+         "primeira_em": "YYYY-MM-DD",
+         "ultima_em": "YYYY-MM-DD"
+       }
+     },
+     "sessoes_analisadas": ["YYYY-MM-DD", ...]
+   }
+   ```
+
+   - Incrementar `count` por ocorrência.
+   - Adicionar data de hoje em `sessoes_analisadas` se ainda não estiver (data distinta).
+   - Manter janela deslizante de até 5 sessões mais recentes (pruning de mais antigas).
+
+4. **Threshold (Plan 3 §5.4 + fix S1):** trigger quando a MESMA expressão tem `count >= 3` E `sessoes_analisadas.length` está entre 2 e 5 (inclusive). Piso de 2 evita falso positivo de brainstorm de 1 dia.
+
+5. **Se threshold atingido** (e essa expressão ainda não foi sugerida nesta versão da voz — rastrear em campo auxiliar `sugestoes_feitas` no mesmo JSON):
+
+   > "Notei que você usa '<X>' bastante (3 vezes nos últimos N dias).
+   > Quer adicionar em 'Padrões sempre'? (y/n)"
+
+6. **Se `y`:** instruir user a rodar `/voz evoluir <X>` manualmente — **skills não cascateiam**. Registrar em `sugestoes_feitas` pra não sugerir de novo.
+
+7. **Se `n`:** manter tracking pra futuro, mas adicionar em `sugestoes_feitas` com flag `recusado: true` pra não sugerir de novo nesta versão da voz.
+
+### Privacidade
+
+`reference/.voz-tracking.json` fica SOMENTE no projeto do user. Nunca envia upstream. Recomendado em `.gitignore` do projeto (skill `setup-projeto` cuida disso).
+
+---
+
 ✅ Texto humanizado entregue
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
