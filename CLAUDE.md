@@ -34,3 +34,18 @@ E. Smoke + review
 
 Skills global do Flávio em ~/.claude/skills/ permanecem intactas — plugin é cópia adaptada.
 Skills no plugin têm precedência se mesmo nome (Claude Code resolve pra slash command do plugin).
+
+## Auto-Obs Hooks (Plan 5 / v0.1.0-alpha.7)
+
+Skills consumidoras implementam hooks pra disparar a engine de auto-observação documentada em `lib/voz/auto-observacao.md`. Padrão de hook:
+
+1. Após action principal da skill, verificar `auto_observacao_ativa: true` no frontmatter de `reference/voz-<handle>.md` do projeto.
+2. Se ativa: detectar sinal específico (varia por skill).
+3. Atualizar tracking JSON apropriado (`reference/.voz-tracking.json` ou `.humanizer-edits.json`).
+4. Se threshold atingido: propor evolução ao user com confirmação (y/n).
+5. Se y: instruir user a rodar `/voz evoluir <padrão>` (skills não cascateiam).
+
+Skills com hooks (Plan 5):
+- `humanizer`: Sinal 1 (expressão recorrente) + Sinal 3 (edição manual repetida)
+- `ideias-conteudo`: Sinal 2 (hook no pipeline status=Roteirizado/Gravado)
+- `analisar-video`: Sinal 4 (vídeo do criador, handle bate)
