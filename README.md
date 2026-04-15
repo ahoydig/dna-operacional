@@ -80,9 +80,11 @@ Heurísticas: descriptions de auto-discovery, argument-hints, próximos passos, 
 
 ---
 
-## ⚠️ Status atual: v0.1.0-alpha.6
+## ⚠️ Status atual: v0.1.0-alpha.7 (alpha completion)
 
-Esta versão entrega **10 skills** (3 de scaffolding + 7 migradas de globais). Faltam 4 skills (`humanizer`, `carrossel-instagram`, `analisar-video`, `roteiro-viral`) que chegam na **v0.1.0 final** (Plan 5).
+Esta versão fecha as **14 skills planejadas pra v0.1.0** (3 de scaffolding + 11 migradas de globais). Plus 3 hooks reais de auto-observação (Sinais 1, 2, 3, 4) nas skills consumidoras (humanizer, ideias-conteudo, analisar-video).
+
+Continua marcada como alpha porque ainda faltam Plan 6 (spike tokens `/schedule`) + Plan 7 (release v0.1.0 final sem `-alpha`).
 
 Se você tá usando skills globais do criador, continue usando — o plugin **não** substitui as globais, ele adiciona uma cópia adaptada e sanitizada.
 
@@ -116,7 +118,7 @@ Ver [JORNADAS.md](plugins/dna-operacional/docs/JORNADAS.md) pra passo-a-passo.
 
 ## 📦 Skills incluídas
 
-### v0.1.0-alpha.6 (atual) — 10 skills
+### v0.1.0-alpha.7 (atual) — 14 skills
 
 | Skill | O que faz |
 |---|---|
@@ -127,13 +129,15 @@ Ver [JORNADAS.md](plugins/dna-operacional/docs/JORNADAS.md) pra passo-a-passo.
 | `/pesquisa-diaria` | Radar diário BR → alimenta `content_pipeline` |
 | `/pesquisa-concorrentes` | Mapeia concorrentes IG → `competitors` + `competitor_posts` |
 | `/raio-x-ads-concorrentes` | Briefing de ads a partir de `ad_library` + `competitors` |
-| `/ideias-conteudo` | Multiplica ideias do pipeline em 5 vídeos |
+| `/ideias-conteudo` | Multiplica ideias do pipeline em 5 vídeos — hook Sinal 2 (auto-obs) |
 | `/analista-conteudo` | Análise SQL 14 seções (Supabase-only) |
 | `/auto-melhoria` | Orquestradora metacognitiva; delega padrões de voz pra `/voz` |
+| `/humanizer` | Remove vícios de IA + aplica voz dinâmica (`reference/voz-<handle>.md`) — hooks Sinais 1+3 |
+| `/carrossel-instagram` | Gera carrosséis profissionais via Playwright (HTML→PNG) |
+| `/analisar-video` | Engenharia reversa Reels/TikTok → `adaptive_models` — hook Sinal 4 |
+| `/roteiro-viral` | Roteiros consumindo `adaptive_models` → `generated_scripts`; delega humanizer |
 
-### v0.1.0 (próxima) — 4 skills restantes
-
-`humanizer`, `carrossel-instagram`, `analisar-video`, `roteiro-viral` — Plan 5. Ver [ROADMAP.md](plugins/dna-operacional/docs/ROADMAP.md).
+**Marco:** alpha.7 fecha as 14 skills planejadas pra v0.1.0. Falta Plan 6 (spike tokens `/schedule`) + Plan 7 (release v0.1.0 final). Ver [ROADMAP.md](plugins/dna-operacional/docs/ROADMAP.md).
 
 ---
 
