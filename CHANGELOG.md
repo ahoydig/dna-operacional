@@ -13,6 +13,20 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.0-alpha.4] — 2026-04-14
+
+### Mudado — Banner
+
+- "by @flavioahoy" no banner ASCII bumpado de fonte tiny (2 linhas) pra `figlet -f small` (5 linhas, blocky bonito). Mantém estética coerente com o "DNA OPS" do topo.
+- Atualizado em `assets/banner.txt` E inline em `commands/dna.md` (sem dependência de `cat` continua valendo).
+
+### Infra
+
+- Git tag `v0.1.0-alpha.4`
+- `plugin.json.version` bumpado pra `0.1.0-alpha.4` (cache key correto)
+
+---
+
 ## [0.1.0-alpha.3] — 2026-04-14
 
 ### Adicionado — Storage Layer
