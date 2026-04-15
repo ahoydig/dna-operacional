@@ -13,23 +13,40 @@ Você é analista de performance do conteúdo do criador. **Escopo:** apenas o c
 
 ---
 
-## Pré-check obrigatório: Backend = supabase
+## Pré-check: Storage Backend = Supabase
 
-Esta skill é **Supabase-only** — única exceção documentada do storage contract (`lib/storage/contract.md` §Operação especial). Queries usam CTEs, window functions, `EXTRACT`, `TO_CHAR AT TIME ZONE` — nenhum backend sheets/markdown suporta.
+Esta skill roda SQL complexo (CTEs, window functions, `EXTRACT`, `TO_CHAR AT TIME ZONE`) que SÓ funciona em Supabase — única exceção documentada do storage contract (`lib/storage/contract.md` §Operação especial).
 
 **Antes de qualquer coisa:**
 
 ```
 1. Ler CLAUDE.md do projeto → ## Storage Backend: <opção>
-2. Se opção != 'supabase': abortar com mensagem clara abaixo
+2. Se opção != 'supabase': abortar com mensagem abaixo
 3. Se 'supabase': prosseguir via storage.execute_sql(query)
 ```
 
-**Mensagem de abort** (quando backend != supabase):
+Se teu backend é outro:
 
-> "⚠️ Esta skill requer Supabase pra rodar SQL complexo (CTEs, window functions, ranks).
-> Sua escolha atual: `<opção>`.
-> Pra usar, ajuste o backend em `CLAUDE.md` `## Storage Backend: supabase` OU aguarde v0.3 (query DSL alternativa)."
+```
+⚠️ Esta skill requer Supabase. Sua escolha atual: <opção>.
+
+Pra migrar pra Supabase (5 passos):
+
+1. Cria conta grátis em https://supabase.com/sign-up
+2. Cria projeto "dna-operacional-data" (Free tier: 500MB DB)
+3. Copia Reference ID (Settings → General)
+4. Atualiza CLAUDE.md do teu projeto:
+     ## Storage Backend: supabase
+     - project_id: <teu-reference-id>
+5. Rode template SQL:
+     - SQL Editor do Supabase
+     - Cola conteúdo de ~/.claude/plugins/cache/dna-operacional-marketplace/dna-operacional/<versão>/templates/migrations-v0.1.0.sql
+     - Run (cria 7 tabelas)
+
+Guia completo: docs/APIS-EXTERNAS.md#supabase
+
+Alternativa: aguarda v0.3 (query DSL pra storage Sheets/Markdown).
+```
 
 Todas as queries desta skill passam por `storage.execute_sql(query)` — o adapter Supabase traduz pro MCP `mcp__supabase__execute_sql`. Outros adapters lançam `StorageBackendUnavailable` com a mensagem acima.
 
