@@ -190,3 +190,17 @@ Confirmar ao user: "Adicionei [N] variações no pipeline. Prontas pra roteiriza
 9. **Sazonalidade é oportunidade**
 10. **Output humanizado** via skill `humanizer`
 11. **Zero SQL inline** — tudo via `storage.*` do contract (Spec 2 §4, CONVENCOES §4)
+
+---
+
+✅ Variações geradas e salvas no pipeline
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧬 PRÓXIMOS PASSOS SUGERIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /analisar-video       — analisa vídeo de referência pra criar adaptive_model
+  2. /roteiro-viral        — gera roteiro com base no adaptive_model
+  3. /analista-conteudo    — valida hipótese contra performance histórica
+
+  💡 /dna pra ver todas · /dna jornadas pra caminhos completos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
