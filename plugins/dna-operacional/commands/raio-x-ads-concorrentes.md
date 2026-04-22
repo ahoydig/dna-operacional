@@ -248,7 +248,7 @@ Após salvar o briefing, apresentar:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-**Se ad_library estava vazia** (caso esperado em v0.1.0), mostrar apenas:
+**Se ad_library estava vazia** (caso esperado enquanto `/coletar-anuncios` não chega na v0.2), mostrar apenas:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
