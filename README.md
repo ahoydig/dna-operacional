@@ -49,7 +49,7 @@ Entrega end-to-end pra cliente de agência/consultoria. Fecha o loop: do orçame
 | Skill | O que faz |
 |---|---|
 | `/orcamento` | Proposta comercial PDF (wrapper de `proposta` com contexto DNA do projeto) |
-| `/apresentacao` | Deck HTML+CSS+JS Vanilla+GSAP (NÃO pptx) — animações 9NE-style, fora-da-caixa |
+| `/apresentacao` | Deck HTML+CSS+JS Vanilla+GSAP (NÃO pptx) — animações cinematográficas, fora-da-caixa |
 | `/landing-page` | LP alta conversão (wrapper `landing-page-builder` + `taste-skill` + `ui-ux-pro-max` + opcional Impeccable polish) |
 | `/contrato` | Edita modelo `.docx`/`.pdf` substituindo placeholders com dados do cliente + projeto |
 

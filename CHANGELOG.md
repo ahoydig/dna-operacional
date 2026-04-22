@@ -9,7 +9,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 ### Added — Client Delivery (+4 skills)
 
 - **/orcamento** — proposta comercial PDF (wrapper skill `proposta` com contexto DNA)
-- **/apresentacao** — deck HTML+CSS+JS Vanilla+GSAP (NÃO pptx) inspirado em 9NE-style scene catalog (extraído pra `references/apresentacao/`)
+- **/apresentacao** — deck HTML+CSS+JS Vanilla+GSAP (NÃO pptx) com scene catalog cinematográfico (18 tipos extraídos pra `references/apresentacao/`)
 - **/landing-page** — LP alta conversão (wrapper `landing-page-builder` + `taste-skill` + `ui-ux-pro-max` + opcional `impeccable`)
 - **/contrato** — edita modelo .docx/.pdf substituindo placeholders com dados do cliente + projeto DNA
 
