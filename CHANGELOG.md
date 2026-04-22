@@ -13,6 +13,20 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.1] — 2026-04-21
+
+### Added
+
+- **`/dna-meta-ads`** — ponte pro plugin `meta-ads-pro`. Detecta se está instalado via filesystem check (`~/.claude/plugins/cache/*/meta-ads-pro/`). Se instalado, mostra mapa de integrações (roteiro-viral → ad copy, raio-x-ads-concorrentes → briefing de campanha, carrossel-instagram → asset_feed_spec, insights ↔ analista-conteudo). Se ausente, instrui a instalação.
+- Seção 🔗 INTEGRAÇÕES no menu `/dna`.
+
+### Notes
+
+- Change puramente aditivo. Não toca em fluxos existentes. Zero risco de regressão nas 14 skills anteriores.
+- Bridge funciona nos dois sentidos: meta-ads-pro v1.0.5+ expõe `/meta-ads-dna` que também detecta dna-operacional e o setup do projeto.
+
+---
+
 ## [0.1.0] — 2026-04-15
 
 🎉 **RELEASE OFICIAL — Sai do alpha.**
