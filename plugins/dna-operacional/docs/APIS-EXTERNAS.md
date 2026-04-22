@@ -386,6 +386,38 @@ launchctl unload ~/Library/LaunchAgents/com.ahoydig.pesquisa-diaria.plist
 
 ---
 
+## Ferramentas opcionais
+
+### Impeccable (design polish para `/landing-page`)
+
+Skill/toolkit do Paul Bakaus (Apache 2.0) — auditoria determinística + polish de UI via 7 domínios + comandos `/polish`, `/audit`, `/critique`. Integra como **Passo 5 opcional** em `/landing-page`. Research e decisão em [`IMPECCABLE-RESEARCH.md`](IMPECCABLE-RESEARCH.md).
+
+**Instalação (uma vez por máquina):**
+
+```bash
+# Clone o repo em local neutro + symlink pro diretório de skills do Claude Code
+git clone --depth 1 https://github.com/pbakaus/impeccable ~/impeccable-src
+ln -sf ~/impeccable-src/.claude/skills/impeccable ~/.claude/skills/impeccable
+```
+
+**Verificação:**
+
+```bash
+test -f ~/.claude/skills/impeccable/SKILL.md && echo "skill OK"
+```
+
+**Atualização (ocasional):**
+
+```bash
+cd ~/impeccable-src && git pull
+```
+
+**Alternativa oficial:** bundles prontos em [impeccable.style](https://impeccable.style).
+
+**Fallback:** se `~/.claude/skills/impeccable/SKILL.md` não existe, `/landing-page` pula o Passo 5 silenciosamente — não bloqueia o deploy.
+
+---
+
 ## FAQ
 
 **Não tenho dinheiro pra Apify — o que fazer?**

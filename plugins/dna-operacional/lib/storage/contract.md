@@ -210,6 +210,31 @@ type Record = { [field: string]: any }
 type RecordPatch = Partial<Record>
 ```
 
+## Campos Longos (Long Text)
+
+Adapters DEVEM usar arquivo separado pra campos marcados como "long text":
+
+| Tabela | Campo | Threshold | Path relativo |
+|---|---|---|---|
+| `competitor_posts` | `transcription` | > 500 chars | `texts/transcriptions/post_<id>.txt` |
+| `competitor_posts` | `hook_visual` | > 500 chars | `texts/hooks_visuais/post_<id>.txt` |
+| `adaptive_models` | `frame_analysis_json` | sempre | `texts/frame_analysis/video_<id>.json` |
+| `adaptive_models` | `transcript` | > 500 chars | `texts/transcriptions/model_<id>.txt` |
+| `generated_scripts` | `body` | > 500 chars | `texts/scripts/script_<id>.md` |
+| `my_content` | `transcript` | > 500 chars | `texts/transcriptions/content_<id>.txt` |
+
+Se o record tem campo longo, comportamento por backend:
+
+- **Supabase:** guarda TEXT inline (banco aguenta). Ignora threshold.
+- **Sheets:** regra igual ao CSV — arquivo separado + referência (célula aspada engasga igual).
+- **CSV:** arquivo separado + referência.
+- **Markdown:** guarda no body do `.md` (já é feito hoje — o arquivo do record é o próprio container do texto longo).
+
+Convenção da referência: campo sufixado `_file` no storage tem path RELATIVO ao `data_dir`.
+Skill consumidora faz: `full_path = data_dir + "/" + record["<campo>_file"]`.
+
+Adapters que redirecionam (CSV/Sheets) DEVEM hidratar na leitura — a skill recebe o record com o campo ORIGINAL materializado (`record["transcription"] = conteúdo`), não o `_file`. A existência do sufixo é detalhe de armazenamento, não de API.
+
 ## Regra ferro
 
 > **Nenhuma skill escreve SQL inline.** Única exceção: `analista-conteudo` via `execute_sql()`.

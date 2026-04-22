@@ -2,6 +2,42 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versionamento segue [Semver](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] — 2026-04-22
+
+🎉 **Release major — ciclo completo cliente.** DNA agora cobre end-to-end: pesquisa → conteúdo → ads → **entrega de cliente**.
+
+### Added — Client Delivery (+4 skills)
+
+- **/orcamento** — proposta comercial PDF (wrapper skill `proposta` com contexto DNA)
+- **/apresentacao** — deck HTML+CSS+JS Vanilla+GSAP (NÃO pptx) com scene catalog cinematográfico (18 tipos extraídos pra `references/apresentacao/`)
+- **/landing-page** — LP alta conversão (wrapper `landing-page-builder` + `taste-skill` + `ui-ux-pro-max` + opcional `impeccable`)
+- **/contrato** — edita modelo .docx/.pdf substituindo placeholders com dados do cliente + projeto DNA
+
+### Added — Infra
+
+- **CSV storage adapter** (`lib/storage/csv.md`) com campos longos em `data/texts/`
+- **Setup Fast Mode** — `/setup-projeto fast` com 8 perguntas essenciais em ~3 min
+- **Setup Completar** — `/setup-projeto completar` preenche gaps de quem começou fast
+- **DNA Mode lowcost** — flag em CLAUDE.md economiza 30-80% tokens em 10 skills (`/dna modo` toggle)
+- **Impeccable integration** — CLI detector + commands `/polish` `/audit` `/critique` integrados em `/landing-page`
+- Nova seção 📄 **CLIENTE** e ⚡ **MODO** no menu `/dna`
+- Nova jornada `📄 ENTREGA DE CLIENTE` em `/dna jornadas`
+
+### Changed
+
+- Default storage: Supabase → **CSV** (zero friction pra marketeiro/empresário)
+- Pre-checks de 6 skills: não mais "⚠ Dependências faltando" — silent default
+- `/analista-conteudo`: mantém "Supabase-required" (SQL complexo — versão CSV simplificada planejada pra v0.3)
+
+### Notes
+
+- Bump cache key 0.1.7 → 0.2.0
+- 4 novas skills + 2 novos libs (storage/csv + mode/*) + 3 novas references + 3 templates
+- Ciclo pesquisa → conteúdo → ads → **delivery** agora completo
+- **Impeccable install:** clone em `~/impeccable-src` + symlink `~/.claude/skills/impeccable → ~/impeccable-src/.claude/skills/impeccable`. Passos alternativos: visitar [impeccable.style](https://impeccable.style) e baixar bundle oficial. Integração é opt-in — `/landing-page` Passo 5 detecta disponibilidade e degrada silenciosamente se ausente.
+
+---
+
 ## [Unreleased]
 
 ### Previsto pra v0.1.0 final

@@ -1,6 +1,6 @@
 ---
-description: Configura qualquer projeto (teu ou de cliente) com CLAUDE.md rico + reference/publico-alvo.md + delega §13 pra /voz criar. Use quando o usuário digitar "/setup-projeto", "configurar projeto", "novo projeto", "setup do projeto".
-argument-hint: "[caminho-projeto?]"
+description: Configura qualquer projeto (teu ou de cliente) com CLAUDE.md rico + reference/publico-alvo.md + reference/voz-<handle>.md (via /voz). DOIS MODOS + upgrade path — `fast` (8 perguntas, 5 min), `completo` (23 perguntas, 20 min), `completar` (detecta gaps e preenche). Default sem arg = pergunta qual modo. Use quando o usuário digitar "/setup-projeto", "configurar projeto", "novo projeto", "setup do projeto".
+argument-hint: "[fast|completo|completar]"
 ---
 
 # /setup-projeto — Configure qualquer projeto no Claude Code
@@ -15,6 +15,147 @@ Você é um consultor de negócios amigável e conversacional. Seu trabalho é e
 1. `CLAUDE.md` — contexto completo do negócio (seções adaptadas ao tipo + `## Storage Backend` + `## Handle`)
 2. `reference/publico-alvo.md` — quem é o público (macro + micro)
 3. **Delega** §13 pra `/voz criar` — skill `/voz` gera `reference/voz-<handle>.md` versionado (user precisa rodar manualmente — skills Claude Code não cascateiam)
+
+## Roteamento
+
+Lê `$ARGUMENTS` e decide qual modo rodar:
+
+- **Arg vazio:** pergunta qual modo (via `AskUserQuestion`), mostrando comparação:
+  - `fast` — 8 perguntas essenciais (~5 min)
+  - `completo` — 23 perguntas (~20 min) — fluxo completo
+  - `completar` — detecta fast anterior e preenche os gaps
+- **Arg = `fast`:** pula direto pra `## Modo Fast` abaixo
+- **Arg = `completo`:** pula direto pra `## Modo Completo` (fluxo histórico, sem alterações)
+- **Arg = `completar`:** pula direto pra `## Modo Completar`
+- **Arg desconhecido:** avisa "⚠ Arg não reconhecido. Opções: fast | completo | completar" e pergunta
+
+---
+
+## Modo Fast — 8 perguntas essenciais
+
+Objetivo: gerar CLAUDE.md válido em ≤ 5 min pra alguém que quer testar o DNA rápido. **Sem intake de fontes, sem roteamento por tipo, sem blocos adaptativos.** Fluxo linear, uma pergunta por vez via `AskUserQuestion`.
+
+### As 8 perguntas
+
+1. **Nome do projeto** (ou da marca/negócio)
+2. **Handle Instagram principal** (sem @, só o texto — ex: `flavioahoy`)
+3. **Nicho em 1 frase** (ex: "nutrição funcional pra mães de primeira viagem")
+4. **Público-alvo em 1 frase** (quem é, idade aproximada, o que quer)
+5. **Oferta principal + preço** (o que tu vende e quanto — ex: "Mentoria 3 meses R$ 2.997")
+6. **Voz em 3 adjetivos** (ex: "direto, provocador, nordestino")
+7. **E-mail de contato** (pra propostas, orçamentos, contratos)
+8. **Storage** — `AskUserQuestion` com opções:
+   - `CSV` (padrão — recomendado pra começar, zero config)
+   - `Sheets` (Google Sheets — precisa URL depois)
+   - `Supabase` (banco SQL — precisa project_id depois)
+
+### Geração
+
+Após as 8 respostas, gerar:
+
+**1. `CLAUDE.md`** — seguir exatamente o template em `${CLAUDE_PLUGIN_ROOT}/templates/claude-md-fast.md` (10 seções mínimas). Substituir os valores `<...>` pelas respostas reais da entrevista. **Não deixar placeholder no arquivo final.**
+
+**2. `reference/publico-alvo.md`** — 5 seções mínimas:
+
+```markdown
+# Avatar
+
+## Macro (70% do público)
+- **Quem é:** [resposta da pergunta 4 expandida]
+- **Dores principais:** [inferir 3-5 a partir do nicho + oferta — marcar "(inferido, confirmar depois)"]
+- **Desejos:** [inferir 3-5 a partir da oferta principal]
+
+## Micro (30% do público) — *(placeholder pro /setup-projeto completar)*
+- [seção vazia — rodar `/setup-projeto completar` pra preencher]
+
+## O que NÃO é o público — *(placeholder pro /setup-projeto completar)*
+- [seção vazia — rodar `/setup-projeto completar` pra preencher]
+```
+
+**3. Voz** — NÃO gerar `reference/voz-<handle>.md` aqui. Instruir user a rodar `/voz criar` manualmente (mesma regra do modo completo).
+
+### Mensagem final do modo fast
+
+Imprimir:
+
+```
+✓ Setup Fast concluído.
+  • CLAUDE.md gerado (10 seções mínimas)
+  • reference/publico-alvo.md com macro esboçado
+  • Storage Backend: <opção escolhida>
+  • DNA Mode: full (default — /dna modo lowcost pra economia)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PRÓXIMOS PASSOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. /voz criar                  — captura voz do projeto
+  2. /setup-projeto completar    — expande pro modo completo (sem refazer)
+  3. /dna                        — ver todas as skills disponíveis
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Pare aqui. Fim do modo fast.
+
+---
+
+## Modo Completar — upgrade fast → completo
+
+Objetivo: detectar um setup fast anterior e preencher SÓ os gaps sem refazer as 8 perguntas iniciais.
+
+### Passo 1 — Detectar estado atual
+
+Ler (via Read tool):
+
+1. `CLAUDE.md` no cwd — procurar linha `## Setup: fast` (marker do modo fast). Se não achar, checar se tem as 10 seções mínimas do template fast.
+2. `reference/publico-alvo.md` — contar seções preenchidas vs placeholders.
+
+### Passo 2 — Classificar gaps
+
+Listar quais seções das 17 do modo completo **faltam** no CLAUDE.md fast:
+
+- Seção 0 (contexto — teu ou cliente?)
+- Seção 1.5 (tipo de negócio — roteamento)
+- Seção 4 (pilares de conteúdo)
+- Seção 4.5 (palavras-chave)
+- Seção 6 (handles multi-plataforma)
+- Seção 7 (concorrentes seed)
+- Seção 9 (métricas adaptadas ao tipo)
+- Seção 10 (cadência editorial)
+- Seção 11 (ferramentas e IDs)
+- Seção 12 (avatar micro + dores + desejos detalhados)
+- Seção 14 (regras pro Claude)
+- Seção 15 (canal de venda + checkout)
+- Seção 16 (canal de atendimento)
+- Seção 17 (sazonalidade)
+
+### Passo 3 — Perguntar SÓ os gaps
+
+Pra cada gap detectado, fazer a pergunta correspondente do modo completo **uma de cada vez** via `AskUserQuestion`. Mesmo tom conversacional.
+
+### Passo 4 — Append sem reescrever
+
+**Importante:** NÃO reescrever CLAUDE.md do zero. Use Edit tool pra inserir as novas seções nas posições corretas. Remover a linha `## Setup: fast` ao final (marker não faz mais sentido no completo).
+
+Pra `reference/publico-alvo.md`: inserir as seções Micro e "Não é público" onde estavam como placeholder.
+
+### Mensagem final do modo completar
+
+```
+✓ Setup expandido pra modo completo.
+  • <N> seções novas adicionadas ao CLAUDE.md
+  • reference/publico-alvo.md com avatar macro + micro
+  • Marker `## Setup: fast` removido
+
+Projeto pronto pro fluxo completo — /dna jornadas pra ver caminhos.
+```
+
+Pare aqui. Fim do modo completar.
+
+---
+
+## Modo Completo
+
+Fluxo histórico completo (23 perguntas, intake de fontes, adaptativo por tipo). **Zero alteração** — segue igual ao que já existia antes da v0.2. Siga as seções abaixo.
 
 ## Tom de Voz da Entrevista
 

@@ -3,6 +3,27 @@ description: Puxa ideias do content_pipeline (status=Ideia), pesquisa profunda v
 argument-hint: "[topic-id?]"
 ---
 
+## Pre-check — Storage Backend
+
+Ler `CLAUDE.md` do projeto atual → linha `## Storage Backend: <opção>`.
+
+- Se não existir ou opção inválida: **default silencioso = csv**. Cria pasta `data/` se não existir. Não abortar, não mostrar aviso de "dependências faltando".
+- Se opção = csv: prossegue (adapter: `lib/storage/csv.md`).
+- Se opção = sheets / supabase / markdown: prossegue via adapter correspondente.
+
+Imprimir só se default silencioso foi usado:
+> "💾 Storage não configurado — salvando em CSV local (`data/`)."
+
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/ideias-conteudo de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual, completo).
+
 Usuário invocou `/ideias-conteudo` com argumento: `$ARGUMENTS`
 
 # /ideias-conteudo — Pesquisa + Multiplicação de Vídeos
@@ -18,10 +39,7 @@ Usuário invocou `/ideias-conteudo` com argumento: `$ARGUMENTS`
 
 ## Passo 0: Puxar Pipeline
 
-Ler backend de storage em `CLAUDE.md` do projeto (`## Storage Backend: <opção>`). Opções: `supabase`, `sheets`, `markdown`. Contract: `lib/storage/contract.md`.
-
-Se backend ausente:
-> "Configure backend em CLAUDE.md `## Storage Backend: <opção>` — opções: supabase / sheets / markdown."
+Backend de storage já resolvido no Pre-check do topo (CSV silent default). Contract: `lib/storage/contract.md`.
 
 Puxar ideias pendentes via contract abstrato:
 

@@ -3,6 +3,27 @@ description: Descobre criadores e marcas concorrentes no Instagram do teu nicho 
 argument-hint: "[seed-handle?]"
 ---
 
+## Pre-check — Storage Backend
+
+Ler `CLAUDE.md` do projeto atual → linha `## Storage Backend: <opção>`.
+
+- Se não existir ou opção inválida: **default silencioso = csv**. Cria pasta `data/` se não existir. Não abortar, não mostrar aviso de "dependências faltando".
+- Se opção = csv: prossegue (adapter: `lib/storage/csv.md`).
+- Se opção = sheets / supabase / markdown: prossegue via adapter correspondente.
+
+Imprimir só se default silencioso foi usado:
+> "💾 Storage não configurado — salvando em CSV local (`data/`)."
+
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/pesquisa-concorrentes de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual, completo).
+
 # /pesquisa-concorrentes — Inteligência de Conteúdo Instagram
 
 > Público: empreendedor brasileiro. Zero jargão de dev. PT-BR sempre.
@@ -59,8 +80,7 @@ Ler `CLAUDE.md` do projeto:
 - `## Storage Backend` (pra persistir depois)
 - Sazonalidade do nicho — se há janela ativa, priorizar concorrentes que publicam nela
 
-Se `## Storage Backend` ausente, abortar com:
-> "⚠️ Backend de storage não configurado. Rode `/setup-projeto` pra escolher (Supabase / Google Sheets / Markdown)."
+Se `## Storage Backend` ausente: já tratado no Pre-check (CSV silent default). Prosseguir.
 
 ## Passo 2: Detectar intenção
 

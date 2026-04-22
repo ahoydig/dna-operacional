@@ -5,6 +5,16 @@ argument-hint: "[opcional: contexto inicial do negócio]"
 
 Usuário invocou `/hormozi-diagnostico` com argumento: `$ARGUMENTS`.
 
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/hormozi-diagnostico de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual).
+
 ## Carregamento de contexto (OBRIGATÓRIO)
 
 Leia via Read tool:

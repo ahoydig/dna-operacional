@@ -3,6 +3,27 @@ description: Engenharia reversa completa de vídeos (Reels, TikTok, Shorts). Bai
 argument-hint: "[url-vídeo|path-arquivo]"
 ---
 
+## Pre-check — Storage Backend
+
+Ler `CLAUDE.md` do projeto atual → linha `## Storage Backend: <opção>`.
+
+- Se não existir ou opção inválida: **default silencioso = csv**. Cria pasta `data/` se não existir. Não abortar, não mostrar aviso de "dependências faltando".
+- Se opção = csv: prossegue (adapter: `lib/storage/csv.md`).
+- Se opção = sheets / supabase / markdown: prossegue via adapter correspondente.
+
+Imprimir só se default silencioso foi usado:
+> "💾 Storage não configurado — salvando em CSV local (`data/`)."
+
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/analisar-video de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual, completo).
+
 Usuário invocou `/analisar-video` com argumento: `$ARGUMENTS`
 
 # /analisar-video — Engenharia Reversa de Vídeos
@@ -73,15 +94,10 @@ Abortar execução até fix.
 
 ### Backend de storage
 
-Ler `CLAUDE.md` do projeto → `## Storage Backend: <opção>`. Opções: `supabase`, `sheets`, `markdown`.
+Já resolvido no Pre-check do topo (CSV silent default). Opções suportadas: `csv` (default), `supabase`, `sheets`, `markdown`.
 
-**Pré-check soft (não aborta):**
-
-Se backend **!= supabase**, avisar:
-> "Backend atual: `<opção>`. Frame analysis pode ficar pesado (~50KB JSON por vídeo). Supabase recomendado pra escala. Prossigo? (y/n)"
-
-Sem `## Storage Backend:` definido:
-> "Configure backend em CLAUDE.md `## Storage Backend: <opção>` — opções: supabase / sheets / markdown."
+**Aviso soft apenas:** se backend **!= supabase**, imprimir:
+> "Backend atual: `<opção>`. Frame analysis pode ficar pesado (~50KB JSON por vídeo). Em CSV vai pra `data/texts/frame_analysis/video_<id>.json`. Supabase recomendado pra escala."
 
 ---
 

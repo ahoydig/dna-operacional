@@ -3,6 +3,27 @@ description: Radar diário de conteúdo BR. Faz scraping agêntico de X, Reddit 
 argument-hint: "[fast|full]"
 ---
 
+## Pre-check — Storage Backend
+
+Ler `CLAUDE.md` do projeto atual → linha `## Storage Backend: <opção>`.
+
+- Se não existir ou opção inválida: **default silencioso = csv**. Cria pasta `data/` se não existir. Não abortar, não mostrar aviso de "dependências faltando".
+- Se opção = csv: prossegue (adapter: `lib/storage/csv.md`).
+- Se opção = sheets / supabase / markdown: prossegue via adapter correspondente.
+
+Imprimir só se default silencioso foi usado:
+> "💾 Storage não configurado — salvando em CSV local (`data/`)."
+
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/pesquisa-diaria de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual, completo).
+
 # /pesquisa-diaria — Radar Agêntico Brasileiro
 
 > Público: empreendedor brasileiro. Zero jargão de dev. PT-BR sempre.
@@ -298,14 +319,7 @@ Escolhe os números que quer salvar no pipeline (ex: "1, 3, 5"), "todos" ou "nen
 
 ## Passo 5: Salvar escolhas no content_pipeline
 
-**Pré-check (obrigatório):** Ler `CLAUDE.md` do projeto atual. Se não tiver seção `## Storage Backend: <opção>`, abortar com:
-
-```
-⚠️ Backend de storage não configurado. Rode /setup-projeto pra escolher
-   (Supabase / Google Sheets / Markdown) antes de persistir escolhas.
-```
-
-Se tem backend, pra cada item escolhido pelo user, chamar operação abstrata do storage layer (`lib/storage/contract.md`):
+**Pré-check de storage já foi feito no topo da skill** (CSV silent default). Pra cada item escolhido pelo user, chamar operação abstrata do storage layer (`lib/storage/contract.md`):
 
 ```
 storage.write_content_pipeline({

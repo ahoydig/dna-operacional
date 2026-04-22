@@ -3,6 +3,27 @@ description: Cria roteiros de alta performance para Reels, TikTok e YouTube Shor
 argument-hint: "[adaptive-model-id?|tema?]"
 ---
 
+## Pre-check — Storage Backend
+
+Ler `CLAUDE.md` do projeto atual → linha `## Storage Backend: <opção>`.
+
+- Se não existir ou opção inválida: **default silencioso = csv**. Cria pasta `data/` se não existir. Não abortar, não mostrar aviso de "dependências faltando".
+- Se opção = csv: prossegue (adapter: `lib/storage/csv.md`).
+- Se opção = sheets / supabase / markdown: prossegue via adapter correspondente.
+
+Imprimir só se default silencioso foi usado:
+> "💾 Storage não configurado — salvando em CSV local (`data/`)."
+
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/roteiro-viral de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual, completo).
+
 Usuário invocou `/roteiro-viral` com argumento: `$ARGUMENTS`
 
 # /roteiro-viral — Roteiros de Vídeo Curto
@@ -18,10 +39,7 @@ Você constrói roteiros de vídeo curto (Reels, TikTok, Shorts) baseados em **a
 
 ## Passo 0: Pré-check de storage
 
-Ler backend em `CLAUDE.md` do projeto (`## Storage Backend: <opção>`). Opções: `supabase`, `sheets`, `markdown`. Contract: `lib/storage/contract.md`.
-
-Se backend ausente:
-> "Configure backend em CLAUDE.md `## Storage Backend: <opção>` — opções: supabase / sheets / markdown."
+Já resolvido no Pre-check do topo (CSV silent default). Contract: `lib/storage/contract.md`.
 
 Todas as leituras e escritas de modelos e roteiros passam pelo contract. **Zero SQL inline** (CONVENCOES §4).
 
