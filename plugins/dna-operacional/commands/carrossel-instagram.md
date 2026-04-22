@@ -5,6 +5,16 @@ argument-hint: "[tópico|URL|path-de-briefing?]"
 
 Usuário invocou `/carrossel-instagram` com argumento: `$ARGUMENTS`
 
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/carrossel-instagram de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual).
+
 # /carrossel-instagram — Pipeline de 5 Gates
 
 > Segue a voz do projeto (via `/humanizer` ao final). Handle do projeto vem de `CLAUDE.md` do user em `## Handle: @<x>`. Sem handle definido → perguntar uma vez e gravar.
