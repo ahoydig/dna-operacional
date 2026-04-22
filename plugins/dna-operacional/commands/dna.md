@@ -67,8 +67,13 @@ Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 ║     /auto-melhoria ....... Detecta padrões → propõe edits        ║
 ║     /dna-melhoria ........ Melhora as próprias skills do plugin  ║
 ║                                                                  ║
-║  🧠 CONSELHEIRO                                                  ║
-║     /dna-hormozi ......... Ponte com hormozi (coach de negócio)  ║
+║  🧠 CONSELHEIRO (Hormozi — coach de negócio em PT-BR)            ║
+║     /hormozi ............. Menu + chat livre (persona)           ║
+║     /hormozi-diagnostico . 6M Diagnostic → constraint #1         ║
+║     /hormozi-oferta ...... Grand Slam Offer builder              ║
+║     /hormozi-leads ....... Core Four + Regra dos 100             ║
+║     /hormozi-money-model . 3-Stage + cash 30d audit              ║
+║     /hormozi-raio-x ...... Scan completo do negócio              ║
 ║                                                                  ║
 ║  🔗 INTEGRAÇÕES                                                  ║
 ║     /dna-meta-ads ........ Ponte com meta-ads-pro (se instalado) ║

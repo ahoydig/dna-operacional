@@ -13,18 +13,36 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
-## [0.1.2] — 2026-04-21
+## [0.1.3] — 2026-04-21
+
+### Changed — Hormozi agora é NATIVO do DNA (antes era bridge)
+
+Mudança de abordagem: em vez de apontar pro plugin `hormozi` externo, os 6 commands do conselheiro e os 5 arquivos de knowledge (PT-BR) agora vivem DENTRO do dna-operacional. DNA funciona sozinho, sem necessidade do plugin standalone.
 
 ### Added
 
-- **`/dna-hormozi`** — ponte pro plugin `hormozi` (coach de negócio em PT-BR baseado em $100M Offers/$100M Leads/$100M Money Models). Detecta se o plugin tá instalado via filesystem check. Se instalado, mostra mapa de integrações (diagnóstico 6M usando reference/ do projeto, Grand Slam Offer com publico-alvo.md, coach sobre briefing de concorrentes, ciclo completo conteúdo → oferta → ads).
-- Nova seção 🧠 CONSELHEIRO no menu `/dna` — aberta pra acolher futuros advisors (pricing, copy, etc).
+- **`/hormozi`** — menu + chat livre com persona completa (diagnostica antes de prescrever, fecha com ação de 48h)
+- **`/hormozi-diagnostico`** — 6M Diagnostic (Metrics/Model/Money/Manpower/Manager/Market)
+- **`/hormozi-oferta`** — Grand Slam Offer builder (Equação de Valor + 5 componentes + garantia + escassez)
+- **`/hormozi-leads`** — Core Four + Regra dos 100 + Mais/Melhor/Novo audit
+- **`/hormozi-money-model`** — 3-Stage Money Model + cash 30d math
+- **`/hormozi-raio-x`** — scan end-to-end combinando oferta + leads + money model
+- Knowledge PT-BR em `references/hormozi/`: `voz-hormozi.md`, `perguntas-coaching.md`, `oferta-100m.md`, `leads-100m.md`, `money-model-100m.md`
+
+### Removed
+
+- `/dna-hormozi` (bridge command) — desnecessário já que Hormozi é nativo agora.
 
 ### Notes
 
-- Change puramente aditivo. Não toca em nenhum fluxo existente.
-- Bridge bidirecional: plugin `hormozi` v0.1.0+ expõe `/hormozi-dna` que detecta dna-operacional + verifica setup do projeto.
-- `hormozi` é standalone — funciona sem dna-operacional também.
+- Plugin `hormozi` standalone (repo separado) continua existindo pra quem quer APENAS o conselheiro sem o resto do DNA. Se usuário instalar os dois simultaneamente, Claude Code vai forçar namespace (`/dna-operacional:hormozi` vs `/hormozi:hormozi`) — recomendação: escolher UM dos dois.
+- Regras de tradução: narrativa em PT-BR; mantém em inglês LTV/CAC/upsell/funnel/tripwire/continuity etc e nomes icônicos (Grand Slam Offer, Core Four, 6M); traduz Value Equation → Equação de Valor, Rule of 100 → Regra dos 100, More/Better/New → Mais/Melhor/Novo; "brother/homie" → "cara/parceiro/véi" com parcimônia.
+
+---
+
+## [0.1.2] — 2026-04-21 (revertido pela 0.1.3)
+
+Essa versão adicionou `/dna-hormozi` como bridge pro plugin externo. A abordagem foi trocada em 0.1.3 — Hormozi virou nativo. Mantida aqui apenas pra histórico.
 
 ---
 
