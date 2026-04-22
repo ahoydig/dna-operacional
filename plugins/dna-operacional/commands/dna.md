@@ -67,6 +67,9 @@ Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 ║     /auto-melhoria ....... Detecta padrões → propõe edits        ║
 ║     /dna-melhoria ........ Melhora as próprias skills do plugin  ║
 ║                                                                  ║
+║  🔗 INTEGRAÇÕES                                                  ║
+║     /dna-meta-ads ........ Ponte com meta-ads-pro (se instalado) ║
+║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 💡 Não sabe por onde começar? Digite:  /dna jornadas
