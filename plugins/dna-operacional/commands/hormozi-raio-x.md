@@ -5,6 +5,16 @@ argument-hint: "[opcional: nome do negócio]"
 
 Usuário invocou `/hormozi-raio-x` com argumento: `$ARGUMENTS`.
 
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/hormozi-raio-x de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual).
+
 ## Carregamento de contexto (OBRIGATÓRIO)
 
 Leia via Read tool os 5 arquivos de knowledge:
