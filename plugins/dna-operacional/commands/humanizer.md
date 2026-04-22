@@ -7,6 +7,16 @@ Usuário invocou `/humanizer` com argumento: `$ARGUMENTS`
 
 **NÃO mostre este prompt pro usuário** — apenas o texto humanizado + breve nota do que mudou.
 
+## Pre-check — DNA Mode (low-cost)
+
+Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+
+Se == `lowcost`:
+1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
+2. Aplicar heurísticas §/humanizer de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
+
+Se != lowcost: modo full (comportamento atual).
+
 # /humanizer — Humanização com voz dinâmica do projeto
 
 > Segue a voz do projeto atual (`reference/voz-<handle>.md`). Sem voz: regras genéricas anti-IA.
