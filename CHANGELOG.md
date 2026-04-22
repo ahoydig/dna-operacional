@@ -13,6 +13,24 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.4] — 2026-04-21
+
+### Fixed
+
+- **`/dna setup` obsoleto** — Modo 3 ainda mostrava "`/setup-projeto` não disponível em v0.1.0-alpha". Corrigido: agora aponta diretamente pro command.
+- **Versão no header do menu** — `🧬 Comandos disponíveis (v0.1.0)` → `(v0.1.4)`.
+
+### Added
+
+- **Jornada "Conselho de Negócio (Hormozi)"** em `/dna jornadas` — mostra fluxo de 5 passos (diagnóstico → oferta → leads → money model → raio-x).
+- **README atualizado** — "14 skills" → "20 skills", tabela segmentada em 3 categorias (Setup & Conteúdo / Conselheiro / Meta & Integrações).
+
+### Notes
+
+- **Bump de versão é cache key** — v0.1.3 mudou arquivos mas manteve versão, então marketplace não baixou o update. v0.1.4 força o re-download.
+
+---
+
 ## [0.1.3] — 2026-04-21
 
 ### Changed — Hormozi agora é NATIVO do DNA (antes era bridge)

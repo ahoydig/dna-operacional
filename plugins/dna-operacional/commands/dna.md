@@ -43,7 +43,7 @@ Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
-║  🧬 Comandos disponíveis (v0.1.3)                                ║
+║  🧬 Comandos disponíveis (v0.1.4)                                ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
 ║  🎯 SETUP                                                        ║
@@ -191,7 +191,7 @@ Antes de renderizar banner ou menus, detectar:
 **Box drawing heavy (`╔═╗║╚╝`)** → ASCII:
 ```
 +==================================================================+
-|  🧬 Comandos disponíveis (v0.1.3)                                |
+|  🧬 Comandos disponíveis (v0.1.4)                                |
 +==================================================================+
 ```
 
