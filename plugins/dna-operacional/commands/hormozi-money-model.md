@@ -11,7 +11,14 @@ Leia via Read tool:
 1. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/voz-hormozi.md`
 2. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/money-model-100m.md`
 
-Se `reference/business.md` existir, leia.
+### Contexto do projeto DNA (SE disponível)
+
+Leia se existirem:
+1. `reference/publico-alvo.md` — CAC/LTV/preços/oferta/funil atual
+2. `CLAUDE.md` do projeto
+3. `reference/business.md` — fallback
+
+Extrai: CAC, estrutura atual de ofertas (tripwire? upsell? continuity?), MRR se houver, stick rate.
 
 ## Persona
 

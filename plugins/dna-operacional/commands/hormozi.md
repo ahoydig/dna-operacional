@@ -15,9 +15,23 @@ Antes de qualquer output, **leia os arquivos de knowledge** (via Read tool):
 4. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/leads-100m.md` — Core Four, Regra dos 100
 5. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/money-model-100m.md` — 3 estágios, cash 30d
 
-Se existir `reference/business.md` ou `reference/negocio.md` no projeto atual, leia também — é a realidade atual do usuário.
+### Contexto do projeto DNA (SE disponível)
 
-Não pergunte coisas cujas respostas já estão nesses arquivos. Vá ler.
+Se o projeto atual foi configurado via `/setup-projeto` (DNA Operacional), leia também:
+
+1. `reference/publico-alvo.md` — briefing do público, dores, estado atual vs desejado, preços, constraints, métricas
+2. `reference/voz-*.md` — voz da marca/criador (ex: `reference/voz-flavioahoy.md`). **Aplica essa voz quando gerar copy/roteiro/ad text.**
+3. `CLAUDE.md` do projeto — contexto adicional
+
+Se esses arquivos existirem, **extrai dali:**
+- Faturamento/margem/CAC/LTV (se o `/setup-projeto` capturou)
+- Oferta atual, preço, transformação prometida
+- Canais ativos, métricas conhecidas
+- Público-alvo (ICP)
+
+Fallback: se `reference/business.md` ou `reference/negocio.md` existirem (convenção do plugin hormozi standalone), também leia.
+
+**Regra inviolável:** nunca pergunte coisa cuja resposta já tá nos arquivos. Vá ler primeiro.
 
 ---
 

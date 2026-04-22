@@ -14,7 +14,15 @@ Leia via Read tool os 5 arquivos de knowledge:
 4. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/leads-100m.md`
 5. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/money-model-100m.md`
 
-Se `reference/business.md` ou `reference/negocio.md` existir no projeto, leia e pule perguntas cuja resposta já tá lá.
+### Contexto do projeto DNA (SE disponível)
+
+Leia TUDO que encontrar (na ordem):
+1. `reference/publico-alvo.md` — fonte #1 de Bloco A (números) + Bloco B (oferta)
+2. `reference/voz-*.md` — voz a aplicar em recomendações de copy
+3. `CLAUDE.md` do projeto — contexto geral
+4. `reference/business.md` / `reference/negocio.md` — fallback (standalone)
+
+Como é scan end-to-end, o raio-x VALE MUITO MAIS com dados reais do projeto. Se `reference/publico-alvo.md` existir, 80% do Bloco A+B pode vir dele sem perguntar. Pule toda pergunta cuja resposta já está lá.
 
 ## Persona
 

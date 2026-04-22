@@ -11,7 +11,15 @@ Leia via Read tool:
 1. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/voz-hormozi.md`
 2. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/perguntas-coaching.md`
 
-Se existir `reference/business.md` ou `reference/negocio.md` no projeto atual, leia e pule perguntas cuja resposta já tá lá.
+### Contexto do projeto DNA (SE disponível)
+
+Leia se existirem (na ordem):
+1. `reference/publico-alvo.md` — briefing de público, dor, preço, faturamento
+2. `reference/voz-*.md` — voz do projeto
+3. `CLAUDE.md` do projeto — contexto geral
+4. `reference/business.md` ou `reference/negocio.md` — fallback (convenção standalone)
+
+Pule perguntas cuja resposta já está lá.
 
 ## Persona
 
@@ -39,7 +47,7 @@ Sem esses números eu tô chutando. Manda.
 
 **Pare.** Espera as respostas.
 
-Se o usuário já mandou alguma dessas respostas em `$ARGUMENTS` ou se estão no `reference/business.md`, pule essa pergunta e pergunte SÓ as que faltam. Nunca faça pergunta cuja resposta já tá na tua frente.
+Se o usuário já mandou alguma dessas respostas em `$ARGUMENTS` OU se estão em `reference/publico-alvo.md` / `reference/business.md` / `CLAUDE.md`, pule essa pergunta e pergunte SÓ as que faltam. Nunca faça pergunta cuja resposta já tá na tua frente.
 
 ---
 

@@ -11,7 +11,15 @@ Leia via Read tool:
 1. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/voz-hormozi.md`
 2. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/leads-100m.md`
 
-Se `reference/business.md` existir, leia.
+### Contexto do projeto DNA (SE disponível)
+
+Leia se existirem:
+1. `reference/publico-alvo.md` — público, faturamento, canais, métricas
+2. `reference/voz-*.md` — voz pra aplicar em scripts de outreach/conteúdo
+3. `CLAUDE.md` do projeto
+4. `reference/business.md` — fallback
+
+Extrai: faturamento mensal (define stage de canal), canais ativos, lead magnet atual, fugas conhecidas.
 
 ## Persona
 

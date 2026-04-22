@@ -13,6 +13,25 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.7] — 2026-04-21
+
+### Fixed — BUG SÉRIO DE INTEGRAÇÃO
+
+- **Hormozi não lia o contexto do DNA.** Os 6 commands Hormozi (portados do plugin standalone) referenciavam `reference/business.md` / `reference/negocio.md` — convenção do plugin standalone. Mas o DNA cria `reference/publico-alvo.md` e `reference/voz-<handle>.md` via `/setup-projeto`. Resultado: o conselheiro perguntava tudo do zero mesmo em projetos DNA configurados, ignorando todo o briefing.
+- **Fix:** os 6 commands agora leem (nessa ordem):
+  1. `reference/publico-alvo.md` — briefing do projeto DNA (público, dores, oferta, preços, métricas)
+  2. `reference/voz-*.md` — voz do projeto (aplicada em copy gerada)
+  3. `CLAUDE.md` do projeto
+  4. `reference/business.md` / `reference/negocio.md` — fallback pra quem rodar standalone
+- **`/hormozi-oferta`** marca como OBRIGATÓRIO aplicar voz-*.md na copy gerada (headline, primary text).
+- **`/hormozi-raio-x`** agora extrai 80% dos Blocos A+B do publico-alvo.md sem perguntar, quando disponível.
+
+### Impacto
+
+Agora o conselheiro responde **de acordo com o DNA do projeto**, não genericamente. Essa era a proposta da integração — antes estava quebrada.
+
+---
+
 ## [0.1.6] — 2026-04-21
 
 ### Fixed

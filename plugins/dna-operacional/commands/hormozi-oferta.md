@@ -12,7 +12,15 @@ Leia via Read tool:
 2. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/oferta-100m.md`
 3. `${CLAUDE_PLUGIN_ROOT}/references/hormozi/perguntas-coaching.md` (seção de diagnóstico de oferta)
 
-Se `reference/business.md` ou `reference/negocio.md` existir no projeto atual, leia.
+### Contexto do projeto DNA (SE disponível)
+
+Leia se existirem (na ordem):
+1. `reference/publico-alvo.md` — oferta atual, público-alvo, dores, transformação, preços
+2. `reference/voz-*.md` — **OBRIGATÓRIO aplicar na copy gerada** (headline, primary text, hook)
+3. `CLAUDE.md` do projeto
+4. `reference/business.md` / `reference/negocio.md` — fallback (standalone)
+
+Extrai dali: oferta atual + preço, público-alvo, transformação prometida. Pule perguntas cuja resposta já está lá.
 
 ## Persona
 
