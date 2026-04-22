@@ -2,7 +2,7 @@
 
 **O sistema operacional da Ahoy Digital — do setup ao lançamento.**
 
-20 skills Claude Code pra criador, agência, inteligência competitiva e **conselho de negócio** em BR. Inclui o coach **Hormozi em PT-BR** (Grand Slam Offer, Core Four, 3-Stage Money Model, 6M Diagnostic). Instala em 2 comandos, funciona em qualquer projeto.
+24 skills Claude Code pra criador, agência, inteligência competitiva, **conselho de negócio** e **entrega de cliente end-to-end** (orçamento → contrato → apresentação → landing page) em BR. Inclui o coach **Hormozi em PT-BR** (Grand Slam Offer, Core Four, 3-Stage Money Model, 6M Diagnostic). Instala em 2 comandos, funciona em qualquer projeto.
 
 ## 🚀 Instalação
 
@@ -13,7 +13,7 @@
 
 Pronto. Digita `/dna` pra ver tudo que dá pra fazer.
 
-## O que tu ganha (20 skills)
+## O que tu ganha (24 skills)
 
 ### 🎯 Setup & Conteúdo
 
@@ -42,6 +42,17 @@ Pronto. Digita `/dna` pra ver tudo que dá pra fazer.
 | `/hormozi-money-model` | Audita 3 estágios (Atração/Upsell/Continuity) + cash 30d |
 | `/hormozi-raio-x` | Scan completo do negócio end-to-end |
 
+### 🧠 Client Delivery
+
+Entrega end-to-end pra cliente de agência/consultoria. Fecha o loop: do orçamento à landing no ar.
+
+| Skill | O que faz |
+|---|---|
+| `/orcamento` | Proposta comercial PDF (wrapper de `proposta` com contexto DNA do projeto) |
+| `/apresentacao` | Deck HTML+CSS+JS Vanilla+GSAP (NÃO pptx) — animações 9NE-style, fora-da-caixa |
+| `/landing-page` | LP alta conversão (wrapper `landing-page-builder` + `taste-skill` + `ui-ux-pro-max` + opcional Impeccable polish) |
+| `/contrato` | Edita modelo `.docx`/`.pdf` substituindo placeholders com dados do cliente + projeto |
+
 ### 🤖 Meta & Integrações
 
 | Skill | O que faz |
@@ -53,17 +64,46 @@ Pronto. Digita `/dna` pra ver tudo que dá pra fazer.
 
 ---
 
+## ⚡ Modo Lowcost
+
+Flag em `CLAUDE.md` que economiza **30–80% tokens** reduzindo escopo das skills (menos perguntas, menos frameworks, menos saídas) sem perder o essencial.
+
+```
+/dna modo            → mostra modo atual (full | lowcost)
+/dna modo lowcost    → ativa modo econômico em todas as skills
+/dna modo full       → volta pro padrão completo
+```
+
+Quando ativado (`dna_mode: lowcost` em `CLAUDE.md`), 10 skills respeitam a flag:
+
+| Skill | Redução em lowcost |
+|---|---|
+| `/setup-projeto` | 17 seções → **fast mode** (8 perguntas essenciais em ~3 min) |
+| `/pesquisa-diaria` | 6 fontes → **3 fontes core** (X + Reddit + portais BR) |
+| `/pesquisa-concorrentes` | 10 concorrentes → **5 concorrentes** |
+| `/raio-x-ads-concorrentes` | Briefing completo → **top 3 anúncios + angle principal** |
+| `/ideias-conteudo` | 10 frameworks → **3 hooks high-performers** |
+| `/analisar-video` | 6 camadas → **roteiro + hook + estrutura** |
+| `/roteiro-viral` | 3 variantes → **1 variante polida** |
+| `/carrossel-instagram` | 10 slides + moodboard → **6 slides + template direto** |
+| `/analista-conteudo` | 14 seções SQL → **4 KPIs core** |
+| `/hormozi-diagnostico` | 6M completo → **3 Ms críticos (Money/Market/Model)** |
+
+Heurística completa em [`lib/mode/low-cost-heuristics.md`](plugins/dna-operacional/lib/mode/low-cost-heuristics.md).
+
+---
+
 ## 🗄️ Storage Layer
 
 Plugin abstrai persistência — tu escolhe onde guardar os dados das skills:
 
 | Backend | Pra quem | Setup |
 |---|---|---|
-| **Supabase** | Power user / agência / escala | Médio (criar projeto + rodar migration) |
-| **Google Sheets** | Maioria dos casos | Fácil (copiar planilha + colar ID) |
-| **Markdown local** | Iniciante / pessoal | Trivial (`mkdir data/`) |
+| **CSV local** (default) | **Todo mundo começa aqui** — marketeiro, empresário, criador | Trivial (zero config — skills criam `data/*.csv` automático) |
+| **Google Sheets** | Quem quer visualizar em planilha compartilhada | Fácil (copiar planilha + colar ID) |
+| **Supabase** | Power user only — agência/escala com SQL complexo (`/analista-conteudo`) | Médio (criar projeto + rodar migration) |
 
-Sem lock-in. Trocar backend = passar pela skill `/dna migrar-storage` (v0.2+) ou migração manual.
+Sem lock-in. Trocar backend = passar pela skill `/dna migrar-storage` (v0.3+) ou migração manual.
 
 Detalhes completos em [`lib/storage/`](plugins/dna-operacional/lib/storage/) e [`templates/`](plugins/dna-operacional/templates/).
 
@@ -152,6 +192,7 @@ Ele te entrevista, monta teu `CLAUDE.md`, define público-alvo e delega a voz pr
 - 🎨 **Carrossel** (4 skills) — setup → voz → ideias → carrossel
 - 🔬 **Inteligência Competitiva** (4 skills) — setup → concorrentes → (v0.2 ads) → raio-x
 - 🧠 **Conselho de Negócio** (5 skills) — diagnóstico 6M → oferta → leads → money model → raio-x
+- 📄 **Entrega de Cliente** (4 skills) — orcamento → contrato → apresentacao → landing-page
 - 🤖 **Manutenção** (3 transversais) — auto-melhoria + voz auto-observa + dna-melhoria
 
 Detalhes em `/dna jornadas`.
