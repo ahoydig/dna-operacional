@@ -13,6 +13,14 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.5] — 2026-04-21
+
+### Fixed — BUG CRÍTICO
+
+- **`/dna-meta-ads` detection quebrada em cache-only** — o glob de detecção do meta-ads-pro em `~/.claude/plugins/cache/*/meta-ads-pro/.claude-plugin/plugin.json` não batia no layout real do cache, que é `~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/.claude-plugin/plugin.json` (versão como subpasta). A detecção passava hoje porque o 2º fallback (marketplaces/) cobria — mas em instalação cache-only, falharia silenciosamente. Fix: 3 globs em cascata agora (com e sem versão + marketplaces).
+
+---
+
 ## [0.1.4] — 2026-04-21
 
 ### Fixed
