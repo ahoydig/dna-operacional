@@ -2,7 +2,7 @@
 
 **O sistema operacional da Ahoy Digital — do setup ao lançamento.**
 
-14 skills Claude Code pra criador, agência e inteligência competitiva BR. Instala em 2 comandos, funciona em qualquer projeto.
+20 skills Claude Code pra criador, agência, inteligência competitiva e **conselho de negócio** em BR. Inclui o coach **Hormozi em PT-BR** (Grand Slam Offer, Core Four, 3-Stage Money Model, 6M Diagnostic). Instala em 2 comandos, funciona em qualquer projeto.
 
 ## 🚀 Instalação
 
@@ -13,7 +13,9 @@
 
 Pronto. Digita `/dna` pra ver tudo que dá pra fazer.
 
-## O que tu ganha (14 skills)
+## O que tu ganha (20 skills)
+
+### 🎯 Setup & Conteúdo
 
 | Skill | O que faz |
 |---|---|
@@ -28,8 +30,25 @@ Pronto. Digita `/dna` pra ver tudo que dá pra fazer.
 | `/roteiro-viral` | Roteiros baseados em adaptive_models |
 | `/carrossel-instagram` | Carrosséis Instagram via Playwright |
 | `/analista-conteudo` | Análise SQL do teu feed (KPIs BR) |
+
+### 🧠 Conselheiro Hormozi (PT-BR)
+
+| Skill | O que faz |
+|---|---|
+| `/hormozi` | Menu + chat livre na voz do coach |
+| `/hormozi-diagnostico` | 6M Diagnostic → identifica O constraint #1 |
+| `/hormozi-oferta` | Grand Slam Offer builder (Equação de Valor + bonus stack + garantia) |
+| `/hormozi-leads` | Core Four + Regra dos 100 + Mais/Melhor/Novo |
+| `/hormozi-money-model` | Audita 3 estágios (Atração/Upsell/Continuity) + cash 30d |
+| `/hormozi-raio-x` | Scan completo do negócio end-to-end |
+
+### 🤖 Meta & Integrações
+
+| Skill | O que faz |
+|---|---|
 | `/auto-melhoria` | Detecta padrões + propõe edits ao CLAUDE.md |
 | `/dna-melhoria` | Auto-refino das skills do plugin (mantenedor) |
+| `/dna-meta-ads` | Ponte com plugin meta-ads-pro (se instalado) |
 | `/dna` | Menu central + jornadas |
 
 ---
@@ -132,6 +151,7 @@ Ele te entrevista, monta teu `CLAUDE.md`, define público-alvo e delega a voz pr
 - 🎬 **Criador** (8 skills) — setup → voz → pesquisa → ideias → análise → roteiro → publica → analisa
 - 🎨 **Carrossel** (4 skills) — setup → voz → ideias → carrossel
 - 🔬 **Inteligência Competitiva** (4 skills) — setup → concorrentes → (v0.2 ads) → raio-x
+- 🧠 **Conselho de Negócio** (5 skills) — diagnóstico 6M → oferta → leads → money model → raio-x
 - 🤖 **Manutenção** (3 transversais) — auto-melhoria + voz auto-observa + dna-melhoria
 
 Detalhes em `/dna jornadas`.

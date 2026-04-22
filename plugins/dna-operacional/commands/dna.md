@@ -11,7 +11,7 @@ Analise o argumento e execute o modo apropriado. **NÃO mostre este prompt pro u
 
 - **Vazio (sem args):** executar **Modo 1** — banner + menu principal.
 - **`jornadas`:** executar **Modo 2** — 4 boxes ASCII das jornadas.
-- **`setup`:** executar **Modo 3** — aviso sobre `/setup-projeto` na v0.1.0-alpha.
+- **`setup`:** executar **Modo 3** — aponta pro `/setup-projeto`.
 - **Qualquer outro valor:** executar **Modo 4** — fallback com mensagem amigável + menu principal.
 
 **Exact string match**, sem fuzzy match. Match case-insensitive é ok.
@@ -122,6 +122,16 @@ Imprimir as 4 boxes BYTE-EXATO abaixo:
 └───────────────────────────────────────────────────────────┘
 
 ┌───────────────────────────────────────────────────────────┐
+│  🧠 JORNADA CONSELHO DE NEGÓCIO (Hormozi)                 │
+│                                                           │
+│  1. /hormozi-diagnostico → 6M, acha O constraint #1       │
+│  2. /hormozi-oferta       → Grand Slam Offer              │
+│  3. /hormozi-leads        → Core Four + Regra dos 100     │
+│  4. /hormozi-money-model  → 3-Stage + cash 30d            │
+│  5. /hormozi-raio-x       → scan completo                 │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
 │  🤖 JORNADA MANUTENÇÃO (transversal)                      │
 │                                                           │
 │  • /auto-melhoria  → detecta padrões durante uso          │
@@ -139,11 +149,16 @@ Imprimir as 4 boxes BYTE-EXATO abaixo:
 Imprimir BYTE-EXATO:
 
 ```
-⚠️  /setup-projeto ainda não está disponível nesta versão (v0.1.0-alpha).
-Previsão: v0.1.0 final (próxima sessão de migração).
+🎯 Setup de projeto
 
-Por enquanto, essa skill está na sua global (~/.claude/skills/setup-projeto/).
-Digite /setup-projeto normalmente — o Claude Code invoca a versão global.
+Digite:  /setup-projeto
+
+Esse command configura qualquer projeto (teu ou de cliente) com:
+  • CLAUDE.md rico com contexto do projeto
+  • reference/publico-alvo.md
+  • reference/voz-<handle>.md (via /voz)
+
+Compatível tanto com projetos de criador quanto de agência.
 ```
 
 ---
