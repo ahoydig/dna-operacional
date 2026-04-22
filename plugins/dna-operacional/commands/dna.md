@@ -43,7 +43,7 @@ Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
-║  🧬 Comandos disponíveis (v0.1.7)                                ║
+║  🧬 Comandos disponíveis (v0.2.0)                                ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
 ║  🎯 SETUP                                                        ║
@@ -74,6 +74,15 @@ Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 ║     /hormozi-leads ....... Core Four + Regra dos 100             ║
 ║     /hormozi-money-model . 3-Stage + cash 30d audit              ║
 ║     /hormozi-raio-x ...... Scan completo do negócio              ║
+║                                                                  ║
+║  📄 CLIENTE (entrega end-to-end)                                 ║
+║     /orcamento ............ Proposta comercial PDF               ║
+║     /apresentacao ......... Deck HTML+GSAP fora-da-caixa         ║
+║     /landing-page ......... Landing de alta conversão            ║
+║     /contrato ............. Edita .docx/.pdf → personalizado     ║
+║                                                                  ║
+║  ⚡ MODO                                                         ║
+║     /dna modo ............. Toggle full ↔ lowcost (economia)     ║
 ║                                                                  ║
 ║  🔗 INTEGRAÇÕES                                                  ║
 ║     /dna-meta-ads ........ Ponte com meta-ads-pro (se instalado) ║
@@ -129,6 +138,17 @@ Imprimir as 4 boxes BYTE-EXATO abaixo:
 │  3. /hormozi-leads        → Core Four + Regra dos 100     │
 │  4. /hormozi-money-model  → 3-Stage + cash 30d            │
 │  5. /hormozi-raio-x       → scan completo                 │
+└───────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────┐
+│  📄 JORNADA ENTREGA DE CLIENTE (fecha o loop)             │
+│                                                           │
+│  1. /setup-projeto        → configura projeto do cliente  │
+│  2. /orcamento            → proposta comercial PDF        │
+│  3. (assinatura)                                          │
+│  4. /contrato             → contrato personalizado        │
+│  5. /apresentacao         → kickoff deck (HTML+GSAP)      │
+│  6. /landing-page         → LP do projeto                 │
 └───────────────────────────────────────────────────────────┘
 
 ┌───────────────────────────────────────────────────────────┐
@@ -191,7 +211,7 @@ Antes de renderizar banner ou menus, detectar:
 **Box drawing heavy (`╔═╗║╚╝`)** → ASCII:
 ```
 +==================================================================+
-|  🧬 Comandos disponíveis (v0.1.7)                                |
+|  🧬 Comandos disponíveis (v0.2.0)                                |
 +==================================================================+
 ```
 
