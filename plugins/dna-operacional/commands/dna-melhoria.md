@@ -20,7 +20,7 @@ Skill é primariamente pro **mantenedor** do plugin (Flávio + colaboradores fut
 
 **Exact string match**, sem fuzzy. Qualquer outro valor: cai em Dry-Run com aviso curto ("argumento não reconhecido — rodando dry-run").
 
-> **⚠️ Nota arquitetural (alinhamento com Spec §3.1):** Spec diz "Sempre dry-run + diff. Nunca aplica direto." Plan 3 honra isso — **não há modo `--apply` em v0.1.0-alpha.5**. User vê propostas e copia/cola manualmente as que aprovar. Modo `--apply` com confirmação 1-a-1 fica como **follow-up futuro** (exigiria atualização de Spec §3.1 antes).
+> **⚠️ Nota arquitetural (alinhamento com Spec §3.1):** Spec diz "Sempre dry-run + diff. Nunca aplica direto." Plan 3 honra isso — **não há modo `--apply` nesta versão**. User vê propostas e copia/cola manualmente as que aprovar. Modo `--apply` com confirmação 1-a-1 fica como **follow-up futuro** (exigiria atualização de Spec §3.1 antes).
 
 ## Escopo do scan
 
@@ -116,12 +116,12 @@ Heurística: H1 (description triggers)
 ═══ Proposta 2/N ═══
 [...]
 
-💡 Copia/cola as propostas que aprovar. v0.1.0-alpha.5 não tem --apply automático.
+💡 Copia/cola as propostas que aprovar. Esta versão não tem --apply automático.
 ```
 
 ## Scope Safety — paths permitidos pra PROPOSTAS
 
-Em v0.1.0-alpha.5 nada é escrito (só dry-run + diff). Mesmo assim, allowlist define quais arquivos podem APARECER nas propostas:
+Nesta versão nada é escrito (só dry-run + diff). Mesmo assim, allowlist define quais arquivos podem APARECER nas propostas:
 
 **Allowlist (pode propor edits):**
 
@@ -154,7 +154,7 @@ ${PLUGIN_ROOT}/docs/*.md
 
 ## Constraints (sempre)
 
-- **Nunca aplica nada sem intervenção manual do user** (alinhamento Spec §3.1 — só dry-run + diff em v0.1.0-alpha.5).
+- **Nunca aplica nada sem intervenção manual do user** (alinhamento Spec §3.1 — só dry-run + diff nesta versão).
 - **Nunca toca arquivos fora do plugin** (CLAUDE.md do user, reference/, data/, etc são intocáveis).
 - **Nunca sugere mudanças que quebram o contract de storage** (`lib/storage/contract.md` é fonte da verdade — não muda de leve).
 - **Nunca propõe remover sanitização existente** — só adicionar.

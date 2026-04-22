@@ -13,6 +13,14 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), ver
 
 ---
 
+## [0.1.6] — 2026-04-21
+
+### Fixed
+
+- **`/dna-melhoria` menções obsoletas** — 4 strings hardcoded "v0.1.0-alpha.5" em descrições internas do command viraram "nesta versão" (gramaticalmente correto). Skill é pra mantenedor, mas evita confusão se rodada durante workshop.
+
+---
+
 ## [0.1.5] — 2026-04-21
 
 ### Fixed — BUG CRÍTICO
