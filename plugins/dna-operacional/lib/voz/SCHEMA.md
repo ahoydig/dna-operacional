@@ -8,7 +8,7 @@ Fonte da verdade da estrutura do arquivo de voz. Skills `voz`, `humanizer` e `au
 
 ```yaml
 ---
-handle: "@flavioahoy"
+handle: "@<seuhandle>"
 versao: 3
 ultima_atualizacao: 2026-04-14
 fontes_evolucao:

@@ -54,6 +54,6 @@
 
 - Spike de tokens `/schedule` real (multi-run pra amostragem robusta) — SPIKE-TOKENS.md atual tem estimativa teórica
 - Padronização de `references/*/` subdirs (precedente criado em carrossel-instagram Plan 5)
-- `@flavioahoy` em banner ASCII (Plan 1) — considerar `${USER_HANDLE}` dinâmico na v0.2
+- Banner ASCII com handle do autor — mantido como assinatura
 - Sinal 3 humanizer best-effort (sem hook formal de edições externas)
 - Spec 2 §7.2 regex precisa `\b` em tokens curtos (learning Plans 2-3)

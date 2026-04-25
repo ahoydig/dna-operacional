@@ -365,8 +365,8 @@ Nova linha:
 
 | Situação | Ação |
 |----------|------|
-| Skill `ui-ux-pro-max` não instalada | Fallback default (Obsidian Quantum + Anton/Manrope) + aviso |
-| Skill `taste-skill` não instalada | Usar subset do briefing direto (cenas-catalog.md §subsets) |
+| Skill `ui-ux-pro-max` não encontrada (bundled+global ausentes) | Fallback default (Obsidian Quantum + Anton/Manrope) + aviso. Bundled vem em `${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/` por padrão. |
+| Skill `taste-skill` não encontrada | Usar subset do briefing direto (cenas-catalog.md §subsets). Bundled em `${CLAUDE_PLUGIN_ROOT}/skills/taste-skill/`. |
 | User não escolhe paleta | Default Obsidian Quantum |
 | `python3` não disponível pra preview | Instruir abrir manual ou `npx serve` |
 | `data/` não existe | `mkdir -p` silencioso |

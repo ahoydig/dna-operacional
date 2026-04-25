@@ -1,11 +1,17 @@
 ---
-description: Gera orçamento/proposta comercial em PDF com dados pré-preenchidos do projeto DNA (público, voz, oferta principal). Invoca a skill global `proposta` (design premium Ahoy + precificação + Playwright PDF). Salva em data/clientes/<slug>/orcamentos/. Use quando digitar "/orcamento", "gerar orçamento", "proposta pra <cliente>", "fazer proposta".
+description: Gera orçamento/proposta comercial em PDF com dados pré-preenchidos do projeto DNA (público, voz, oferta principal). Invoca a skill `proposta` (bundled em `${CLAUDE_PLUGIN_ROOT}/skills/proposta/`, fallback global) — design premium configurável + precificação + Playwright PDF. Salva em data/clientes/<slug>/orcamentos/. Use quando digitar "/orcamento", "gerar orçamento", "proposta pra <cliente>", "fazer proposta".
 argument-hint: "[nome do cliente]"
 ---
 
 Usuário invocou `/orcamento $ARGUMENTS`.
 
-Esse comando é um **wrapper fino** pra skill global `proposta` — aplica o contexto do projeto DNA antes de delegar.
+Esse comando é um **wrapper fino** pra skill `proposta` — aplica o contexto do projeto DNA antes de delegar.
+
+**Resolução da skill:**
+1. Bundled (preferencial): `${CLAUDE_PLUGIN_ROOT}/skills/proposta/SKILL.md`
+2. Fallback global: `~/.claude/skills/proposta/SKILL.md`
+
+Se nenhuma das duas existir, abortar com instrução de reinstalar o plugin.
 
 ## Passo 1 — Ler contexto DNA do projeto
 
@@ -29,17 +35,17 @@ Perguntar APENAS o que não veio em `$ARGUMENTS` ou no contexto:
 1. **Nome do cliente** (se não veio em args)
 2. **Razão social + CNPJ** (opcional — pra nota fiscal)
 3. **Nicho do cliente** (ex: clínica odontológica, SaaS B2B, infoprodutor fitness)
-4. **Escopo do projeto** em 1-3 frases (o que a Ahoy vai entregar)
+4. **Escopo do projeto** em 1-3 frases (o que a empresa vai entregar)
 5. **Deadline esperado** (em semanas/meses)
 6. **Faixa de orçamento** (opcional — ajuda a calibrar precificação)
 7. **Nome + cargo de quem assina** pelo cliente
 
 **Pré-preencher do contexto:**
-- `{{EMPRESA_AHOY}}` = nome do projeto em CLAUDE.md
-- `{{EMAIL_AHOY}}` = e-mail em CLAUDE.md
+- `{{EMPRESA}}` = nome do projeto em CLAUDE.md
+- `{{EMAIL_EMPRESA}}` = e-mail em CLAUDE.md
 - `{{VOZ}}` = voz dos adjetivos em CLAUDE.md ou `reference/voz-*.md`
 
-## Passo 3 — Invocar skill global `proposta`
+## Passo 3 — Invocar skill `proposta`
 
 Usar a **Skill tool** com `skill: "proposta"` passando contexto agregado:
 
@@ -59,12 +65,12 @@ Dados do cliente:
 - Faixa orçamento: <faixa>
 - Assinatura: <nome + cargo>
 
-Gera proposta premium, aplica Nofex font + A4 print-friendly, saída em PDF.
+Gera proposta premium, aplica fonte de headlines configurada (default Inter) + A4 print-friendly, saída em PDF.
 ```
 
 A skill `proposta` cuida de:
 - Precificação guiada (setup + mensalidade)
-- Design premium (paleta Ahoy: `#010B12` + `#2BC20E`)
+- Design premium (paleta configurável via placeholders `{{COR_PRIMARIA}}` + `{{COR_DESTAQUE}}`; defaults neutros se não configurada)
 - Renderização Playwright → PDF
 - Histórico em `propostas/historico-propostas.json`
 
@@ -141,7 +147,7 @@ Usar RFC 4180 escape (aspas duplas em campos com vírgula/aspas).
 
 | Situação | Ação |
 |----------|------|
-| Skill `proposta` não instalada | Instruir: "Instale a skill `proposta` via `/plugin` antes de usar `/orcamento`." |
+| Skill `proposta` não encontrada (bundled+global ausentes) | Bundled vem em `${CLAUDE_PLUGIN_ROOT}/skills/proposta/`. Se ausente, plugin foi instalado mal — recomendar reinstalar. |
 | PDF não gerou | Repassar erro da skill `proposta` sem censurar |
 | `data/` não existe | Criar silenciosamente com `mkdir -p` |
 | CLAUDE.md ausente | Avisar uma vez, rodar fluxo coletando tudo do zero |

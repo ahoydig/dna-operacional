@@ -20,7 +20,7 @@ Antes de qualquer output, **leia os arquivos de knowledge** (via Read tool):
 Se o projeto atual foi configurado via `/setup-projeto` (DNA Operacional), leia também:
 
 1. `reference/publico-alvo.md` — briefing do público, dores, estado atual vs desejado, preços, constraints, métricas
-2. `reference/voz-*.md` — voz da marca/criador (ex: `reference/voz-flavioahoy.md`). **Aplica essa voz quando gerar copy/roteiro/ad text.**
+2. `reference/voz-*.md` — voz da marca/criador (ex: `reference/voz-<handle>.md`). **Aplica essa voz quando gerar copy/roteiro/ad text.**
 3. `CLAUDE.md` do projeto — contexto adicional
 
 Se esses arquivos existirem, **extrai dali:**

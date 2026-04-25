@@ -1,6 +1,6 @@
-# Efeitos Tipográficos — Headlines NOFEX
+# Efeitos Tipográficos — Headlines {{FONT_HEADLINE_NAME_UPPER}}
 
-Catálogo de efeitos CSS para aplicar na fonte NOFEX nas headlines dos slides. O efeito é escolhido no Gate 3 com base no mood/paleta do carrossel. As cores devem ser adaptadas à paleta aprovada.
+Catálogo de efeitos CSS para aplicar na fonte {{FONT_HEADLINE_NAME_UPPER}} nas headlines dos slides. O efeito é escolhido no Gate 3 com base no mood/paleta do carrossel. As cores devem ser adaptadas à paleta aprovada.
 
 ---
 
@@ -10,7 +10,7 @@ Texto com degradê de cores. Versátil, funciona com qualquer paleta.
 
 ```css
 .headline {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -28,13 +28,13 @@ Texto com degradê de cores. Versátil, funciona com qualquer paleta.
 
 ## 2. Dupla Camada (Fill + Outline)
 
-NOFEX preenchida + NOFEX Outline sobrepostas. Efeito premium e sofisticado.
+{{FONT_HEADLINE_NAME_UPPER}} preenchida + {{FONT_HEADLINE_NAME_UPPER}} Outline sobrepostas. Efeito premium e sofisticado.
 
 ```css
 .headline-container { position: relative; }
 
 .headline-fill {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -44,7 +44,7 @@ NOFEX preenchida + NOFEX Outline sobrepostas. Efeito premium e sofisticado.
 }
 
 .headline-outline {
-  font-family: 'Nofex Outline', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}} Outline', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -74,7 +74,7 @@ Gradiente multi-stop simulando reflexo metálico.
 
 ```css
 .headline {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -97,7 +97,7 @@ Texto com brilho neon via text-shadow múltiplo.
 
 ```css
 .headline {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -121,7 +121,7 @@ Gradiente vertical de quente para escuro.
 
 ```css
 .headline {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -145,7 +145,7 @@ Cor sólida com sombra offset que dá profundidade. O mais versátil.
 
 ```css
 .headline {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -163,11 +163,11 @@ Cor sólida com sombra offset que dá profundidade. O mais versátil.
 
 ## 7. Outline Glow
 
-Usa a NOFEX Outline com brilho. Efeito futurista e clean.
+Usa a {{FONT_HEADLINE_NAME_UPPER}} Outline com brilho. Efeito futurista e clean.
 
 ```css
 .headline {
-  font-family: 'Nofex Outline', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}} Outline', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -185,13 +185,13 @@ Usa a NOFEX Outline com brilho. Efeito futurista e clean.
 
 ## 8. Offset Duplo
 
-Duas camadas da mesma NOFEX com deslocamento. Bold e dinâmico.
+Duas camadas da mesma {{FONT_HEADLINE_NAME_UPPER}} com deslocamento. Bold e dinâmico.
 
 ```css
 .headline-container { position: relative; }
 
 .headline-back {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -202,7 +202,7 @@ Duas camadas da mesma NOFEX com deslocamento. Bold e dinâmico.
 }
 
 .headline-front {
-  font-family: 'Nofex', 'Bebas Neue', sans-serif;
+  font-family: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -230,7 +230,7 @@ Duas camadas da mesma NOFEX com deslocamento. Bold e dinâmico.
 2. Consultar "Melhor para" e "Combina com" de cada efeito
 3. Selecionar 1-2 opções
 4. Apresentar ao usuário com preview no slide 1
-5. O efeito aprovado é aplicado em TODOS os slides que têm headline NOFEX
+5. O efeito aprovado é aplicado em TODOS os slides que têm headline {{FONT_HEADLINE_NAME_UPPER}}
 
 ## Adaptação de cores
 

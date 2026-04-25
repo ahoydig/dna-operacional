@@ -34,12 +34,17 @@ Perguntar:
 
 ## Passo 3 — Detectar skills disponíveis
 
-Antes de orquestrar, verificar quais skills estão instaladas:
+Antes de orquestrar, verificar quais skills estão instaladas. **Resolução bundled-first** — o plugin já empacota as skills críticas; só faz fallback pra global se ausente:
 
 ```bash
-LANDING_BUILDER=$(ls ~/.claude/skills/landing-page-builder/SKILL.md 2>/dev/null && echo "yes")
-TASTE=$(ls ~/.claude/skills/taste-skill/SKILL.md 2>/dev/null && echo "yes")
-UIUX=$(ls ~/.claude/skills/ui-ux-pro-max/SKILL.md 2>/dev/null && echo "yes")
+# Bundled (dentro do próprio plugin) — caminho preferencial
+LANDING_BUILDER=$(ls ${CLAUDE_PLUGIN_ROOT}/skills/landing-page-builder/SKILL.md 2>/dev/null && echo "bundled" \
+  || ls ~/.claude/skills/landing-page-builder/SKILL.md 2>/dev/null && echo "global")
+TASTE=$(ls ${CLAUDE_PLUGIN_ROOT}/skills/taste-skill/SKILL.md 2>/dev/null && echo "bundled" \
+  || ls ~/.claude/skills/taste-skill/SKILL.md 2>/dev/null && echo "global")
+UIUX=$(ls ${CLAUDE_PLUGIN_ROOT}/skills/ui-ux-pro-max/SKILL.md 2>/dev/null && echo "bundled" \
+  || ls ~/.claude/skills/ui-ux-pro-max/SKILL.md 2>/dev/null && echo "global")
+# Impeccable é opcional — só global (não vem bundled)
 IMPECCABLE=$(ls ~/.claude/skills/impeccable/SKILL.md 2>/dev/null && echo "yes")
 METODO_ZERO=$(ls ~/.claude/plugins/*/metodo-zero/ 2>/dev/null && echo "yes")
 ```
@@ -48,8 +53,7 @@ METODO_ZERO=$(ls ~/.claude/plugins/*/metodo-zero/ 2>/dev/null && echo "yes")
 - Se `METODO_ZERO` disponível E arquétipo = `premium-escuro`/`brutal` → **delegar inteiro pra `/metodo-zero:criar-pipeline`** (engine especializado). Depois só registrar no CSV.
 - Caso contrário → seguir fluxo abaixo com `landing-page-builder` + skills de design.
 
-Se `LANDING_BUILDER` não existe:
-> "⚠ Skill `landing-page-builder` não instalada. Instala ou uso Método Zero?"
+> ⚠️ Se as skills bundled não forem encontradas (plugin instalado mal), reportar caminho esperado: `${CLAUDE_PLUGIN_ROOT}/skills/<nome>/SKILL.md`. Não bloquear se a global existir como fallback.
 
 ## Passo 4 — Direção visual (ui-ux-pro-max)
 

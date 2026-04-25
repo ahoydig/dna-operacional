@@ -89,7 +89,9 @@ Abortar execução até fix.
 ### Dependências do sistema
 - `yt-dlp` instalado (baixar vídeos de URLs)
 - `ffmpeg` / `ffprobe` instalados (extrair frames e áudio)
-- Skill `transcribe-audio` configurada (Whisper)
+- Skill `transcribe-audio` configurada (Whisper rodando no Modal.com)
+  - Se ausente, instruir o user: "Roda `/setup-transcribe-audio` primeiro — ele te guia pelo setup do Modal (gratuito, ~10min)."
+  - Guia completo em `${CLAUDE_PLUGIN_ROOT}/docs/SETUP-MODAL.md`
 - Claude multimodal (lê imagens)
 
 ### Backend de storage
@@ -144,7 +146,12 @@ ffmpeg -i <video> -vf "fps=<taxa>" <destino>/frames-<id>/f_%03d.jpg -y
 ffmpeg -i <video> -vn -acodec libmp3lame <destino>/audio-<id>.mp3 -y
 ```
 
-Transcrever via skill `transcribe-audio` (global). O path da integração Whisper vive em `${USER_WHISPER_DIR}` ou no setup da skill global — não hardcodar caminho absoluto. Chamada tipo:
+Transcrever via skill `transcribe-audio` (instalada localmente pelo user via `/setup-transcribe-audio`). O path da pasta `whisper-modal/` vive na própria SKILL.md gerada pelo setup — não hardcodar caminho absoluto.
+
+Se a skill não existir (`~/.claude/skills/transcribe-audio/SKILL.md` ausente), abortar com:
+> "❌ Skill `transcribe-audio` não configurada. Roda `/setup-transcribe-audio` primeiro — guia em `${CLAUDE_PLUGIN_ROOT}/docs/SETUP-MODAL.md`."
+
+Chamada tipo:
 
 ```bash
 # Via skill transcribe-audio — idioma "en" default, "pt" pra português. Whisper detecta auto.

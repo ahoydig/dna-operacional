@@ -13,7 +13,7 @@ Inspecionar `$ARGUMENTS`:
 
 ```bash
 if [ -z "$ARGUMENTS" ]; then
-  # Perguntar ao user: "Qual modelo? Me passa o path (.docx ou .pdf) OU digita 'padrao' pra eu gerar um modelo Ahoy do zero."
+  # Perguntar ao user: "Qual modelo? Me passa o path (.docx ou .pdf) OU digita 'padrao' pra eu gerar um modelo padrão do zero."
 elif [ ! -f "$ARGUMENTS" ]; then
   # Erro: "Arquivo não encontrado: $ARGUMENTS"
 fi
@@ -29,7 +29,7 @@ esac
 **3 caminhos:**
 - **docx** → edição direta via skill `docx`
 - **pdf** → converter pra docx (avisar user que output final será .docx, com opção de re-gerar PDF no fim)
-- **padrao** → gerar modelo Ahoy usando `templates/contrato-padrao-structure.md`
+- **padrao** → gerar modelo padrão usando `templates/contrato-padrao-structure.md`
 
 Se `MODE == "unknown"`:
 > "⚠ Formato não suportado. Só aceito .docx ou .pdf (ou 'padrao' pra gerar modelo do zero)."
@@ -38,7 +38,7 @@ Se `MODE == "unknown"`:
 
 | Arquivo | Uso |
 |---------|-----|
-| `CLAUDE.md` | Empresa, CNPJ Ahoy (se cadastrado), e-mail, cidade |
+| `CLAUDE.md` | Empresa, CNPJ da empresa (em CLAUDE.md) (se cadastrado), e-mail, cidade |
 | `data/clientes/<slug>/cliente.json` | Dados do cliente já cadastrado (se `/orcamento` rodou antes) |
 | `reference/publico-alvo.md` | Contexto do nicho |
 
@@ -68,7 +68,7 @@ Placeholders esperados (pré-mapeados pra contexto DNA):
 | Placeholder | Fonte auto-preenchimento |
 |-------------|-------------------------|
 | `{{EMPRESA}}` | CLAUDE.md — nome do projeto |
-| `{{CNPJ_EMPRESA}}` | CLAUDE.md — CNPJ Ahoy (se tiver) |
+| `{{CNPJ_EMPRESA}}` | CLAUDE.md — CNPJ da empresa (em CLAUDE.md) (se tiver) |
 | `{{EMAIL_EMPRESA}}` | CLAUDE.md — e-mail |
 | `{{CIDADE}}` | CLAUDE.md — cidade (se tiver), senão "Fortaleza/CE" |
 | `{{DATA_ASSINATURA}}` | `$(date +%d/%m/%Y)` |
@@ -87,7 +87,7 @@ Se o modelo tem placeholders NÃO mapeados, tratá-los como perguntas genéricas
 
 Pra cada placeholder:
 
-1. Se tem fonte auto → pré-preencher + confirmar com user ("Detectei `{{EMPRESA}}` = 'Ahoy Digital'. Confirma? [S/n]")
+1. Se tem fonte auto → pré-preencher + confirmar com user ("Detectei `{{EMPRESA}}` = '{{EMPRESA}}'. Confirma? [S/n]")
 2. Se não tem fonte → perguntar direto
 
 **Sessão de perguntas** em bloco único (não uma por uma):
@@ -96,9 +96,9 @@ Pra cada placeholder:
 📋 Preenchimento do contrato
 
 Pré-preenchido do DNA:
-  EMPRESA = Ahoy Digital
+  EMPRESA = {{EMPRESA}}
   CNPJ_EMPRESA = 00.000.000/0001-00
-  EMAIL_EMPRESA = contato@ahoydigital.ag
+  EMAIL_EMPRESA = {{EMAIL_EMPRESA}}
   CIDADE = Fortaleza/CE
   DATA_ASSINATURA = 21/04/2026
 
@@ -173,7 +173,7 @@ id,cliente,slug,modelo_origem,output_path,formato,valor,prazo,created_at
 ```
 
 Nova linha com:
-- `modelo_origem` = path de `$ARGUMENTS` ou "padrao-ahoy"
+- `modelo_origem` = path de `$ARGUMENTS` ou "padrao"
 - `output_path` = path do .docx (e .pdf se gerado)
 - `formato` = "docx" ou "docx+pdf"
 
@@ -214,7 +214,7 @@ Nova linha com:
 |----------|------|
 | Skill `docx` não instalada | Bloquear: "Instala a skill `docx` antes de usar `/contrato`." |
 | Skill `pdf` não instalada (modo pdf-convert) | Bloquear: "Instala a skill `pdf` ou me passa um .docx direto." |
-| Modelo sem placeholders `{{X}}` | Avisar: "Não achei placeholders `{{X}}`. Quer editar manualmente ou usar modelo padrão Ahoy?" |
+| Modelo sem placeholders `{{X}}` | Avisar: "Não achei placeholders `{{X}}`. Quer editar manualmente ou usar modelo padrão?" |
 | Cliente sem `cliente.json` nem dados | Coletar no briefing e criar cliente.json |
 | Placeholder aparece múltiplas vezes | Substituir todas as ocorrências (find-replace é greedy por default) |
 

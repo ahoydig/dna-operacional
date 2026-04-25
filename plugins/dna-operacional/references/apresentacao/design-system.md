@@ -1,6 +1,6 @@
-# Design System — /apresentacao (Ahoy Presentation Engine)
+# Design System — /apresentacao (DNA Presentation Engine)
 
-Referência destilada do **Ahoy Presentation Engine** (Awwwards-ready) — base do plugin DNA Operacional. Tudo aqui é pra ser consumido pela skill `/apresentacao` ao gerar HTML + CSS + JS Vanilla + GSAP.
+Referência destilada do **DNA Presentation Engine** (Awwwards-ready) — base do plugin DNA Operacional. Tudo aqui é pra ser consumido pela skill `/apresentacao` ao gerar HTML + CSS + JS Vanilla + GSAP.
 
 > **Filosofia do engine:** build 100% Vanilla JS + GSAP. Zero framework. Rodável em Netlify. Tokens via CSS custom properties injetadas em runtime.
 >

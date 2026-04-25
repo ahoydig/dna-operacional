@@ -327,7 +327,7 @@ Agendamento local no Mac. Só roda com Mac ligado. **Zero custo, zero infra remo
 
 ### 1. Criar plist
 
-Cria `~/Library/LaunchAgents/com.ahoydig.pesquisa-diaria.plist`:
+Cria `~/Library/LaunchAgents/com.dna-operacional.pesquisa-diaria.plist`:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -335,7 +335,7 @@ Cria `~/Library/LaunchAgents/com.ahoydig.pesquisa-diaria.plist`:
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.ahoydig.pesquisa-diaria</string>
+    <string>com.dna-operacional.pesquisa-diaria</string>
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
@@ -358,7 +358,7 @@ Cria `~/Library/LaunchAgents/com.ahoydig.pesquisa-diaria.plist`:
 ### 2. Carregar
 
 ```bash
-launchctl load ~/Library/LaunchAgents/com.ahoydig.pesquisa-diaria.plist
+launchctl load ~/Library/LaunchAgents/com.dna-operacional.pesquisa-diaria.plist
 ```
 
 Verifica:
@@ -369,14 +369,14 @@ launchctl list | grep pesquisa
 ### 3. Testar manualmente
 
 ```bash
-launchctl start com.ahoydig.pesquisa-diaria
+launchctl start com.dna-operacional.pesquisa-diaria
 tail -f ~/logs/pesquisa-diaria.log
 ```
 
 ### 4. Desligar
 
 ```bash
-launchctl unload ~/Library/LaunchAgents/com.ahoydig.pesquisa-diaria.plist
+launchctl unload ~/Library/LaunchAgents/com.dna-operacional.pesquisa-diaria.plist
 ```
 
 ### 5. Limitação

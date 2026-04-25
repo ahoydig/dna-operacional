@@ -231,7 +231,7 @@ Gerar o ASCII via `npx oh-my-logo "CLAUDE\nCODE" sunset --filled --block-font bl
 
 ### Headlines
 
-Fonte Nofex com efeito tipográfico aprovado no Gate 3. Tamanho 70-96px (capa e CTA até 120px).
+Fonte {{FONT_HEADLINE_NAME}} com efeito tipográfico aprovado no Gate 3. Tamanho 70-96px (capa e CTA até 120px).
 
 **NUNCA deixar palavras órfãs** (artigos como "DO", "DA", "O", "A" sozinhos em uma linha). Verificar SEMPRE no PNG renderizado.
 
@@ -239,7 +239,7 @@ Como evitar:
 - `&nbsp;` entre palavra curta e a seguinte: `DO&nbsp;OPENCLAW`
 - Ajustar `font-size` até o texto quebrar sem órfãs
 - `<br>` manual pra forçar quebras seguras
-- **Nofex clipa acentos** — precisa `padding-top` e `overflow: visible` no container da headline
+- **{{FONT_HEADLINE_NAME}} clipa acentos** — precisa `padding-top` e `overflow: visible` no container da headline
 
 **Regra de conversão monetária:** Sempre em BRL (R$). Público brasileiro. $20 → ~R$120. Nunca dólar no texto do slide.
 
@@ -316,7 +316,7 @@ await (await page.locator('article').first()).screenshot({ path: 'screenshots/tw
 
 ### Fontes
 
-Ler `references/carrossel-instagram/fonts-config.md`. Resumo: Headlines = Nofex (fallback Bebas Neue), Accent = Crankdat (fallback Space Grotesk), Body = Inter.
+Ler `references/carrossel-instagram/fonts-config.md`. Resumo: Headlines = {{FONT_HEADLINE_NAME}} (fallback Bebas Neue), Accent = Crankdat (fallback Space Grotesk), Body = Inter.
 
 Copiar fontes locais pro diretório de trabalho antes de gerar (ver fonts-config pra detecção de OS e paths).
 
@@ -411,7 +411,7 @@ Se qualquer resposta for "não", corrigir ANTES de apresentar.
 | Google Translate quebra X.com | Não usar. Manipular DOM diretamente |
 | Screenshots lado a lado com alturas diferentes | `align-items: stretch` + `object-fit: cover`, ou `flex-start` com flex ratios |
 | Texto do slide em inglês | Converter TUDO pra PT-BR: "subscription" → "assinatura", valores em R$ |
-| Nofex clipa acentos | `padding-top` no container da headline + `overflow: visible` |
+| {{FONT_HEADLINE_NAME}} clipa acentos | `padding-top` no container da headline + `overflow: visible` |
 
 ---
 

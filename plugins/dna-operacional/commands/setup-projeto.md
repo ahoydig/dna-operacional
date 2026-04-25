@@ -38,7 +38,7 @@ Objetivo: gerar CLAUDE.md válido em ≤ 5 min pra alguém que quer testar o DNA
 ### As 8 perguntas
 
 1. **Nome do projeto** (ou da marca/negócio)
-2. **Handle Instagram principal** (sem @, só o texto — ex: `flavioahoy`)
+2. **Handle Instagram principal** (sem @, só o texto — ex: `seuhandle`)
 3. **Nicho em 1 frase** (ex: "nutrição funcional pra mães de primeira viagem")
 4. **Público-alvo em 1 frase** (quem é, idade aproximada, o que quer)
 5. **Oferta principal + preço** (o que tu vende e quanto — ex: "Mentoria 3 meses R$ 2.997")

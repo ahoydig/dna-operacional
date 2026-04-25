@@ -1,4 +1,4 @@
-# Template — Contrato Padrão Ahoy (gerado sob demanda)
+# Template — Contrato Padrão (gerado sob demanda)
 
 Spec de estrutura do contrato padrão que a skill `/contrato` gera quando o user não tem modelo próprio (`/contrato padrao`). O skill `docx` usa esse spec pra montar o .docx do zero.
 
@@ -6,14 +6,14 @@ Spec de estrutura do contrato padrão que a skill `/contrato` gera quando o user
 
 Todos em CAPS, formato `{{NOME}}`, auto-detectáveis pela regex `/\{\{([A-Z_0-9]+)\}\}/g`.
 
-### Dados da Ahoy (pré-preenchidos do CLAUDE.md)
+### Dados da empresa (pré-preenchidos do CLAUDE.md)
 
 | Placeholder | Fonte | Exemplo |
 |-------------|-------|---------|
-| `{{EMPRESA}}` | CLAUDE.md `# Projeto <nome>` | `Ahoy Digital` |
-| `{{EMPRESA_RAZAO_SOCIAL}}` | CLAUDE.md (seção empresa) | `Ahoy Digital Ltda.` |
+| `{{EMPRESA}}` | CLAUDE.md `# Projeto <nome>` | `{{EMPRESA}}` |
+| `{{EMPRESA_RAZAO_SOCIAL}}` | CLAUDE.md (seção empresa) | `{{EMPRESA_RAZAO_SOCIAL}}` |
 | `{{CNPJ_EMPRESA}}` | CLAUDE.md (seção empresa) | `00.000.000/0001-00` |
-| `{{EMAIL_EMPRESA}}` | CLAUDE.md `## Contato: <email>` | `contato@ahoydigital.ag` |
+| `{{EMAIL_EMPRESA}}` | CLAUDE.md `## Contato: <email>` | `{{EMAIL_EMPRESA}}` |
 | `{{ENDERECO_EMPRESA}}` | CLAUDE.md (opcional) | `Rua X, 100, Fortaleza/CE` |
 | `{{REPRESENTANTE_EMPRESA}}` | CLAUDE.md ou perguntar | `Flávio Montenegro` |
 

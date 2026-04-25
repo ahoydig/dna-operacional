@@ -111,7 +111,7 @@ id,objetivo,cliente,slug,out_dir,arquetipo,paleta,polish_impeccable,created_at
 
 ```
 id,cliente,slug,modelo_origem,output_path,formato,valor,prazo,created_at
-1,"Matheus Moita","matheus-moita","padrao-ahoy","data/clientes/matheus-moita/contratos/2026-04-21/contrato-matheus-moita.docx","docx","R$ 12.000,00",45,"2026-04-21T13:00:00-03:00"
+1,"Matheus Moita","matheus-moita","padrao","data/clientes/matheus-moita/contratos/2026-04-21/contrato-matheus-moita.docx","docx","R$ 12.000,00",45,"2026-04-21T13:00:00-03:00"
 ```
 
 **Formato:** `docx` | `docx+pdf`

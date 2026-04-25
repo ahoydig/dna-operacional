@@ -2,6 +2,52 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versionamento segue [Semver](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-04-25
+
+🌐 **Release public-ready.** Plugin agora pode ser instalado por qualquer pessoa sem que skills/templates carreguem dados pessoais do autor. Comandos como `/landing-page`, `/apresentacao` e `/orcamento` deixaram de depender de skills externas instaladas separadamente — vêm bundled.
+
+### Added — Skills bundled
+
+- `plugins/dna-operacional/skills/landing-page-builder/`
+- `plugins/dna-operacional/skills/taste-skill/`
+- `plugins/dna-operacional/skills/ui-ux-pro-max/`
+- `plugins/dna-operacional/skills/proposta/` (sanitizada — paleta, fonte, contato e logos viraram placeholders configuráveis)
+
+### Added — Setup do Modal pra transcrição
+
+- **`docs/SETUP-MODAL.md`** — guia passo a passo (conta gratuita Modal.com → CLI → autenticação → `app.py` pronto pra colar → deploy → teste). ~10 minutos.
+- **`/setup-transcribe-audio`** — comando que valida o setup do user e gera `~/.claude/skills/transcribe-audio/SKILL.md` local apontando pra pasta correta.
+- `/analisar-video` agora aponta pro guia se a skill `transcribe-audio` não estiver configurada, em vez de quebrar silenciosamente.
+
+### Added — Tooling
+
+- **`bin/sync-skills.sh`** — sincroniza skills bundled com a versão global do autor, aplica sanitização em massa e escaneia leaks. Suporta `--dry`. Rodar antes de bumpar versão.
+- **`plugins/dna-operacional/skills/.gitignore`** — evita commitar `__pycache__/`, `.pyc`, `.DS_Store`.
+
+### Changed — Resolução bundled-first
+
+- `/landing-page`, `/apresentacao`, `/orcamento` agora resolvem skills primeiro em `${CLAUDE_PLUGIN_ROOT}/skills/`, fallback pra `~/.claude/skills/`. Plugin recém-instalado funciona out-of-the-box.
+
+### Changed — Sanitização
+
+Templates e defaults que iam pra cliente final viraram configuráveis:
+
+- Skill `proposta`: paleta `#010B12 + #2BC20E` → tokens `{{COR_PRIMARIA}}`, `{{COR_DESTAQUE}}`, `{{COR_LIME}}`, `{{COR_FUNDO_CLARO}}`. Fonte Nofex → `{{FONT_HEADLINE_NAME}}` (default Inter). Logos, contato, ferramentas internas tudo configurável.
+- `commands/contrato.md`, `templates/contrato-padrao-structure.md`: "modelo Ahoy" → "modelo padrão", `{{EMPRESA_AHOY}}` → `{{EMPRESA}}`, `{{EMAIL_AHOY}}` → `{{EMAIL_EMPRESA}}`.
+- `commands/orcamento.md`: paleta hardcoded → variável; "skill global proposta" → resolução bundled-first.
+- `references/apresentacao/`: "Ahoy Presentation Engine" → "DNA Presentation Engine"; exemplo `mainText: "AHOY"` → `"SUA MARCA"`; nomes/fotos de membros do time em exemplos → genéricos.
+- `docs/APIS-EXTERNAS.md`: identificadores LaunchAgent `com.ahoydig.*` → `com.dna-operacional.*`.
+
+Autoria do plugin (autor, repo, e-mail, banner ASCII) **não foi alterada** — continua atribuída ao autor. Só o conteúdo que vai pro cliente final virou neutro.
+
+### Notes
+
+- Plugin agora pesa ~836 KB de skills bundled (antes: 0). Total continua < 1 MB.
+- `impeccable` não foi empacotada (continua como dependência opcional global) — usa fallback silencioso se ausente.
+- Dependência ao `transcribe-audio` ficou explícita: sem `/setup-transcribe-audio`, `/analisar-video` aponta pro guia em vez de tentar adivinhar paths.
+
+---
+
 ## [0.2.0] — 2026-04-22
 
 🎉 **Release major — ciclo completo cliente.** DNA agora cobre end-to-end: pesquisa → conteúdo → ads → **entrega de cliente**.

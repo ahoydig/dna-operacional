@@ -1,6 +1,6 @@
 # Catálogo de Cenas — /apresentacao (18 tipos)
 
-Catálogo das 18 cenas do Ahoy Presentation Engine. Cada cena = um `type` aceito em `config.scenes[].type`.
+Catálogo das 18 cenas do DNA Presentation Engine. Cada cena = um `type` aceito em `config.scenes[].type`.
 
 **Formato de cada entrada:**
 1. Propósito (quando usar)
@@ -52,7 +52,7 @@ hero: c => `<section id="scene-${c.id}" class="scene scene--hero" data-type="sta
 **Campos:**
 ```js
 content: {
-  mainText: "AHOY",
+  mainText: "SUA MARCA",
   subText: "DIGITAL",
   manifesto: {
     title: "O MANIFESTO",
@@ -94,7 +94,7 @@ content: {
   title: "TRIPULAÇÃO",
   subtitle: "sua equipe de operações",
   members: [
-    { image: "assets/time/flavio.webp", name: "Flávio Montenegro", role: "Estrategista", specialty: "Growth e IA" },
+    { image: "assets/time/membro1.webp", name: "Nome do Membro", role: "Cargo", specialty: "Especialidade" },
     // ...
   ]
 }

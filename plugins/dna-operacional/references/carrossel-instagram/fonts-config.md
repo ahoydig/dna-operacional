@@ -6,8 +6,8 @@ Se o user já tem essas fontes instaladas no sistema (macOS: `~/Library/Fonts/`;
 
 | Uso | Família | Arquivo |
 |-----|---------|---------|
-| Headlines | Nofex | Nofex.ttf |
-| Headlines (variação) | Nofex Outline | Nofex-Outline.ttf |
+| Headlines | {{FONT_HEADLINE_NAME}} | {{FONT_HEADLINE_NAME}}.ttf |
+| Headlines (variação) | {{FONT_HEADLINE_NAME}} Outline | {{FONT_HEADLINE_NAME}}-Outline.ttf |
 | Accent/Destaques | Crankdat Regular | Crankdat-Regular.ttf |
 | Accent/Destaques Bold | Crankdat Bold | Crankdat-Bold.ttf |
 
@@ -37,7 +37,7 @@ Resolver diretório de fontes do sistema conforme OS:
 
 ```bash
 FONTS_DIR="${USER_FONTS_DIR:-$HOME/Library/Fonts}"
-ls "$FONTS_DIR/Nofex.ttf" 2>/dev/null && echo "LOCAL" || echo "FALLBACK"
+ls "$FONTS_DIR/{{FONT_HEADLINE_NAME}}.ttf" 2>/dev/null && echo "LOCAL" || echo "FALLBACK"
 ```
 
 ### 2. Se LOCAL: copiar fontes para diretório de trabalho
@@ -45,8 +45,8 @@ ls "$FONTS_DIR/Nofex.ttf" 2>/dev/null && echo "LOCAL" || echo "FALLBACK"
 ```bash
 FONTS_DIR="${USER_FONTS_DIR:-$HOME/Library/Fonts}"
 mkdir -p ./fonts
-cp "$FONTS_DIR/Nofex.ttf" ./fonts/
-cp "$FONTS_DIR/Nofex-Outline.ttf" ./fonts/
+cp "$FONTS_DIR/{{FONT_HEADLINE_NAME}}.ttf" ./fonts/
+cp "$FONTS_DIR/{{FONT_HEADLINE_NAME}}-Outline.ttf" ./fonts/
 cp "$FONTS_DIR/Crankdat-Regular.ttf" ./fonts/
 cp "$FONTS_DIR/Crankdat-Bold.ttf" ./fonts/
 ```
@@ -57,12 +57,12 @@ cp "$FONTS_DIR/Crankdat-Bold.ttf" ./fonts/
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @font-face {
-  font-family: 'Nofex';
-  src: url('./fonts/Nofex.ttf') format('truetype');
+  font-family: '{{FONT_HEADLINE_NAME}}';
+  src: url('./fonts/{{FONT_HEADLINE_NAME}}.ttf') format('truetype');
 }
 @font-face {
-  font-family: 'Nofex Outline';
-  src: url('./fonts/Nofex-Outline.ttf') format('truetype');
+  font-family: '{{FONT_HEADLINE_NAME}} Outline';
+  src: url('./fonts/{{FONT_HEADLINE_NAME}}-Outline.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Crankdat';
@@ -86,14 +86,14 @@ cp "$FONTS_DIR/Crankdat-Bold.ttf" ./fonts/
 
 ```css
 /* Modo LOCAL */
---font-headline: 'Nofex', 'Bebas Neue', sans-serif;
---font-headline-outline: 'Nofex Outline', 'Bebas Neue', sans-serif;
+--font-headline: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
+--font-headline-outline: '{{FONT_HEADLINE_NAME}} Outline', 'Bebas Neue', sans-serif;
 --font-accent: 'Crankdat', 'Space Grotesk', sans-serif;
 --font-body: 'Inter', sans-serif;
 
 /* Modo FALLBACK (mesma declaration, o browser resolve) */
---font-headline: 'Nofex', 'Bebas Neue', sans-serif;
---font-headline-outline: 'Nofex Outline', 'Bebas Neue', sans-serif;
+--font-headline: '{{FONT_HEADLINE_NAME}}', 'Bebas Neue', sans-serif;
+--font-headline-outline: '{{FONT_HEADLINE_NAME}} Outline', 'Bebas Neue', sans-serif;
 --font-accent: 'Crankdat', 'Space Grotesk', sans-serif;
 --font-body: 'Inter', sans-serif;
 ```

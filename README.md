@@ -129,6 +129,30 @@ Detalhes em [`lib/voz/SCHEMA.md`](plugins/dna-operacional/lib/voz/SCHEMA.md) e [
 
 ---
 
+## 📦 Skills bundled (a partir da v0.3.0)
+
+Comandos como `/landing-page`, `/apresentacao`, `/orcamento` dependiam de skills externas que tinham que ser instaladas separadamente. **Agora vêm dentro do plugin** — instalou, funciona.
+
+| Skill bundled | Onde mora | Usada por |
+|---|---|---|
+| `landing-page-builder` | `${CLAUDE_PLUGIN_ROOT}/skills/` | `/landing-page` |
+| `taste-skill` | `${CLAUDE_PLUGIN_ROOT}/skills/` | `/landing-page`, `/apresentacao` |
+| `ui-ux-pro-max` | `${CLAUDE_PLUGIN_ROOT}/skills/` | `/landing-page`, `/apresentacao` |
+| `proposta` | `${CLAUDE_PLUGIN_ROOT}/skills/` | `/orcamento` |
+
+Branding (paleta, fonte, logos, contato) é **configurável via placeholders** — cada user preenche os dele no `setup-projeto`. Defaults neutros caso não configure.
+
+### Skill que NÃO vem bundled: `transcribe-audio` (Modal.com)
+
+`/analisar-video` e qualquer transcrição de áudio precisam de GPU (Whisper). A solução é Modal.com (free tier de US$ 30/mês cobre ~300-600h de áudio). Como precisa de conta e CLI, é setup explícito:
+
+1. Segue [`docs/SETUP-MODAL.md`](plugins/dna-operacional/docs/SETUP-MODAL.md) (~10 minutos)
+2. Roda `/setup-transcribe-audio` no Claude Code — valida o setup e instala a skill local
+
+A skill `impeccable` (polish opcional) também não vem bundled — é totalmente opcional, comandos seguem sem ela.
+
+---
+
 ## 🔑 Antes de rodar: configure as APIs
 
 Algumas skills precisam de chaves externas (Apify, Supabase, Modal). **Zero hardcoded — cada aluno configura a sua.**
@@ -146,7 +170,7 @@ Ou veja [`docs/APIS-EXTERNAS.md`](plugins/dna-operacional/docs/APIS-EXTERNAS.md)
 |---|---|---|
 | Apify | Scraping (pesquisas, video download) | $5/mês de créditos |
 | Supabase | SQL analytics (`/analista-conteudo`) + storage | 500MB DB grátis |
-| Modal | Whisper transcrição (`/analisar-video`) | $30/mês crédito |
+| Modal | Whisper transcrição (`/analisar-video`) — guia em [`docs/SETUP-MODAL.md`](plugins/dna-operacional/docs/SETUP-MODAL.md) + comando `/setup-transcribe-audio` | $30/mês crédito |
 | Google Sheets | Storage backend alternativo | Grátis |
 
 Cada skill faz pré-check no início — se falta config, mostra passo-a-passo pra fix.
