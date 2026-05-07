@@ -96,6 +96,43 @@ auto-melhoria (durante uso) → voz (auto-evoluir) → dna-melhoria (release pre
 
 ---
 
+## Jornada: Onboarding de Cliente
+
+Fecha o loop antes da entrega. Quando bate um cliente novo, este é o primeiro `/comando`.
+
+### Fluxo
+
+1. **`/onboarding`** — coleta dados (5 perguntas), cria 4 ativos:
+   - Grupo WhatsApp (Cliente + Bruna + equipe Ahoy)
+   - Shared Drive `<Cliente> — Ahoy` com 6 pastas padrão
+   - Google Form de briefing (cópia do template)
+   - NotebookLM `<Cliente> — DNA` (vazio, equipe popula depois)
+2. **Cliente preenche briefing** (~15 min)
+3. **(Hook futuro v0.5)** Form preenchido → respostas viram source no NotebookLM
+4. **`/setup-projeto <slug>`** — gera o projeto DNA do cliente baseado no briefing
+5. **`/orcamento <Cliente>`** — proposta comercial
+6. **`/contrato <Cliente>`** — contrato personalizado
+7. Resto da jornada CLIENTE segue normal
+
+### Pré-requisitos no CLAUDE.md do user
+
+```markdown
+## Onboarding (cliente)
+- bruna_whatsapp: <55XX9XXXXXXXX>
+- equipe_whatsapp:
+  - <55XX9XXXXXXXX>
+- equipe_emails:
+  - <email-google-workspace>
+- uazapi_url: <https://...>
+- uazapi_token_env: UAZAPI_TOKEN_BRUNA
+- briefing_form_template_id: <ID do Form modelo>
+- gws_account: <email>
+```
+
+E env var `$UAZAPI_TOKEN_BRUNA` apontada.
+
+---
+
 ## Grafo visual completo
 
 Ver Spec 2 §6 pra o grafo ASCII com todas as dependências.
