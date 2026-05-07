@@ -66,16 +66,20 @@ Confirma? (s/n)
 
 Se `s`, prossegue. Se `n`, aborta sem criar nada (zero side effects até aqui).
 
-## Etapa 2-5
+## Etapas 2-5 — Execução
 
-Documentadas em `references/etapas.md`. Skill chama em ordem:
+Skill executa em ordem (sequencial — etapa N+1 precisa do output de N):
 
-1. Etapa 2: Cria Shared Drive + pastas (gws-drive)
-2. Etapa 3: Cria Form briefing duplicando template (gws-forms) + linka Sheet
-3. Etapa 4: Cria NotebookLM vazio (notebooklm CLI)
-4. Etapa 5: Cria grupo WhatsApp (uazapi) + Bruna manda mensagem boas-vindas com links
+| Etapa | Ação | Reference |
+|---|---|---|
+| 2 | Cria Shared Drive + 6 pastas padrão | `references/etapas.md#etapa-2` |
+| 3 | Duplica Form briefing + linka Sheet | `references/etapas.md#etapa-3` |
+| 4 | Cria NotebookLM vazio | `references/etapas.md#etapa-4` |
+| 5 | Cria grupo WhatsApp + manda mensagem boas-vindas | `references/etapas.md#etapa-5` |
 
-Ordem importante: WhatsApp por último porque mensagem precisa dos URLs gerados pelas etapas 2-4.
+Cada etapa retorna IDs/URLs que entram no `cliente.json`. Erro em qualquer etapa → status `falhou_etapa_N`, skill aborta SEM desfazer etapas anteriores. User vê instrução manual de fix em cada caso.
+
+Mensagens disparadas pela Bruna seguem templates em `references/mensagens.md`.
 
 ## Etapa 6 — Persistência
 
