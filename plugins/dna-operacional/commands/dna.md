@@ -43,7 +43,7 @@ Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
-║  🧬 Comandos disponíveis (v0.2.0)                                ║
+║  🧬 Comandos disponíveis (v0.4.0)                                ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
 ║  🎯 SETUP                                                        ║
@@ -76,6 +76,7 @@ Em seguida, imprima o menu principal BYTE-EXATO abaixo:
 ║     /hormozi-raio-x ...... Scan completo do negócio              ║
 ║                                                                  ║
 ║  📄 CLIENTE (entrega end-to-end)                                 ║
+║     /onboarding ........... Kickoff (grupo WA + Drive + Form)    ║
 ║     /orcamento ............ Proposta comercial PDF               ║
 ║     /apresentacao ......... Deck HTML+GSAP fora-da-caixa         ║
 ║     /landing-page ......... Landing de alta conversão            ║
@@ -143,12 +144,14 @@ Imprimir as 4 boxes BYTE-EXATO abaixo:
 ┌───────────────────────────────────────────────────────────┐
 │  📄 JORNADA ENTREGA DE CLIENTE (fecha o loop)             │
 │                                                           │
-│  1. /setup-projeto        → configura projeto do cliente  │
-│  2. /orcamento            → proposta comercial PDF        │
-│  3. (assinatura)                                          │
-│  4. /contrato             → contrato personalizado        │
-│  5. /apresentacao         → kickoff deck (HTML+GSAP)      │
-│  6. /landing-page         → LP do projeto                 │
+│  1. /onboarding           → grupo WA + Drive + briefing   │
+│  2. (cliente preenche briefing)                           │
+│  3. /setup-projeto        → configura projeto do cliente  │
+│  4. /orcamento            → proposta comercial PDF        │
+│  5. (assinatura)                                          │
+│  6. /contrato             → contrato personalizado        │
+│  7. /apresentacao         → kickoff deck (HTML+GSAP)      │
+│  8. /landing-page         → LP do projeto                 │
 └───────────────────────────────────────────────────────────┘
 
 ┌───────────────────────────────────────────────────────────┐
