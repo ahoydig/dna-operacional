@@ -15,6 +15,9 @@ Skills do plugin dependem de APIs/serviços externos pra funcionar. Este doc mos
 | [`/schedule` Anthropic](#schedule-anthropic) | Agendamento `/pesquisa-diaria` | Paga tokens por execução |
 | [GitHub Actions](#github-actions) | Agendamento alternativo | Grátis em repos públicos |
 | [launchd (Mac)](#launchd-mac) | Agendamento local Mac-only | Grátis |
+| [UAZAPI](#uazapi) | `/onboarding` | Plano Ahoy: ~R$ 79/mês por instância |
+| [NotebookLM](#notebooklm) | `/onboarding` | Free tier — 100 notebooks |
+| [Google Forms](#google-forms) | `/onboarding` | Grátis (Workspace) |
 
 ---
 
@@ -415,6 +418,112 @@ cd ~/impeccable-src && git pull
 **Alternativa oficial:** bundles prontos em [impeccable.style](https://impeccable.style).
 
 **Fallback:** se `~/.claude/skills/impeccable/SKILL.md` não existe, `/landing-page` pula o Passo 5 silenciosamente — não bloqueia o deploy.
+
+---
+
+## UAZAPI
+
+API REST brasileira pra WhatsApp Business. Usado por `/onboarding` (criar grupo + mandar mensagem boas-vindas).
+
+### 1. Conta + instância
+
+1. Acessa https://uazapi.com (ou self-hosted https://<seu-dominio>.uazapi.com)
+2. Cria conta, contrata plano com 1+ instância
+3. Conecta WhatsApp via QR Code (escaneia com o número que vai mandar mensagens — ex: número da Bruna)
+
+### 2. Obter token da instância
+
+1. Painel UAZAPI → tua instância → "Token de instância"
+2. Copia (formato UUID)
+
+### 3. Configurar no sistema
+
+```bash
+export UAZAPI_TOKEN_BRUNA='<seu-token-uuid>'
+```
+
+E no `CLAUDE.md` do projeto:
+
+```markdown
+## Onboarding (cliente)
+- bruna_whatsapp: <55XX9XXXXXXXX>
+- uazapi_url: <https://...>
+- uazapi_token_env: UAZAPI_TOKEN_BRUNA
+```
+
+### 4. Custo
+
+- Plano Ahoy hosted: ~R$ 79/mês por instância
+- Free tier: https://free.uazapi.com (1 instância, sem garantia)
+
+### 5. Endpoints usados pelo plugin
+
+- `POST /group/create` — criar grupo (Etapa 5.1)
+- `POST /group/promote` — promover membros a admin (Etapa 5.2)
+- `POST /send/text` — mandar mensagem (Etapa 5.3)
+
+Reference completa em `~/.claude/skills/uazapi/SKILL.md` (skill global).
+
+---
+
+## NotebookLM
+
+Notebook de pesquisa do Google. Usado por `/onboarding` (criar notebook nomeado pra equipe).
+
+### 1. Instalar CLI
+
+```bash
+pip install notebooklm-py
+notebooklm login   # OAuth Google
+```
+
+### 2. Verificar
+
+```bash
+notebooklm status
+# deve mostrar "Authenticated as <email>"
+```
+
+### 3. Custo
+
+- Free tier: 100 notebooks por conta Google
+- Plus: ilimitado (R$ 100/mês)
+
+### 4. Comandos usados pelo plugin
+
+- `notebooklm create --title <nome>` — criar notebook (Etapa 4)
+
+Reference completa em `~/.claude/skills/notebooklm/SKILL.md`.
+
+---
+
+## Google Forms
+
+Usado por `/onboarding` (briefing do cliente).
+
+### 1. Pré-requisito: ter o Form template
+
+1. Cria 1 Google Form modelo seguindo `templates/briefing-form-template.md`
+2. Salva em qualquer pasta do Google Drive da conta `gws_account`
+3. Copia o ID da URL (`https://docs.google.com/forms/d/<ID>/edit`)
+
+### 2. Configurar no CLAUDE.md
+
+```markdown
+## Onboarding (cliente)
+- briefing_form_template_id: <ID do Form>
+```
+
+### 3. Custo
+
+Grátis com Google Workspace.
+
+### 4. Comandos gws-forms usados
+
+- `gws forms copy --source <id> --name <novo>` — duplicar (Etapa 3.1)
+- `gws drive move <form_id> --parent <pasta_id>` — mover pra pasta certa (Etapa 3.2)
+- `gws forms link-sheet <form_id>` — linkar respostas (Etapa 3.4)
+- `gws forms get-public-url <form_id>` — pegar URL viewform (Etapa 3.5)
 
 ---
 
