@@ -55,9 +55,29 @@ data/
   "contato_cargo": "Sócio-fundador",
   "created_at": "2026-04-21T10:00:00-03:00",
   "updated_at": "2026-04-21T10:00:00-03:00",
-  "notes": "Preferência por WhatsApp. Assinou em 21/04."
+  "notes": "Preferência por WhatsApp. Assinou em 21/04.",
+
+  "onboarding": {
+    "whatsapp_principal": "5585999990000",
+    "whatsapps_extras": [],
+    "whatsapp_group_jid": "120363...@g.us",
+    "drive_id": "0AB...XYZ",
+    "drive_url": "https://drive.google.com/drive/folders/0AB...XYZ",
+    "form_id": "1aBc...",
+    "form_url": "https://docs.google.com/forms/d/e/.../viewform",
+    "form_responses_sheet_id": "1xyZ...",
+    "notebooklm_id": "uuid-...",
+    "notebooklm_url": "https://notebooklm.google.com/notebook/...",
+    "status": "iniciado",
+    "started_at": "2026-05-07T10:00:00-03:00",
+    "completed_at": null
+  }
 }
 ```
+
+> **Bloco `onboarding`:** opcional. Populado pela skill `/onboarding`. Se cliente teve `/orcamento` antes do onboarding, o bloco é mergeado depois — top-level fica intocado.
+>
+> **Status:** `iniciado` (skill rodou) | `briefing_enviado` (mensagem disparada) | `briefing_recebido` (Form preenchido — atualizado por hook futuro v0.5) | `concluido` | `falhou_<etapa>` (rollback parcial executado)
 
 **Regra de write:** toda skill que gera artefato checa se `cliente.json` existe. Se não, cria com os dados coletados. Se existe, merge silencioso dos campos (não sobrescreve sem perguntar).
 
