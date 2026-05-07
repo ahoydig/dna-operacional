@@ -61,6 +61,7 @@ Se `$LC_ALL` indicar ASCII-only, degradar `━` pra `-`:
 | `auto-melhoria` | nenhum forçado |
 | `dna-melhoria` | nenhum forçado |
 | `dna` | nenhum (ele É o menu) |
+| `onboarding-cliente` | `/setup-projeto` (após briefing chegar), `/orcamento` |
 
 ## 3. Saudação (opcional, start de skill)
 
