@@ -2,6 +2,41 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versionamento segue [Semver](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-05-07
+
+🚀 **Onboarding de cliente em 1 comando.** Novo `/onboarding` orquestra ritual de boas-vindas: cria grupo WhatsApp (cliente + equipe), Shared Drive com 6 pastas padrão, Google Form de briefing, NotebookLM nomeado, e dispara mensagem de boas-vindas com links — tudo em ~30s.
+
+### Added
+
+- **`/onboarding`** — comando que orquestra ritual de boas-vindas de cliente novo. Cria em ordem:
+  - Shared Drive `<Cliente> — Ahoy` com 6 pastas padrão (`00 — Briefing` até `99 — Anexos`)
+  - Google Form de briefing duplicado de template + Sheet de respostas linkada
+  - NotebookLM `<Cliente> — DNA` (vazio, equipe popula depois)
+  - Grupo WhatsApp via UAZAPI (cliente + Bruna + equipe Ahoy)
+  - Mensagem de boas-vindas da Bruna com links clicáveis
+- Skill bundled `skills/onboarding-cliente/` (SKILL.md + 2 references + smoke test)
+- Templates `templates/onboarding-folder-structure.md` e `templates/briefing-form-template.md`
+- Documentação UAZAPI + NotebookLM + Google Forms em `docs/APIS-EXTERNAS.md`
+- Jornada de onboarding em `docs/JORNADAS.md`
+
+### Changed
+
+- `cliente.json` ganha bloco opcional `onboarding` (retrocompatível) com IDs de Drive/Form/NotebookLM/grupo WhatsApp
+- `/dna` menu mostra `/onboarding` na seção CLIENTE; versão `v0.2.0` → `v0.4.0`
+- Jornada CLIENTE agora começa com `/onboarding`, não com `/setup-projeto`
+
+### Pré-requisitos novos
+
+Ver `docs/JORNADAS.md#jornada-onboarding-de-cliente` — bloco `## Onboarding (cliente)` no CLAUDE.md do projeto + env var `UAZAPI_TOKEN_BRUNA`.
+
+### Notes
+
+- Token UAZAPI nunca entra em arquivo do plugin — vai em env var local (`~/.zshrc`).
+- Audit Spec §7.2 zero matches: nenhum dado pessoal (números, e-mails, UUIDs, URLs reais) ficou hardcoded no plugin.
+- Hook que popula NotebookLM quando briefing é preenchido entra em v0.5 (fora do escopo desta versão).
+
+---
+
 ## [0.3.0] — 2026-04-25
 
 🌐 **Release public-ready.** Plugin agora pode ser instalado por qualquer pessoa sem que skills/templates carreguem dados pessoais do autor. Comandos como `/landing-page`, `/apresentacao` e `/orcamento` deixaram de depender de skills externas instaladas separadamente — vêm bundled.
