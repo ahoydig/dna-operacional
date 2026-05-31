@@ -49,6 +49,13 @@ Ver `contract.md` pro padrão geral de detecção e sinalização.
 - **Redução estimada:** ~50%
 - **Acceptance:** carrossel ainda é gerado com slides válidos usando paleta padrão do projeto
 
+## /carrossel-torneio, /carrossel-lab-hybrid, /carrossel-lab-viral, /carrossel-lab-editorial
+
+- **Full:** pipeline completo do lab (research-first, best-of-N, render+QA lint).
+- **Lowcost:** NÃO se aplica — o lab é ferramenta de avaliação, sempre roda em full. Em lowcost, avisar e seguir full.
+- **Redução estimada:** 0% (intencional).
+- **Acceptance:** o torneio precisa de qualidade máxima pra ser comparação justa.
+
 ## /humanizer
 
 - **Full:** aplica voz + auto-observação de voz + sugestão de evolução da voz
