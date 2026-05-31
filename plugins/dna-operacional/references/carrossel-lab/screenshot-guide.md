@@ -217,3 +217,18 @@ Quando a captura automática falhar:
 2. Pedir: "Pode tirar um screenshot e me passar o caminho do arquivo?"
 3. Aceitar: png, jpg, jpeg, webp
 4. Aplicar o mesmo estilo (border-radius, shadow) ao embutir
+
+## Réplica fiel (quando a captura real falha)
+
+Ordem do lab: **captura real > réplica fiel em HTML > pedir ao user**.
+
+1. Tentar captura real (seções acima).
+2. Se falhar (login/paywall/bloqueio), **recriar o componente real** em HTML/CSS com cara de verdade — não mockup genérico:
+   - **Tweet/X:** card com avatar circular, nome + @handle, texto, barra de ações, timestamp; cores reais do X.
+   - **Terminal:** janela com title bar (3 dots), monospace, prompt realista, output plausível.
+   - **News card:** logo do veículo, manchete na fonte certa, lede, imagem hero.
+   - **Dashboard:** layout de cards/métricas com números plausíveis (nunca inventar dado real atribuído a fonte).
+3. **Marcar a réplica internamente:** o elemento raiz recebe `data-replica="true"`. Nunca apresentar réplica como print autêntico de algo que não foi capturado.
+4. Aplicar o mesmo `screenshot-frame` (border-radius, shadow) do contrato.
+
+**Regra de honestidade:** réplica reproduz a *forma* do componente, não fabrica fato. Números/citações dentro da réplica seguem a regra "não fabricar": ou vêm da fonte real, ou são claramente ilustrativos.
