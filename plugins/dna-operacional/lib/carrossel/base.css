@@ -1,0 +1,103 @@
+/* base.css — contrato de design do carrossel-lab.
+   Tokens definidos por slide via inline style ou :root override.
+   Escala modular 1.333 base 24px. Grid 8pt. */
+
+:root {
+  --bg: linear-gradient(135deg, #1A1A2E, #16213E);
+  --ink: #FFFFFF;
+  --accent: #E94560;
+
+  --fs-0: 24px;  --fs-1: 32px;  --fs-2: 43px;
+  --fs-3: 57px;  --fs-4: 76px;  --fs-5: 101px; --fs-6: 135px;
+
+  --font-headline: 'Nofex', 'Bebas Neue', sans-serif;
+  --font-headline-outline: 'Nofex Outline', 'Bebas Neue', sans-serif;
+  --font-accent: 'Crankdat', 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --pad-x: 64px; --pad-top: 96px; --pad-bottom: 120px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.slide {
+  width: 1080px; height: 1350px;       /* 4:5 default */
+  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  background: var(--bg);
+  color: var(--ink);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 56px;                            /* múltiplo de 8 */
+  font-family: var(--font-body);
+}
+
+.slide.format-3-4 { height: 1440px; }
+.slide.format-1-1 { height: 1080px; }
+
+.bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+
+.headline-group { position: relative; z-index: 1; text-align: center; }
+
+.headline {
+  font-family: var(--font-headline);
+  font-size: var(--fs-4);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  padding-top: 0.08em;                  /* Nofex clipa acento */
+  overflow: visible;
+}
+.headline.cover { font-size: var(--fs-5); }
+
+.body {
+  font-family: var(--font-body);
+  font-size: var(--fs-0);
+  line-height: 1.5;
+  text-align: left;
+  max-width: 38ch;                      /* ~38 caracteres por linha */
+  z-index: 1;
+}
+.body.center { text-align: center; }
+
+.screenshot-frame {
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+  overflow: hidden;
+  max-width: 920px;
+  width: 100%;
+  z-index: 1;
+}
+.screenshot-frame img { width: 100%; display: block; } /* sem object-fit/background */
+
+.screenshots-row { display: flex; gap: 16px; width: 100%; max-width: 920px; align-items: stretch; }
+.screenshots-row .screenshot-frame { flex: 1; display: flex; }
+.screenshots-row .screenshot-frame img { object-fit: cover; object-position: top left; }
+
+.slide-number {
+  position: absolute; top: 48px; right: 64px;
+  font-family: var(--font-accent);
+  font-size: var(--fs-0);
+  color: var(--accent);
+  z-index: 2;
+}
+
+.progress {
+  position: absolute; top: 56px; left: 64px;
+  display: flex; gap: 8px; z-index: 2;
+}
+.progress .dot { width: 24px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.25); }
+.progress .dot.active { background: var(--accent); }
+
+.handle {
+  position: absolute; bottom: 56px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--fs-0);
+  opacity: 0.7; z-index: 2;
+}
