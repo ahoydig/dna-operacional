@@ -51,6 +51,26 @@ def lint(html):
             violations.append({"code": "CONTRAST_ACCENT_BG",
                 "msg": f"contraste accent/bg {contrast_ratio(accent, bg):.2f} < 3.0"})
 
+    # body font-size mínimo 24px e dentro da escala modular
+    for m in re.finditer(r'\.body\s*\{[^}]*font-size\s*:\s*(\d+)px', css):
+        size = int(m.group(1))
+        if size < 24:
+            violations.append({"code": "BODY_TOO_SMALL",
+                "msg": f"body {size}px < 24px"})
+
+    # qualquer font-size declarado deve estar na escala modular
+    for m in re.finditer(r'font-size\s*:\s*(\d+)px', css):
+        size = int(m.group(1))
+        if size not in MODULAR:
+            violations.append({"code": "FONT_OFF_SCALE",
+                "msg": f"font-size {size}px fora da escala modular {sorted(MODULAR)}"})
+
+    # object-fit: contain combinado com background no mesmo bloco de screenshot
+    for block in re.findall(r'\{[^}]*\}', css):
+        if 'object-fit' in block and 'contain' in block and 'background' in block:
+            violations.append({"code": "OBJECTFIT_CONTAIN_BG",
+                "msg": "object-fit:contain + background cria bordas escuras"})
+
     return {"violations": violations}
 
 def main():
