@@ -112,3 +112,19 @@ As declarations são as mesmas. A diferença é se os @font-face das fontes loca
 | @handle | 16-20px | 15-19px | 14-18px |
 
 Estes são ranges. Ajustar conforme quantidade de texto no slide.
+
+## Escala modular (contrato do lab)
+
+O lab usa **escala modular fixa razão 1.333 (perfect fourth), ancorada em 24px**, substituindo os ranges livres acima quando o command for de laboratório (`carrossel-lab-*`):
+
+| Nível | px | Uso |
+|-------|----|-----|
+| 0 | 24 | body mínimo |
+| 1 | 32 | body destaque / subtítulo |
+| 2 | 43 | label grande / dado secundário |
+| 3 | 57 | headline interna |
+| 4 | 76 | headline capa (mínimo) |
+| 5 | 101 | headline capa dominante |
+| 6 | 135 | display gigante (capa CTA) |
+
+Tamanhos fora desta escala são **reprovados** pelo QA lint (`lib/carrossel/qa_lint.py`). Capa usa níveis 4–6; slides internos 2–3 pra headline, 0–1 pra body.
