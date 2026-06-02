@@ -1,7 +1,5 @@
-500;600;700;900&family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&display=swap');
-
-
-
+/* base.css — contrato visual do carrossel (canônico, validado pixel-perfect vs protótipo).
+   Fontes (@import/@font-face) são injetadas pelo render_carrossel.py, não aqui. */
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#0d0b0a; --text:#fff; --gray:#bdb5ad; --accent:#C4714A;
