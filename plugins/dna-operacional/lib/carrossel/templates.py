@@ -70,6 +70,10 @@ def _cover(s, idx, total, meta):
     <div style="font-family:'Inter';font-weight:700;font-size:48px;color:#fff;">{c.get('right_label','')}</div>
   </div></div>"""
     icon_top = '<img src="%s" style="width:84px;height:84px;margin:8px 0 14px;z-index:1;display:block;">' % asset(meta["icon_top"]) if meta.get("icon_top") else ""
+    # strip: imagem larga (ex: grade de previews) preenchendo o espaço entre o sub e o footer — evita capa vazia
+    strip = ('<img src="%s" style="position:absolute;left:64px;right:64px;bottom:150px;width:calc(100%% - 128px);z-index:2;filter:drop-shadow(0 16px 36px rgba(0,0,0,0.5));">' % asset(s["strip"])) if s.get("strip") else ""
+    # figure: figura única (ex: mascote) centralizada no espaço inferior — herói da capa
+    fig = ('<img src="%s" style="position:absolute;left:50%%;bottom:130px;transform:translateX(-50%%);height:%dpx;z-index:2;filter:drop-shadow(0 18px 34px rgba(0,0,0,0.6));">' % (asset(s["figure"]), s.get("figure_h", 620))) if s.get("figure") else ""
     return f"""
 <div class="slide" style="justify-content:flex-start;text-align:left;align-items:flex-start;">
   {_bg(meta)}
@@ -78,6 +82,8 @@ def _cover(s, idx, total, meta):
   <div class="kicker" style="margin:0 0 14px;">{s.get('kicker','')}</div>
   <div class="headline" style="font-size:{s.get('hsize',104)}px;text-align:left;">{accent(s['headline'])}</div>
   <div class="sub" style="margin:22px 0 0;max-width:26ch;text-align:left;color:#e8e0d6;">{accent(s.get('sub',''))}</div>
+  {strip}
+  {fig}
   {compo}
   {footer(meta['handle'], swipe=True)}
 </div>"""
