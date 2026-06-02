@@ -44,3 +44,21 @@ def test_offscale_font_is_flagged():
     os.remove(p)
     codes = [v["code"] for v in result["violations"]]
     assert "FONT_OFF_SCALE" in codes
+
+def test_headline_sem_accent_flagado():
+    p = os.path.join(FIX, "_tmp_noacc.html")
+    open(p,"w").write('<style>:root{--bg:#16213E;--ink:#FFF;--accent:#E94560;}'
+      '.slide{background:var(--bg);color:var(--ink);}.body{font-size:24px;}.headline{font-size:76px;}</style>'
+      '<div class="slide"><div class="headline">SEM ACCENT</div><div class="body">x</div>'
+      '<div class="screenshot-frame"><img src="x"></div></div>')
+    r=run_lint("_tmp_noacc.html"); os.remove(p)
+    assert "HEADLINE_NO_ACCENT" in [v["code"] for v in r["violations"]]
+
+def test_headline_com_accent_ok():
+    p = os.path.join(FIX, "_tmp_acc.html")
+    open(p,"w").write('<style>:root{--bg:#16213E;--ink:#FFF;--accent:#E94560;}'
+      '.slide{background:var(--bg);color:var(--ink);}.body{font-size:24px;}.headline{font-size:76px;}</style>'
+      '<div class="slide"><div class="headline">COM <span class="em">accent</span></div>'
+      '<div class="body">x</div><div class="screenshot-frame"><img src="x"></div></div>')
+    r=run_lint("_tmp_acc.html"); os.remove(p)
+    assert "HEADLINE_NO_ACCENT" not in [v["code"] for v in r["violations"]]

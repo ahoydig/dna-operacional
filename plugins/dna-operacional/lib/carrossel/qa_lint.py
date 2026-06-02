@@ -71,6 +71,12 @@ def lint(html):
             violations.append({"code": "OBJECTFIT_CONTAIN_BG",
                 "msg": "object-fit:contain + background cria bordas escuras"})
 
+    # headline deve ter >=1 palavra accent (<span class="em">) — regra do MANIFESTO (exatamente 1)
+    for m in re.finditer(r'class="headline[^"]*"[^>]*>(.*?)</div>', html, re.S):
+        if 'class="em"' not in m.group(1):
+            violations.append({"code": "HEADLINE_NO_ACCENT",
+                "msg": "headline sem palavra accent (<span class='em'>)"})
+
     return {"violations": violations}
 
 def main():
