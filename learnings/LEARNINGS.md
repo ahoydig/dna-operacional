@@ -7,3 +7,4 @@
 - [carrossel-ativos-reais.md](carrossel-ativos-reais.md) — buscar ativo real e usar como referência (image-to-image) > gerar do nada
 - [carrossel-loop-verificacao.md](carrossel-loop-verificacao.md) — loop obrigatório gerar→render→ler PNG→corrigir; agente revisor + auto-correção
 - [carrossel-bg-foto-criador.md](carrossel-bg-foto-criador.md) — background da capa/CTA = foto do próprio criador, tratada/escurecida
+- [carrossel-mascote-clawd.md](carrossel-mascote-clawd.md) — mascote CLAWD: cabeça-caixa fiel + corpo humano pixelado, nunca fofo/robozinho
