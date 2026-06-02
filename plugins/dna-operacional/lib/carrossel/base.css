@@ -1,234 +1,54 @@
-/* base.css v2 — contrato de design do carrossel-lab.
-   Reconstruído a partir da análise de 17 carrosséis virais reais (Claude/IA nicho).
-   Princípios: 1 accent quente fixo + alto contraste + zero poluição cromática.
-   Escala modular 1.333 base 24px. Grid 8pt. Canvas 4:5. */
+500;600;700;900&family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Instrument+Serif:ital@0;1&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
-/* ---- Temas: 2 variantes validadas pelos virais ----
-   .theme-cream  = fundo creme quente + tinta quase-preta + accent terracota
-   .theme-dark   = fundo quase-preto + tinta branca + accent salmão
-   Ambos: 1 só accent quente, contraste alto. */
-:root {
-  --fs-0: 24px;  --fs-1: 32px;  --fs-2: 43px;
-  --fs-3: 57px;  --fs-4: 76px;  --fs-5: 101px; --fs-6: 135px;
 
-  --font-display: 'Nofex', 'Inter', sans-serif;       /* headline "comum" (bold) */
-  --font-serif:   'Instrument Serif', Georgia, serif;  /* palavra-chave itálica accent */
-  --font-body:    'Inter', sans-serif;
-  --font-accent:  'Crankdat', 'Space Grotesk', sans-serif; /* fonte autoral do Flávio: kicker, handle, motifs, comentários */
-  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
-  --font-hand:    'Caveat', cursive;                   /* anotação handwritten */
-
-  --pad-x: 72px; --pad-top: 88px; --pad-bottom: 120px;
-  --gap: 40px;
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d0b0a; --text:#fff; --gray:#bdb5ad; --accent:#C4714A;
+  --pad-x:64px;
 }
-
-.theme-cream {
-  --bg: #ECE6DC;            /* creme quente */
-  --bg-grad: linear-gradient(160deg, #F1ECE3, #E4DCCD);
-  --ink: #1A1410;           /* quase-preto quente */
-  --ink-soft: #5C5347;
-  --accent: #C4522A;        /* terracota (marca Anthropic) */
-  --card-bg: #161310;       /* card escuro p/ prompt/screenshot */
-  --card-ink: #F2ECE2;
-}
-.theme-dark {
-  --bg: #0E0B09;            /* quase-preto quente */
-  --bg-grad: linear-gradient(160deg, #14100D, #0A0807);
-  --ink: #F4EEE6;
-  --ink-soft: #A89C8C;
-  --accent: #E07A52;        /* salmão/coral */
-  --card-bg: #1B1612;
-  --card-ink: #F2ECE2;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-.slide {
-  width: 1080px; height: 1350px;       /* 4:5 default */
-  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
-  background: var(--bg-grad), var(--bg);
-  color: var(--ink);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--gap);
-  font-family: var(--font-body);
-}
-.slide.format-3-4 { height: 1440px; }
-.slide.format-1-1 { height: 1080px; }
-
-/* textura sutil de grão (sem poluir) */
-.slide::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5;
-  opacity: 0.035;
-  background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
-  background-size: 4px 4px;
-}
-
-/* ---- Foto de fundo da capa/CTA (profundidade — padrão noevarner) ---- */
-.bg-photo {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  object-fit: cover; width: 100%; height: 100%;
-}
-.bg-photo + .bg-scrim, .bg-scrim {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(8,6,5,0.55), rgba(8,6,5,0.82));
-}
-
-/* ---- Mascote do Claude Code (PNG transparente) ---- */
-.mascot { position: absolute; z-index: 2; pointer-events: none; }
-.mascot.top { top: 64px; left: 50%; transform: translateX(-50%); width: 200px; }
-.mascot.cta { width: 280px; }
-
-/* ---- Comentário estilo Crankdat (rotacionado, personalidade) ---- */
-.crank-note {
-  font-family: var(--font-accent); font-weight: 700;
-  font-size: var(--fs-2); color: var(--accent);
-  position: absolute; z-index: 3; transform: rotate(-4deg);
-  text-transform: none;
-}
-
-/* ---- Kicker / label de seção (Inter — NÃO competir com a headline) ---- */
-.kicker {
-  font-family: var(--font-body); font-weight: 700;
-  font-size: var(--fs-0); letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--accent); z-index: 1;
-}
-
-/* ---- Headline: sans bold + palavra-chave serif itálico accent ---- */
-.headline {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: var(--fs-4);
-  line-height: 1.04;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  padding-top: 0.06em;                  /* Nofex clipa acento */
-  overflow: visible;
-  z-index: 1;
-}
-.headline.cover { font-size: var(--fs-5); }
-.headline.giant { font-size: var(--fs-6); }
-.headline .em {                          /* a palavra-chave */
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  color: var(--accent);
-  letter-spacing: 0;
-}
-
-/* ---- Body ---- */
-.body {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--fs-1);
-  line-height: 1.5;
-  max-width: 30ch;                      /* linha curta (mobile) */
-  color: var(--ink);
-  z-index: 1;
-}
-.body .em { color: var(--accent); font-weight: 700; }
-.body.small { font-size: var(--fs-0); }
-
-/* ---- Número-herói (capa de dado) ---- */
-.hero-number {
-  font-family: var(--font-display); font-weight: 900;
-  font-size: var(--fs-6); line-height: 0.92; color: var(--accent);
-  letter-spacing: -0.02em; z-index: 1;
-}
-
-/* ---- Número fantasma gigante (atrás) ---- */
-.ghost-number {
-  position: absolute; right: -40px; top: 40%;
-  font-family: var(--font-display); font-weight: 900;
-  font-size: 560px; line-height: 0.8; color: var(--ink);
-  opacity: 0.05; z-index: 0; pointer-events: none; user-select: none;
-}
-
-/* ---- Prova 1: prompt verbatim em bloco monospace ---- */
-.prompt-block {
-  background: var(--card-bg); color: var(--card-ink);
-  border-radius: 16px; padding: 40px;
-  font-family: var(--font-mono); font-size: var(--fs-0); line-height: 1.55;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.08);
-  z-index: 1; position: relative;
-}
-.prompt-block .kw { color: var(--accent); font-weight: 700; }
-.prompt-block .title-bar {
-  display: flex; gap: 8px; margin-bottom: 24px;
-}
-.prompt-block .title-bar i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
-.prompt-block .title-bar i:nth-child(1){ background:#FF5F56; }
-.prompt-block .title-bar i:nth-child(2){ background:#FFBD2E; }
-.prompt-block .title-bar i:nth-child(3){ background:#27C93F; }
-
-/* ---- Prova 2: screenshot real / réplica ---- */
-.screenshot-frame {
-  border-radius: 16px;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.06);
-  overflow: hidden; width: 100%; z-index: 1; position: relative;
-}
-.screenshot-frame img { width: 100%; display: block; } /* sem object-fit/background */
-
-/* ---- Prova 3: GitHub repo card overlay ---- */
-.github-card {
-  background: #ffffff; color: #1a1a1a; border-radius: 12px; padding: 22px 26px;
-  box-shadow: 0 12px 36px rgba(0,0,0,0.3); border: 1px solid #d0d7de;
-  font-family: var(--font-body); max-width: 560px; z-index: 2; position: relative;
-}
-.github-card .repo { font-size: var(--fs-0); font-weight: 700; }
-.github-card .repo .owner { color: #57606a; font-weight: 500; }
-.github-card .desc { font-size: 22px; color: #57606a; margin-top: 8px; line-height: 1.4; }
-.github-card .meta { display: flex; gap: 20px; margin-top: 14px; font-size: 20px; color: #57606a; }
-.github-card .meta b { color: #1a1a1a; }
-
-/* ---- Anotação handwritten (seta + label) ---- */
-.annotation {
-  font-family: var(--font-hand); font-weight: 700;
-  font-size: var(--fs-2); color: var(--accent);
-  position: absolute; z-index: 3; transform: rotate(-6deg);
-}
-
-/* ---- Money-quote (caixa shareable) ---- */
-.money-quote {
-  border-left: 5px solid var(--accent);
-  padding: 12px 0 12px 28px;
-  font-family: var(--font-serif); font-style: italic;
-  font-size: var(--fs-2); line-height: 1.25; color: var(--ink);
-  z-index: 1; max-width: 26ch;
-}
-
-/* ---- Motifs persistentes ---- */
-.slide-number {
-  position: absolute; top: 56px; right: 72px;
-  font-family: var(--font-body); font-weight: 700;
-  font-size: var(--fs-0); color: var(--ink-soft); letter-spacing: 0.1em; z-index: 4;
-}
-.progress {
-  position: absolute; top: 64px; left: 72px; display: flex; gap: 8px; z-index: 4;
-}
-.progress .dot { width: 28px; height: 5px; border-radius: 3px; background: var(--ink); opacity: 0.2; }
-.progress .dot.active { opacity: 1; background: var(--accent); }
-.handle {                          /* Crankdat = assinatura autoral, longe da headline */
-  position: absolute; bottom: 56px; left: 72px;
-  font-family: var(--font-accent); font-weight: 700;
-  font-size: var(--fs-1); color: var(--ink-soft); z-index: 4; letter-spacing: 0.02em;
-}
-.swipe {
-  position: absolute; bottom: 56px; right: 72px;
-  font-family: var(--font-hand); font-weight: 700;
-  font-size: var(--fs-1); color: var(--accent); z-index: 4;
-}
-/* CTA tokens gigantes (último slide) */
-.cta-stack { display: flex; flex-direction: column; gap: 16px; z-index: 1; }
-.cta-stack .verb {
-  font-family: var(--font-display); font-weight: 900; text-transform: uppercase;
-  font-size: var(--fs-5); line-height: 0.98; color: var(--ink);
-}
-.cta-stack .verb .arrow { color: var(--accent); }
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;
+  background:var(--bg);padding:64px var(--pad-x) 56px;
+  font-family:'Inter',sans-serif;color:var(--text);display:flex;flex-direction:column;}
+.slide::before{content:"";position:absolute;inset:0;z-index:0;opacity:0.04;pointer-events:none;
+  background-image:radial-gradient(#fff 0.5px,transparent 0.5px);background-size:3px 3px;}
+.bgphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.scrim{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,rgba(8,6,5,0.62),rgba(8,6,5,0.86));}
+.ghost{position:absolute;top:36px;right:48px;font-family:'Nofex',sans-serif;
+  font-size:300px;line-height:0.8;color:#fff;opacity:0.035;z-index:0;}
+.snum{position:absolute;top:60px;left:var(--pad-x);font-family:'Inter';font-weight:700;
+  font-size:26px;color:#7a726a;z-index:4;letter-spacing:0.08em;}
+.kicker{font-family:'Inter';font-weight:700;font-size:28px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--accent);z-index:1;margin-bottom:18px;}
+.headline{font-family:'Nofex',sans-serif;font-weight:800;line-height:0.94;
+  letter-spacing:-0.005em;text-transform:uppercase;z-index:1;padding-top:0.04em;}
+.headline .em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  text-transform:none;color:var(--accent);font-size:1.18em;line-height:0.8;}
+.sub{font-family:'Inter';font-weight:500;font-size:34px;line-height:1.42;color:var(--gray);
+  margin-top:24px;max-width:32ch;z-index:1;}
+.sub .em{color:var(--text);font-weight:700;}
+.sub .acc{color:var(--accent);font-weight:700;}
+.hero{z-index:1;}
+.shot{width:100%;border-radius:14px;display:block;
+  box-shadow:0 24px 64px rgba(0,0,0,0.72),0 0 0 1px rgba(255,255,255,0.05);}
+.note{position:absolute;font-family:'Caveat',cursive;font-weight:700;
+  font-size:44px;color:var(--accent);z-index:3;}
+.sun{font-family:'Instrument Serif',serif;color:var(--accent);font-size:96px;line-height:1;z-index:1;}
+.quote{border-left:5px solid var(--accent);padding:6px 0 6px 28px;
+  font-family:'Instrument Serif',serif;font-style:italic;font-size:46px;line-height:1.25;
+  color:var(--text);z-index:1;max-width:24ch;}
+/* footer: handle Crankdat CENTRALIZADO */
+.footer{position:absolute;left:0;right:0;bottom:48px;display:flex;justify-content:center;
+  align-items:center;z-index:4;}
+.footer .handle{font-family:'Crankdat',sans-serif;font-weight:700;font-size:46px;
+  color:#d8d0c6;letter-spacing:0.01em;line-height:1;}
+.swipe{position:absolute;bottom:50px;right:var(--pad-x);font-family:'Crankdat',sans-serif;
+  font-weight:700;font-size:40px;color:var(--accent);z-index:4;}
+/* CTA */
+.cta-stack{z-index:1;}
+.cta-stack .big{font-family:'Nofex',sans-serif;font-weight:800;text-transform:uppercase;
+  line-height:0.96;}
+.cta-stack .tok{color:var(--accent);}
+.center{text-align:center;align-items:center;}
+.spacer{flex:1;}
