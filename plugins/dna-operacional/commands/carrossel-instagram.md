@@ -1,442 +1,146 @@
 ---
-description: Gera carrosséis profissionais para Instagram via HTML-to-Image (Playwright). Coleta moodboard visual via agent-browser antes da direção visual. Suporta formatos 3:4, 4:5 e 1:1. Use quando digitar "/carrossel-instagram", "criar carrossel", "gerar slides instagram", "post instagram", "carrossel viral", "remodelar post".
-argument-hint: "[tópico|URL|path-de-briefing?]"
+description: Gera carrossel viral pra Instagram sobre QUALQUER tema. Clona a geometria de virais reais (eixo de coluna, headline gigante, herói grande), usa ativos reais (não inventa) e fecha com loop de verificação automático (lint + agente revisor + auto-correção). Use quando digitar "/carrossel-instagram", "criar carrossel", "post instagram", "carrossel viral", "gerar slides".
+argument-hint: "[tópico|URL|notícia]"
 ---
 
 Usuário invocou `/carrossel-instagram` com argumento: `$ARGUMENTS`
 
-## Pre-check — DNA Mode (low-cost)
+# /carrossel-instagram — Gerador de Carrossel Viral (genérico)
 
-Ler `CLAUDE.md` → `## DNA Mode: <x>` (default: full).
+> Gera um carrossel pronto pra postar (PNG por slide + roteiro.md com caption e hashtags), clonando a geometria de carrosséis virais reais. Tema é livre — vem de `$ARGUMENTS` (ideia, URL, notícia). Os ativos são **reais** (fotos, logos oficiais, telas capturadas/forjadas), nunca inventados. A verificação não é opcional: é um loop automático de lint + agente revisor + auto-correção até zero defeitos.
 
-Se == `lowcost`:
-1. Imprimir: "💡 Modo lowcost ativo — resultado reduzido. /dna modo full pra resultado completo."
-2. Aplicar heurísticas §/carrossel-instagram de `${CLAUDE_PLUGIN_ROOT}/lib/mode/low-cost-heuristics.md`.
-
-Se != lowcost: modo full (comportamento atual).
-
-# /carrossel-instagram — Pipeline de 5 Gates
-
-> Segue a voz do projeto (via `/humanizer` ao final). Handle do projeto vem de `CLAUDE.md` do user em `## Handle: @<x>`. Sem handle definido → perguntar uma vez e gravar.
-
-**Objetivo:** Gerar carrossel pronto pra postar (PNG por slide + caption + hashtags) via HTML renderizado como imagem.
-
-**Escopo:** Briefing → moodboard → copy → direção visual → geração final.
-**Fora do escopo:** Roteirizar vídeo (`/roteiro-viral`), analisar referência em vídeo (`/analisar-video`).
+**Pipeline canônico** (lib em `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/`):
+- Geometria: `base.css` (classes `.slide .headline .em .sub .kicker .hero .shot .quote .footer .handle .swipe .cta-stack .ghost .snum .bgphoto .scrim .note .center .spacer`; vars `--pad-x:64px`, `--accent:#C4714A`).
+- Roteiro: `carrossel.json` (formato em `schema.md`).
+- Render: `render_carrossel.py` (json → HTML) + `render.mjs` (HTML → PNG via Playwright).
+- QA: `qa_lint.py`.
 
 ---
 
-## Passo 0: Resolver Handle
+## Passo 0 — Handle e voz
 
-Ler `CLAUDE.md` do projeto atual: `## Handle: @<x>`. Fixar em `${USER_HANDLE}` pra toda a sessão.
-
-Sem handle: perguntar via `AskUserQuestion` — "Qual handle do Instagram vai assinar este carrossel?" — e sugerir gravar em `CLAUDE.md` depois.
-
----
-
-## Pipeline: 5 Gates
-
-```
-BRIEFING → MOODBOARD VISUAL → CONTEÚDO TEXTUAL → DIREÇÃO VISUAL → GERAÇÃO FINAL
-```
-
-Cada gate exige **aprovação explícita do user** antes de avançar. Nunca pular.
+1. Ler `CLAUDE.md` do projeto atual procurando `## Handle: @<x>`. Fixar em `${HANDLE}` pra toda a sessão.
+   - Sem handle → perguntar **uma vez** ("Qual handle do Instagram assina este carrossel?"), usar a resposta e sugerir gravar em `CLAUDE.md` depois.
+2. Se existir `reference/voz-${HANDLE}.md`, ler o frontmatter (tom, formalidade, energia, vícios a evitar). Calibra a copy do roteiro e a caption. Sem arquivo de voz → tom "amigo que descobriu algo bom" (não guru, não professor).
 
 ---
 
-## Gate 1: Briefing & Pesquisa
+## Passo 1 — Pesquisa do tema (fatos REAIS)
 
-### Inputs aceitos
+1. Interpretar `$ARGUMENTS`:
+   - URL / notícia / post → abrir via Playwright (ou WebFetch) e extrair os pontos-chave reais.
+   - Ideia/tema solto → `WebSearch` pra reunir fatos, números, exemplos reais e ângulos.
+2. Ler os mapas de viralização:
+   - `${CLAUDE_PLUGIN_ROOT}/references/carrossel-lab/MANIFESTO-DIAGRAMACAO.md` — blueprint de geometria (3 escolas, grid, zonas verticais, tipografia, elemento herói, templates A/B/C). **É o contrato visual desta skill.**
+   - `${CLAUDE_PLUGIN_ROOT}/references/carrossel-lab/hooks-frameworks.md` — fórmulas de hook e arco narrativo.
+   - `${CLAUDE_PLUGIN_ROOT}/references/carrossel-lab/algoritmo-ig.md` — alavancas de alcance (save/comment, retenção, swipe).
 
-| Input | Ação |
-|-------|------|
-| URL de notícia | Abrir via Playwright, ler, extrair pontos-chave |
-| Post/Reel de Instagram | Abrir, analisar design/conteúdo, remodelar com identidade do user |
-| Tweet/Thread | Capturar e transformar em carrossel |
-| Repo GitHub / doc | Analisar e transformar em conteúdo educativo |
-| Link YouTube | Capturar thumbnail + título |
-| Ideia solta / tema | Pesquisar, buscar referências, propor ângulos |
-
-### Coleta obrigatória
-
-Não avança sem: **Objetivo**, **Template** (ler `references/carrossel-instagram/templates.md`), **Formato** (3:4 / 4:5 / 1:1), **Handle** (já resolvido no Passo 0).
-
-### Defaults (nunca perguntar)
-
-- **Formato padrão:** 3:4 (1080x1440) quando não especificado
-- **Screenshots:** SEMPRE capturar via Playwright direto do app/site real. Nunca perguntar se o user quer fornecer — já abrir e capturar.
-
-### Regras de conteúdo
-
-- Zero jargão que o público não entende. Se precisa explicar o que é, não serve pro slide.
-- Tom equilibrado ao comparar ferramentas. Nunca massacrar um produto pra vender outro.
-- Pessoas reais com nome completo. Capturar perfil: Instagram > X > LinkedIn > GitHub.
-
-### Gate 1: Apresentar resumo do briefing. Aguardar aprovação.
+**Nunca fabricar** dado, número, métrica, citação, link ou nome. Se não achar a fonte, dizer que não achou — não inventar.
 
 ---
 
-## Gate 1.5: Moodboard Visual
+## Passo 2 — GATE: roteiro completo em texto (aguardar aprovação)
 
-Ler `references/carrossel-instagram/visual-research.md`.
+Propor o **roteiro completo em texto** — sem gerar uma única imagem ainda. **7-8 slides.** Cada slide descrito assim:
 
-Após briefing aprovado, **SEMPRE** coletar moodboard de referências visuais externas antes de avançar pra copy. Esta fase ancora o Gate 3 em evidências reais.
+- **tipo:** `cover` | `content` | `quote` | `cta`
+- **kicker:** label curto (ex: "Passo 1", "O problema")
+- **headline:** com `{palavra accent}` (exatamente 1 trecho entre chaves — vira serif itálico colorido)
+- **sub:** subtítulo / linha de impacto
+- **ativo visual:** QUAL prova visual real vai entrar (foto tratada, logo oficial, tela capturada/forjada, gráfico)
 
-### Fluxo resumido
+Arco recomendado (do MANIFESTO, templates A/B/C):
+- **Slide 1 (cover):** hook mais agressivo, promessa quantificada. bg = **foto do criador** escurecida.
+- **Slides 2-6/7 (content/quote):** um passo/ideia por slide, 1 prova visual real cada.
+- **Último (cta):** headline maior do carrossel + `Comenta "TOKEN"`. bg = **foto do criador** (bookend, fecha o loop).
 
-1. **Engine:**
-   - **Default:** `agent-browser` (sessão persistente, menos tokens, batch nativo)
-   - **Fallback:** Playwright MCP
-2. **Capturar screenshot full-page** de pelo menos **2 fontes** (Pinterest + Dribbble default)
-3. **Salvar** em `./moodboard/{fonte}-full.png`
-4. **Analisar** padrões visuais das grades capturadas
-5. **Escrever** `./moodboard/moodboard.md` com destaques + direção sugerida pro Gate 3
-6. **Apresentar** moodboard ao user
-
-### Regras
-
-- **Nunca pular** — sem moodboard, Gate 3 vira chute
-- **Nunca usar 1 fonte só** — mínimo 2 (Pinterest + Dribbble)
-- **1 screenshot full-page da grade** > 10 screenshots individuais
-
-### Gate 1.5: User aprova moodboard e direção preliminar.
+**Apresentar o roteiro e AGUARDAR aprovação explícita do user antes de avançar.** Não gerar imagem, não montar `carrossel.json`, não renderizar nada antes do "ok".
 
 ---
 
-## Gate 2: Conteúdo Textual
+## Passo 3 — Pipeline de ativos + montar carrossel.json
 
-Gerar para cada slide: título, corpo, mapa de screenshots, caption e 5 hashtags.
+> Só depois do roteiro aprovado.
 
-### Regra obrigatória: todo slide tem visual
-
-**TODOS os slides devem ter pelo menos um elemento visual** (screenshot, imagem, logo, gráfico). Slides só-texto são proibidos. Sem screenshot natural: usar manchete capturada, gráfico de dados, logo com tratamento, ou outro visual relevante.
-
-### Regras de copy
-
-- **Aplicar `/humanizer`** em toda copy no final. Voz dinâmica do projeto (`reference/voz-${USER_HANDLE}.md`).
-- **Cenários concretos > features.** Mostrar o que o leitor faria, não o que a ferramenta faz.
-- **Tom: amigo que descobriu algo bom.** Não guru, não professor.
-- **Português conversacional brasileiro real.** Frases completas. Nunca encurtar pra caber no slide.
-- **Arco narrativo coeso.** Cada slide tem função na história.
-- **Body text:** quebra de linha entre cada sentença.
-
-Apresentar TUDO de uma vez pro user ver o fluxo narrativo completo.
-
-### Gate 2: User aprova ou ajusta textos.
+1. **Ativos** — seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/assets-pipeline.md` (foto real → pixel via `gerar-imagem`, remoção de croma, logos oficiais) e `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/forge-screen.md` (telas forjadas em PT-BR via HTML→PNG). Regra-mãe: **ativo real > gerado do nada**. bg da capa/CTA = **foto do criador**.
+2. **Estrutura de trabalho** — criar `./carrossel-<slug>/` com:
+   - `assets/` — todos os ativos (fotos, logos, telas, gráficos)
+   - `fonts/` — copiar `Nofex.ttf`, `Crankdat-Bold.ttf`, `Crankdat-Regular.ttf` (de `~/Library/Fonts/`, fallback workdir/fonts) — `Nofex-Outline.ttf` não é registrada pelo render, não copiar
+   - `carrossel.json` — o roteiro (formato em `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/schema.md`)
+3. **Montar `carrossel.json`** seguindo o schema:
+   - `meta`: `handle` (= `${HANDLE}`), `accent` (default `#C4714A`), `tema` (`escuro`), `total`, `bg_photo` (foto do criador), `icon_top` opcional.
+   - `slides[]`: tipos `cover`/`content`/`quote`/`cta`. `{x}` = palavra accent (exatamente 1 por headline). `hero` (content) = caminho da tela/prova. `compo` (cover) = composição. Paths relativos `assets/...` (o gerador prefixa `../` sozinho).
 
 ---
 
-## Gate 3: Direção Visual
+## Passo 4 — Render
 
-Ler `references/carrossel-instagram/palettes.md` e `references/carrossel-instagram/headline-effects.md`.
+No diretório `./carrossel-<slug>/`:
 
-Propor: 2-3 paletas, efeito tipográfico, mapa de layouts, preview do slide 1.
-
-**Efeito tipográfico aplica em TODAS as headlines**, não só na capa.
-
-### Gate 3: User aprova paleta, efeito e estilo.
-
----
-
-## Gate 4: Geração Final
-
-1. Capturar screenshots (ler `references/carrossel-instagram/screenshot-guide.md`)
-2. Gerar HTML de cada slide
-3. Renderizar como PNG via Playwright
-4. Apresentar ao user
-5. Após aprovação, criar `roteiro.md` com textos, caption, hashtags e caminhos dos PNGs
-
-### Gate 4: User aprova ou pede ajuste em slides específicos.
-
----
-
-## Regra #1: Referências visuais SEMPRE reais
-
-**SEMPRE buscar referências visuais reais ANTES de criar qualquer coisa.** Ordem de prioridade:
-
-1. Abrir o app/site real via Playwright e capturar screenshot direto
-2. Google Imagens — buscar "[nome] logo/screenshot/icon" via Playwright, navegar até a fonte e baixar com `curl`
-3. Google Play Store / App Store — capturar o ícone oficial
-4. Repositórios de ícones — simpleicons.org, brandlogos.net, wikimedia commons
-5. **ÚLTIMO RECURSO:** criar mockup em HTML
-
-**NUNCA:**
-- SVGs genéricos inline (círculos, estrelas)
-- Favicons (16-32px, ficam pixelados)
-- Ícones inventados que não se parecem com a marca real
-- Emojis como substituto de ícones reais
-
----
-
-## Regra #2: Layout flexbox centralizado (NUNCA violar)
-
-O conteúdo dos slides DEVE usar flexbox. NUNCA `position: absolute` para headline, body text, screenshots ou visuais.
-
-**Position absolute permitido APENAS para:** Crankdat comments, handle, background blur, badges decorativos.
-
-### Estrutura obrigatória do body
-
-```css
-body {
-  width: 1080px;    /* ou 1350, 1080 conforme formato */
-  height: 1440px;   /* ou 1350, 1080 conforme formato */
-  padding: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 70px;         /* 100px na capa, 70px nos slides de conteúdo */
-  position: relative; /* pra elementos absolute */
-  overflow: hidden;
-}
-```
-
-Blocos principais (headline-group, body-text, screenshot) ficam **no fluxo do flex**. Garante centralização automática.
-
----
-
-## Regra #3: Alinhamento
-
-- **Headlines:** SEMPRE `text-align: center`
-- **Cards, logos, screenshots:** SEMPRE `justify-content: center`
-- **Handle:** SEMPRE centralizado (`position: absolute; bottom: 50px; left: 0; right: 0; text-align: center`)
-- **Subtítulo na capa:** centralizado
-- **Body text em slides de conteúdo:** `text-align: left` (exceto capa e CTA = centralizado)
-
----
-
-## Design dos slides
-
-### Background
-
-NUNCA gradiente liso sozinho. Usar gradiente + textura/glows + logo real com blur.
-
-Logo como background: buscar LOGO REAL (Regra #1), aplicar `opacity: 0.08-0.12; filter: blur(3-5px);`, tamanho 900-1100px, centralizada, rotação leve (-5° a -10°).
-
-**Para carrosséis sobre Claude Code / Anthropic:** usar ASCII block art "CLAUDE CODE" como background:
-```css
-.bg-logo {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -48%) rotate(-5deg);
-  font-family: 'Courier New', monospace;
-  font-size: 34px; line-height: 1.12; white-space: pre; letter-spacing: -1px;
-  background: linear-gradient(180deg, #ff9966 0%, #ff5e62 50%, #ffa34e 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  opacity: 0.14; filter: blur(1.5px); z-index: 0; pointer-events: none;
-}
-```
-Gerar o ASCII via `npx oh-my-logo "CLAUDE\nCODE" sunset --filled --block-font block --letter-spacing 0`.
-
-**NUNCA usar o sunburst SVG como logo do Claude Code** — sunburst é da marca Claude (produto), não do Claude Code (CLI).
-
-### Headlines
-
-Fonte {{FONT_HEADLINE_NAME}} com efeito tipográfico aprovado no Gate 3. Tamanho 70-96px (capa e CTA até 120px).
-
-**NUNCA deixar palavras órfãs** (artigos como "DO", "DA", "O", "A" sozinhos em uma linha). Verificar SEMPRE no PNG renderizado.
-
-Como evitar:
-- `&nbsp;` entre palavra curta e a seguinte: `DO&nbsp;OPENCLAW`
-- Ajustar `font-size` até o texto quebrar sem órfãs
-- `<br>` manual pra forçar quebras seguras
-- **{{FONT_HEADLINE_NAME}} clipa acentos** — precisa `padding-top` e `overflow: visible` no container da headline
-
-**Regra de conversão monetária:** Sempre em BRL (R$). Público brasileiro. $20 → ~R$120. Nunca dólar no texto do slide.
-
-### Crankdat
-
-Comentários com personalidade espalhados pelo slide:
-- **30-36px** (slides normais), **48px+** (CTA)
-- **Sem parênteses.** "de graça", não "(de graça)"
-- **Posições criativas:** rotações -3° a +8°, variar entre slides
-- **1-3 por slide** — variar quantidade entre slides consecutivos
-- Distribuir pelas bordas e diagonais — não agrupar tudo num canto
-- Cor: accent com opacidade 0.6 ou branco com opacidade 0.5
-
-### Screenshots
-
-- `border-radius: 16px`, box-shadow forte, GRANDES (30-35% da altura do slide)
-- Centralizados no flex
-- Crescem progressivamente ao longo do carrossel (curva texto→visual)
-- 1 screenshot grande > grid de vários pequenos
-- Mostrar RESULTADO REAL da skill/ferramenta, não mockup de terminal
-- Se precisar login (Meta Ads, etc): pedir pro user logar no Playwright
-- Camuflar dados sensíveis via JavaScript antes de capturar (nomes de clientes, contas)
-- Vídeos fornecidos pelo user podem substituir screenshots estáticos — compor via ffmpeg
-
-#### PROIBIDO: object-fit contain com background
-
-**NUNCA `object-fit: contain` com `background`** — cria bordas escuras enormes. Erro #1 mais grave.
-
-**CSS correto:**
-```css
-/* Screenshot único — tamanho natural, preenche largura */
-.screenshot-frame img { width: 100%; display: block; }
-
-/* Dois lado a lado — mesma altura */
-.screenshots-row { display: flex; gap: 16px; width: 100%; max-width: 920px; align-items: stretch; }
-.screenshots-row .screenshot-frame { flex: 1; display: flex; }
-.screenshots-row .screenshot-frame img { object-fit: cover; object-position: top left; }
-
-/* Dois lado a lado — alturas diferentes */
-.screenshots-row-natural { display: flex; gap: 16px; width: 100%; max-width: 920px; align-items: flex-start; }
-.screenshots-row-natural .screenshot-frame:first-child { flex: 2; }
-.screenshots-row-natural .screenshot-frame:last-child { flex: 3; }
-```
-
-#### Screenshots em português
-
-**TODOS os screenshots de fontes em inglês DEVEM ser traduzidos pra PT-BR antes de capturar.**
-
-Método para tweets (X/Twitter):
-```javascript
-// Esconder sidebar e bottom bar
-await page.evaluate(() => {
-  ['sidebarColumn', 'BottomBar'].forEach(id => {
-    const el = document.querySelector(`[data-testid="${id}"]`);
-    if (el) el.style.display = 'none';
-  });
-  const nav = document.querySelector('header[role="banner"]');
-  if (nav) nav.style.display = 'none';
-});
-// Traduzir texto do tweet via DOM
-await page.evaluate(() => {
-  const t = document.querySelector('[data-testid="tweetText"]');
-  if (t) t.innerHTML = 'TEXTO TRADUZIDO';
-});
-// Capturar o article isolado
-await (await page.locator('article').first()).screenshot({ path: 'screenshots/tweet-pt.png' });
-```
-
-**Google Translate NÃO funciona com X.com** — manipular DOM diretamente.
-
-### Tabs coloridos (skill.md)
-
-**NÃO usar tabs coloridos** — parecem artificiais. Substituir por mascot, ícone, ou outro visual orgânico fornecido pelo user.
-
-### Fontes
-
-Ler `references/carrossel-instagram/fonts-config.md`. Resumo: Headlines = {{FONT_HEADLINE_NAME}} (fallback Bebas Neue), Accent = Crankdat (fallback Space Grotesk), Body = Inter.
-
-Copiar fontes locais pro diretório de trabalho antes de gerar (ver fonts-config pra detecção de OS e paths).
-
----
-
-## Renderização
-
-1. Salvar HTML no diretório de trabalho
-2. Servir via `python3 -m http.server [porta]` (verificar porta livre)
-3. Abrir via Playwright com viewport do formato (3:4 = 1080x1440)
-4. Aguardar 3 segundos pras fontes carregarem
-5. Capturar screenshot como PNG
-6. **Para overlays transparentes:** `browser_run_code` com `page.screenshot({ path: 'file.png', omitBackground: true, type: 'png' })`
-7. **FECHAR O BROWSER** após cada slide
-
-### Composição de vídeo em slides
-
-Quando um slide precisa de vídeo rodando (mascot, demo):
-
-1. HTML do slide com placeholder vazio onde o vídeo vai
-2. Playwright `evaluate()` pra medir `getBoundingClientRect()` do placeholder
-3. Renderizar HTML como PNG (background estático)
-4. Compor via ffmpeg: `background PNG + vídeo escalado + overlay`
-
-Regras:
-- Vídeo DEVE preencher TODA a largura da área de sombra. Usar `scale=LARGURA:-1,crop=LARGURA:ALTURA`
-- `shortest=1` no overlay filter pra manter animação
-- Remover fundo preto: `colorkey=0x000000:0.25:0.15`
-- Para mascot: NÃO cropar laterais nem topo — só cropar espaço vazio embaixo dos pés
-
-Exemplo ffmpeg:
 ```bash
-ffmpeg -y -loop 1 -i bg.png -i video.mp4 \
-  -filter_complex "[1:v]scale=810:-1,crop=810:550:0:(ih-550)/2[vid];[0:v][vid]overlay=135:615:shortest=1" \
-  -t 10 -an -c:v libx264 -pix_fmt yuv420p -r 24 -crf 18 output.mp4
+cp ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/base.css ./base.css
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render_carrossel.py carrossel.json slides
+node ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render.mjs slides
 ```
 
----
-
-## Auto-review obrigatório (antes de mostrar ao user)
-
-**Renderizar CADA slide como PNG e verificar visualmente ANTES de mostrar.** Usar `Read` pra visualizar cada PNG.
-
-1. **Layout flex?** Elementos principais no fluxo do flex, NÃO position absolute?
-2. **Centralizado?** Headlines, screenshots, cards e handle centralizados?
-3. **Logos reais?** De fontes reais, não SVGs genéricos?
-4. **Background rico?** Gradiente + textura + logo blur (ASCII block art pra Claude Code)?
-5. **Crankdat OK?** Sem parênteses, 30px+, rotacionado?
-6. **Português natural?** Ler em voz alta. Acentos corretos (ção, é, ê, á, ú, ô, õ).
-7. **Densidade?** ~65% preenchido em slides de conteúdo. CTA = mínimo.
-8. **Screenshots reais?** Resultado REAL, não mockup de terminal?
-9. **Vídeos encaixados?** Largura preenche 100% da área de sombra?
-10. **Ajuste pontual?** Se o user pediu mudança específica, NÃO alterar layout inteiro — só o que foi pedido.
-11. **Todo slide com visual?** Cada slide tem ≥1 elemento visual?
-12. **SEM bordas escuras?** Nenhum screenshot com `object-fit: contain` + `background`?
-13. **Screenshots em PT-BR?** Tudo em inglês traduzido via DOM antes de capturar?
-14. **Sem palavras órfãs?** Nenhuma palavra curta sozinha numa linha?
-15. **Valores em reais?** Tudo em R$, nenhum dólar no texto?
-16. **Screenshots legíveis?** Texto dentro dos screenshots legível no tamanho final?
-17. **Alturas alinhadas?** Em layouts lado a lado, alturas compatíveis?
-18. **Moodboard considerado?** Paleta/efeito/layout derivados do moodboard do Gate 1.5?
-
-Se qualquer resposta for "não", corrigir ANTES de apresentar.
+- `render_carrossel.py` injeta `@import` Google Fonts + `@font-face` Nofex/Crankdat e linka `../base.css`; escreve `slides/NN.html`.
+- `render.mjs` usa Playwright (viewport 1080×1350 @2x, captura `clip`) e escreve `slides/NN.png`.
+- Precisa de `node_modules` com Playwright. Se não houver local, linkar de `/Users/flavioahoy/Documents/projects/propostas/node_modules` (`ln -s`).
 
 ---
 
-## Reference Files
+## Passo 5 — Loop de verificação (OBRIGATÓRIO, nunca pular)
 
-| Arquivo | Quando ler |
-|---------|-----------|
-| `references/carrossel-instagram/templates.md` | Gate 1 — templates |
-| `references/carrossel-instagram/visual-research.md` | Gate 1.5 — moodboard |
-| `references/carrossel-instagram/palettes.md` | Gate 3 — paletas |
-| `references/carrossel-instagram/headline-effects.md` | Gate 3 — efeitos |
-| `references/carrossel-instagram/screenshot-guide.md` | Gate 4 — captura |
-| `references/carrossel-instagram/fonts-config.md` | Antes da geração |
+Seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/verify.md`. Em resumo, o loop:
+
+1. **Lint determinístico** — `python3 ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/qa_lint.py slides/NN.html` em cada slide. Lê CSS de `<style>` inline, `base.css` linkado e atributos `style=`. Valida contraste WCAG (`--text`/`--bg`, `--accent`/`--bg`), `BODY_TOO_SMALL`, `HEADLINE_TOO_SMALL` (< 76px), `OBJECTFIT_CONTAIN_BG`, `HEADLINE_NO_ACCENT`. Exit ≠ 0 = violação.
+2. **Agente revisor automático** — `Read` cada PNG e checar o subjetivo que o lint não pega: hierarquia, respiro, palavra órfã, acentos PT-BR corretos, prova visual presente em todo slide de conteúdo, headline com exatamente 1 palavra accent, Crankdat só no handle/swipe, bg foto do criador na capa/CTA.
+3. **Auto-correção** — corrigir HTML/json/ativo e **re-renderizar**. Repetir lint + revisor **até zero defeitos**. Não mostrar ao user antes de zerar.
 
 ---
 
-## Troubleshooting
+## Passo 6 — Entrega
 
-| Problema | Solução |
-|----------|---------|
-| Fonte não carrega | Copiar .ttf pro diretório `./fonts/` (ver fonts-config) |
-| Screenshot branco/transparente errado | Usar `omitBackground: true` no `browser_run_code` |
-| Servidor HTTP ocupado | Tentar outra porta |
-| Vídeo composto fica branco | Verificar que bg.png tem gradiente (não transparente) |
-| Elementos grudados no topo | Verificar `justify-content: center` no body |
-| **Bordas escuras ao redor do screenshot** | Remover `object-fit: contain` e `background`. Usar `width: 100%` sem object-fit, ou `object-fit: cover` pra lado a lado |
-| Palavra órfã na headline | `&nbsp;` entre palavra curta e a seguinte, ou ajustar font-size |
-| Screenshot de tweet em inglês | Traduzir via `page.evaluate()` no `[data-testid="tweetText"]` antes de capturar |
-| Google Translate quebra X.com | Não usar. Manipular DOM diretamente |
-| Screenshots lado a lado com alturas diferentes | `align-items: stretch` + `object-fit: cover`, ou `flex-start` com flex ratios |
-| Texto do slide em inglês | Converter TUDO pra PT-BR: "subscription" → "assinatura", valores em R$ |
-| {{FONT_HEADLINE_NAME}} clipa acentos | `padding-top` no container da headline + `overflow: visible` |
+1. Mostrar os PNGs finais (`slides/NN.png`).
+2. Criar `roteiro.md` em `./carrossel-<slug>/` com: textos de cada slide, **caption** e **5 hashtags** — tudo na voz do projeto (`reference/voz-${HANDLE}.md` se existir).
 
 ---
 
-## Regras
+## Regras invioláveis (do MANIFESTO)
 
-1. **Nunca pular gates** — cada um precisa aprovação do user
-2. **Handle via `${USER_HANDLE}`** — ler de `CLAUDE.md`, nunca hardcodar
-3. **Screenshots reais** via Playwright — não perguntar, já capturar
-4. **Todo slide com visual** — só-texto é proibido
-5. **Efeito tipográfico em TODAS as headlines**, não só na capa
-6. **Humanizer no final** — voz dinâmica do projeto
-7. **Auto-review antes de apresentar** — 18 checks obrigatórios
-8. **Referências visuais reais** — nunca SVG genérico ou emoji
-9. **PT-BR em tudo** — screenshots traduzidos, valores em R$
-10. **Flexbox, não position absolute** — exceto Crankdat, handle, background
+1. **Clonar geometria** — eixo de coluna (`--pad-x:64px`), headline gigante, elemento herói grande. Não reinventar layout; usar `base.css` + `templates.py`.
+2. **Headline:** Nofex + **exatamente 1 palavra** serif itálico accent (`{x}` → `.em`). **Crankdat só no handle e no swipe.**
+3. **Todo slide de conteúdo com ≥1 prova visual real.** Slide só-texto é proibido.
+4. **Ativo real > gerado do nada.** Foto, logo oficial, tela capturada/forjada antes de qualquer coisa inventada.
+5. **Loop de verificação nunca pula** (Passo 5).
+6. **PT-BR e R$** — público brasileiro, valores em reais, nunca dólar no texto. **Não fabricar dado.**
+7. **Capa e CTA: bg = foto do criador** (escurecida via `.bgphoto` + `.scrim`).
+8. **GATE do Passo 2** — nenhuma imagem antes da aprovação do roteiro.
 
 ---
 
-✅ Carrossel renderizado e pronto pra postar
+## Reference / lib
+
+| Arquivo | Quando |
+|---|---|
+| `${CLAUDE_PLUGIN_ROOT}/references/carrossel-lab/MANIFESTO-DIAGRAMACAO.md` | Passo 1 — geometria |
+| `${CLAUDE_PLUGIN_ROOT}/references/carrossel-lab/hooks-frameworks.md` | Passo 1 — hooks |
+| `${CLAUDE_PLUGIN_ROOT}/references/carrossel-lab/algoritmo-ig.md` | Passo 1 — alcance |
+| `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/schema.md` | Passo 3 — carrossel.json |
+| `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/assets-pipeline.md` | Passo 3 — ativos |
+| `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/forge-screen.md` | Passo 3 — telas PT-BR |
+| `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render_carrossel.py` · `render.mjs` · `base.css` | Passo 4 — render |
+| `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/verify.md` · `qa_lint.py` | Passo 5 — verificação |
+
+---
+
+✅ Carrossel viral renderizado, verificado e pronto pra postar
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧬 PRÓXIMOS PASSOS SUGERIDOS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   1. /ideias-conteudo  — próximo carrossel da série
+  2. /roteiro-viral    — virar isso em Reel
 
   💡 /dna pra ver todas · /dna jornadas pra caminhos completos
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
