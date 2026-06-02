@@ -29,21 +29,34 @@ def test_contain_bg_is_flagged():
     codes = [v["code"] for v in result["violations"]]
     assert "OBJECTFIT_CONTAIN_BG" in codes
 
-def test_offscale_font_is_flagged():
-    # font-size fora da escala modular (ex: 50px) deve ser pego
+def test_headline_pequena_flagada():
+    # headline < 76px (inline) deve disparar HEADLINE_TOO_SMALL — headline tem que dominar
     import os
-    p = os.path.join(FIX, "_tmp_offscale.html")
+    p = os.path.join(FIX, "_tmp_small.html")
     open(p, "w").write(
-        '<style>:root{--bg:#16213E;--ink:#FFFFFF;--accent:#E94560;}'
-        '.slide{background:var(--bg);color:var(--ink);}'
-        '.headline{font-size:50px;}.body{font-size:24px;}</style>'
-        '<div class="slide"><div class="headline">T</div>'
-        '<div class="body">x</div>'
+        '<style>:root{--bg:#16213E;--text:#FFFFFF;--accent:#E94560;}'
+        '.slide{background:var(--bg);color:var(--text);}.body{font-size:24px;}</style>'
+        '<div class="slide"><div class="headline" style="font-size:50px;">T <span class="em">x</span></div>'
+        '<div class="body">y</div>'
         '<div class="screenshot-frame"><img src="x.png"></div></div>')
-    result = run_lint("_tmp_offscale.html")
+    result = run_lint("_tmp_small.html")
+    os.remove(p)
+    assert "HEADLINE_TOO_SMALL" in [v["code"] for v in result["violations"]]
+
+def test_headline_grande_inline_ok():
+    # headline 104px (o que o design aprovado usa) NÃO deve disparar (escala rígida foi removida)
+    import os
+    p = os.path.join(FIX, "_tmp_big.html")
+    open(p, "w").write(
+        '<style>:root{--bg:#16213E;--text:#FFFFFF;--accent:#E94560;}'
+        '.slide{background:var(--bg);color:var(--text);}.body{font-size:24px;}</style>'
+        '<div class="slide"><div class="headline" style="font-size:104px;">T <span class="em">x</span></div>'
+        '<div class="body">y</div>'
+        '<div class="screenshot-frame"><img src="x.png"></div></div>')
+    result = run_lint("_tmp_big.html")
     os.remove(p)
     codes = [v["code"] for v in result["violations"]]
-    assert "FONT_OFF_SCALE" in codes
+    assert "HEADLINE_TOO_SMALL" not in codes and "FONT_OFF_SCALE" not in codes
 
 def test_headline_sem_accent_flagado():
     p = os.path.join(FIX, "_tmp_noacc.html")
@@ -62,3 +75,23 @@ def test_headline_com_accent_ok():
       '<div class="body">x</div><div class="screenshot-frame"><img src="x"></div></div>')
     r=run_lint("_tmp_acc.html"); os.remove(p)
     assert "HEADLINE_NO_ACCENT" not in [v["code"] for v in r["violations"]]
+
+def test_contraste_le_base_css_linkado():
+    """Prova do achado adversarial: qa_lint deve ler o CSS de um <link href=...css>, não só <style>.
+    Antes era inerte (HTML real linka base.css externo)."""
+    import os, tempfile, shutil
+    d = tempfile.mkdtemp()
+    try:
+        open(os.path.join(d,"bad.css"),"w").write(
+            ":root{--bg:#cccccc;--text:#dddddd;--accent:#eeeeee;}")
+        open(os.path.join(d,"s.html"),"w").write(
+            '<!DOCTYPE html><html><head><link rel="stylesheet" href="bad.css"></head>'
+            '<body><div class="slide"><div class="headline" style="font-size:104px;">H <span class="em">x</span></div>'
+            '<div class="body">y</div></div></body></html>')
+        import subprocess, sys, json as J
+        out = subprocess.run([sys.executable, os.path.join(HERE,"..","qa_lint.py"),
+                              os.path.join(d,"s.html"), "--json"], capture_output=True, text=True)
+        codes = [v["code"] for v in J.loads(out.stdout)["violations"]]
+        assert "CONTRAST_INK_BG" in codes, "contraste do base.css linkado não foi lido (lint inerte)"
+    finally:
+        shutil.rmtree(d)
