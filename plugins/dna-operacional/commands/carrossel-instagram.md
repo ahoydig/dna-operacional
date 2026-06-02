@@ -79,13 +79,17 @@ No diretório `./carrossel-<slug>/`:
 
 ```bash
 cp ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/base.css ./base.css
+# render.mjs precisa rodar DE DENTRO do workdir (ESM resolve playwright a partir da pasta do script,
+# não do cwd) — por isso copiamos ele pra cá, junto do node_modules linkado:
+cp ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render.mjs ./render.mjs
+ln -sfn /Users/flavioahoy/Documents/projects/propostas/node_modules ./node_modules   # se não houver playwright local
 python3 ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render_carrossel.py carrossel.json slides
-node ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render.mjs slides
+node ./render.mjs slides
 ```
 
 - `render_carrossel.py` injeta `@import` Google Fonts + `@font-face` Nofex/Crankdat e linka `../base.css`; escreve `slides/NN.html`.
-- `render.mjs` usa Playwright (viewport 1080×1350 @2x, captura `clip`) e escreve `slides/NN.png`.
-- Precisa de `node_modules` com Playwright. Se não houver local, linkar de `/Users/flavioahoy/Documents/projects/propostas/node_modules` (`ln -s`).
+- `render.mjs` usa Playwright (viewport 1080×1350 @2x, captura `clip` fixo) e escreve `slides/NN.png`.
+- **Importante:** o `render.mjs` e o `node_modules` (com Playwright) precisam estar NO workdir — rodar o script direto de `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/` falha com `ERR_MODULE_NOT_FOUND: playwright`.
 
 ---
 

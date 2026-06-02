@@ -48,9 +48,11 @@ automaticamente. Não escrever `../` no json.
 ### Etapa 2 — Render visual (html → png)
 
 ```bash
-# pré-requisito: node_modules com playwright. Se faltar, linkar:
+# render.mjs roda DE DENTRO do workdir (ESM resolve playwright a partir da pasta do script, não do cwd).
+cp <lib>/carrossel/render.mjs <workdir>/render.mjs
 ln -sfn /Users/flavioahoy/Documents/projects/propostas/node_modules <workdir>/node_modules
-node <lib>/carrossel/render.mjs <workdir>/slides
+cd <workdir> && node ./render.mjs ./slides
+# rodar direto de <lib>/carrossel/render.mjs falha com ERR_MODULE_NOT_FOUND: playwright
 ```
 
 Playwright, viewport 1080×1350, deviceScaleFactor 2, `waitUntil:networkidle` + `document.fonts.ready`
