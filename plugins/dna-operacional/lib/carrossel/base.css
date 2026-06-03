@@ -1,0 +1,55 @@
+/* base.css — contrato visual do carrossel (canônico, validado pixel-perfect vs protótipo).
+   Fontes (@import/@font-face) são injetadas pelo render_carrossel.py, não aqui. */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d0b0a; --text:#fff; --gray:#bdb5ad; --accent:#C4714A;
+  --pad-x:64px;
+}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;
+  background:var(--bg);padding:64px var(--pad-x) 56px;
+  font-family:'Inter',sans-serif;color:var(--text);display:flex;flex-direction:column;}
+.slide::before{content:"";position:absolute;inset:0;z-index:0;opacity:0.04;pointer-events:none;
+  background-image:radial-gradient(#fff 0.5px,transparent 0.5px);background-size:3px 3px;}
+.bgphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.scrim{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,rgba(8,6,5,var(--scrim-top,0.42)),rgba(8,6,5,var(--scrim-bot,0.72)));}
+.ghost{position:absolute;top:36px;right:48px;font-family:'Nofex',sans-serif;
+  font-size:300px;line-height:0.8;color:#fff;opacity:0.035;z-index:0;}
+.snum{position:absolute;top:60px;left:var(--pad-x);font-family:'Inter';font-weight:700;
+  font-size:26px;color:#7a726a;z-index:4;letter-spacing:0.08em;}
+.kicker{font-family:'Inter';font-weight:700;font-size:28px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--accent);z-index:1;margin-bottom:18px;}
+.headline{font-family:'Nofex',sans-serif;font-weight:800;line-height:0.94;
+  letter-spacing:-0.005em;text-transform:uppercase;z-index:1;padding-top:0.04em;}
+/* accent = MESMA fonte da headline (Nofex), só muda a cor (preferência do criador).
+   Pra voltar ao serif itálico, use a classe .slide.accent-serif (toggle no playground). */
+.headline .em{color:var(--accent);}
+.accent-serif .headline .em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  text-transform:none;font-size:1.18em;line-height:0.8;}
+.sub{font-family:'Inter';font-weight:500;font-size:34px;line-height:1.42;color:var(--gray);
+  margin-top:24px;max-width:32ch;z-index:1;}
+.sub .em{color:var(--text);font-weight:700;}
+.sub .acc{color:var(--accent);font-weight:700;}
+.hero{z-index:1;}
+.shot{width:100%;border-radius:14px;display:block;
+  box-shadow:0 24px 64px rgba(0,0,0,0.72),0 0 0 1px rgba(255,255,255,0.05);}
+.note{position:absolute;font-family:'Caveat',cursive;font-weight:700;
+  font-size:44px;color:var(--accent);z-index:3;}
+.sun{font-family:'Instrument Serif',serif;color:var(--accent);font-size:96px;line-height:1;z-index:1;}
+.quote{border-left:5px solid var(--accent);padding:6px 0 6px 28px;
+  font-family:'Instrument Serif',serif;font-style:italic;font-size:46px;line-height:1.25;
+  color:var(--text);z-index:1;max-width:24ch;}
+/* footer: handle Crankdat CENTRALIZADO */
+.footer{position:absolute;left:0;right:0;bottom:48px;display:flex;justify-content:center;
+  align-items:center;z-index:4;}
+.footer .handle{font-family:'Crankdat',sans-serif;font-weight:700;font-size:46px;
+  color:#d8d0c6;letter-spacing:0.01em;line-height:1;}
+.swipe{position:absolute;bottom:50px;right:var(--pad-x);font-family:'Crankdat',sans-serif;
+  font-weight:700;font-size:40px;color:var(--accent);z-index:4;}
+/* CTA */
+.cta-stack{z-index:1;}
+.cta-stack .big{font-family:'Nofex',sans-serif;font-weight:800;text-transform:uppercase;
+  line-height:0.96;}
+.cta-stack .tok{color:var(--accent);}
+.center{text-align:center;align-items:center;}
+.spacer{flex:1;}

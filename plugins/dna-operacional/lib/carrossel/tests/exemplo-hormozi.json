@@ -1,0 +1,15 @@
+{
+  "meta": {"handle":"@flavioahoy","accent":"#C4714A","tema":"escuro","total":7,
+           "icon_top":"assets/claude-sun.png","bg_photo":"assets/bg-capa.png"},
+  "slides": [
+    {"tipo":"cover","kicker":"Sem saber programar","headline":"Clone o {Hormozi} dentro do Claude",
+     "sub":"6 docs. Um prompt. Ele {destrincha seu negócio}.",
+     "compo":{"left":"assets/hormozi-pixel.png","left2":"assets/livros.png","right_icon":"assets/claude-sun.png","right_label":"Claude"}},
+    {"tipo":"content","kicker":"Passo 1","headline":"Crie um {projeto}","sub":"Abra um projeto novo no Claude e batize de {\"Coach de negócios Hormozi\"}.","hero":"assets/tela1-criar-projeto.png"},
+    {"tipo":"content","kicker":"Passo 2","headline":"Suba os {6 docs}","sub":"A voz dele, as perguntas de coaching, os 3 livros e {os docs do seu negócio}.","hero":"assets/tela2-documentos.png"},
+    {"tipo":"content","kicker":"Passo 3","headline":"Diga {como} agir","sub":"Um prompt curto mandando o Claude te meter o sarrafo igual o Hormozi faria.","hero":"assets/tela3-instrucoes.png"},
+    {"tipo":"content","kicker":"O resultado","headline":"Agora ele {destrincha} tudo","sub":"Te diz exatamente o que arrumar, em que ordem, com os frameworks dele.","hero":"assets/tela4-resultado.png","hsize":96},
+    {"tipo":"quote","kicker":"Por que isso importa","headline":"Um sócio {brutalmente} honesto. De graça.","quote":"A maioria paga R$2 mil/hora por esse tipo de conselho. Você acabou de montar um que não dorme.","sub":"Não é sobre o Hormozi. É sobre ter alguém que te fala a verdade {quando você precisar}."},
+    {"tipo":"cta","headline_top":"Quer o passo a passo?","token":"HORMOZI","sub":"que eu te mando os {6 docs + o prompt completo} no direct.","bg_photo":"assets/bg-capa.png"}
+  ]
+}
