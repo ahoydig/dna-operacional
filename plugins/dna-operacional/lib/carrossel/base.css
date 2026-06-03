@@ -12,7 +12,7 @@
   background-image:radial-gradient(#fff 0.5px,transparent 0.5px);background-size:3px 3px;}
 .bgphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
 .scrim{position:absolute;inset:0;z-index:0;
-  background:linear-gradient(180deg,rgba(8,6,5,0.62),rgba(8,6,5,0.86));}
+  background:linear-gradient(180deg,rgba(8,6,5,var(--scrim-top,0.62)),rgba(8,6,5,var(--scrim-bot,0.86)));}
 .ghost{position:absolute;top:36px;right:48px;font-family:'Nofex',sans-serif;
   font-size:300px;line-height:0.8;color:#fff;opacity:0.035;z-index:0;}
 .snum{position:absolute;top:60px;left:var(--pad-x);font-family:'Inter';font-weight:700;
@@ -21,8 +21,11 @@
   text-transform:uppercase;color:var(--accent);z-index:1;margin-bottom:18px;}
 .headline{font-family:'Nofex',sans-serif;font-weight:800;line-height:0.94;
   letter-spacing:-0.005em;text-transform:uppercase;z-index:1;padding-top:0.04em;}
-.headline .em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
-  text-transform:none;color:var(--accent);font-size:1.18em;line-height:0.8;}
+/* accent = MESMA fonte da headline (Nofex), só muda a cor (preferência do criador).
+   Pra voltar ao serif itálico, use a classe .slide.accent-serif (toggle no playground). */
+.headline .em{color:var(--accent);}
+.accent-serif .headline .em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  text-transform:none;font-size:1.18em;line-height:0.8;}
 .sub{font-family:'Inter';font-weight:500;font-size:34px;line-height:1.42;color:var(--gray);
   margin-top:24px;max-width:32ch;z-index:1;}
 .sub .em{color:var(--text);font-weight:700;}

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel Playground</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,Inter,sans-serif;background:#15110e;color:#eee;display:flex;height:100vh;overflow:hidden}
+  #panel{width:380px;flex:0 0 380px;background:#1d1815;border-right:1px solid #3a302a;
+    padding:18px 20px;overflow-y:auto;height:100vh}
+  #panel h1{font-size:17px;color:#C4714A;margin-bottom:4px}
+  #panel .sub{font-size:12px;color:#9a8f85;margin-bottom:14px}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .tab{background:#2a221d;border:1px solid #3a302a;color:#cdbfb4;font-size:13px;font-weight:600;
+    padding:7px 11px;border-radius:8px;cursor:pointer}
+  .tab.on{background:#C4714A;color:#1a1410;border-color:#C4714A}
+  .grp{border-top:1px solid #2c2520;padding:12px 0}
+  .grp h2{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8a7f75;margin-bottom:10px}
+  .ctrl{margin-bottom:13px}
+  .ctrl label{display:flex;justify-content:space-between;font-size:13px;color:#cdc3b9;margin-bottom:4px}
+  .ctrl label b{color:#fff;font-variant-numeric:tabular-nums}
+  .ctrl input[type=range]{width:100%;accent-color:#C4714A}
+  .row{display:flex;gap:10px;align-items:center}
+  .row input[type=color]{width:46px;height:30px;border:none;background:none;border-radius:6px;cursor:pointer}
+  .chk{display:flex;align-items:center;gap:8px;font-size:13px;color:#cdc3b9;cursor:pointer}
+  #copy{width:100%;background:#C4714A;color:#1a1410;font-weight:700;font-size:14px;border:none;
+    padding:12px;border-radius:9px;cursor:pointer;margin-top:8px}
+  #out{width:100%;height:120px;margin-top:10px;background:#100c0a;color:#9fd39f;border:1px solid #2c2520;
+    border-radius:8px;font-family:ui-monospace,monospace;font-size:10px;padding:8px;display:none}
+  #stage{flex:1;display:flex;align-items:center;justify-content:center;background:#0a0807;
+    background-image:radial-gradient(#1a1410 1px,transparent 1px);background-size:22px 22px}
+  #wrap{width:1080px;height:1350px;transform-origin:center center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  #frame{width:1080px;height:1350px;border:0;display:block;background:#0d0b0a}
+  .hint{font-size:11px;color:#7a6f65;margin-top:8px;line-height:1.4}
+</style>
+</head>
+<body>
+  <div id="panel">
+    <h1>Carrossel Playground</h1>
+    <div class="sub">Ajusta ao vivo · 1:1 com o render · copia o JSON no fim</div>
+    <div class="tabs" id="tabs"></div>
+    <div class="grp">
+      <h2>Global</h2>
+      <div class="ctrl">
+        <label>Cor do accent</label>
+        <div class="row"><input type="color" id="accent"><span id="accentHex" style="font-size:12px;color:#9a8f85"></span></div>
+      </div>
+      <label class="chk"><input type="checkbox" id="serif"> Accent serifado (preview — default é flat)</label>
+    </div>
+    <div class="grp" id="dynamic">
+      <h2>Slide <span id="slideNo"></span> · <span id="slideType"></span></h2>
+      <div id="controls"></div>
+    </div>
+    <button id="copy">📋 Copiar carrossel.json</button>
+    <textarea id="out" readonly></textarea>
+    <div class="hint">Reage ao vivo. Os números viram campos do carrossel.json — cole de volta e rode o render pra gerar os PNGs finais. (Serif é só preview; o default fica flat.)</div>
+  </div>
+  <div id="stage"><div id="wrap"><iframe id="frame"></iframe></div></div>
+
+<script>
+const PAD = n => String(n+1).padStart(2,'0');
+const D = {
+  // specs por tipo: [campo, label, min, max, step, default]
+  cover: [
+    ['hsize','Headline altura (px)',40,140,1,104],
+    ['sub_size','Sub altura (px)',20,64,1,34],
+    ['figure_h','Figure altura (px)',200,950,5,620],
+    ['figure_x','Figure ← → (centro)',-320,320,2,0],
+    ['figure_bottom','Figure ↑↓ (base)',0,420,2,130],
+    ['aux_w','Aux tamanho (px)',200,820,5,500],
+    ['aux_x','Aux ← (esq)',-60,440,2,40],
+    ['aux_bottom','Aux ↑↓ (base)',0,520,2,430],
+    ['aux_rot','Aux rotação (°)',-16,16,1,-5],
+    ['scrim_top','BG escuro topo',0,1,0.02,0.42],
+    ['scrim_bot','BG escuro base',0,1,0.02,0.72],
+  ],
+  content: [
+    ['hsize','Headline altura (px)',40,140,1,96],
+    ['sub_size','Sub altura (px)',20,64,1,34],
+    ['hero_w','Hero tamanho %',40,100,1,100],
+  ],
+  quote: [
+    ['hsize','Headline altura (px)',40,140,1,96],
+    ['quote_size','Quote altura (px)',30,110,1,58],
+    ['sub_size','Sub altura (px)',20,64,1,34],
+  ],
+  cta: [
+    ['scrim_top','BG escuro topo',0,1,0.02,0.42],
+    ['scrim_bot','BG escuro base',0,1,0.02,0.72],
+  ],
+};
+let data, cur=0;
+
+fetch('carrossel.json').then(r=>r.json()).then(j=>{
+  data=j;
+  if(!data.meta.accent) data.meta.accent='#C4714A';
+  document.getElementById('accent').value=data.meta.accent;
+  document.getElementById('accentHex').textContent=data.meta.accent;
+  buildTabs(); select(0);
+});
+
+function buildTabs(){
+  const t=document.getElementById('tabs'); t.innerHTML='';
+  data.slides.forEach((s,i)=>{
+    const b=document.createElement('div'); b.className='tab'; b.textContent=(i+1)+' '+s.tipo;
+    b.onclick=()=>select(i); t.appendChild(b);
+  });
+}
+function select(i){
+  cur=i;
+  [...document.querySelectorAll('.tab')].forEach((b,k)=>b.classList.toggle('on',k===i));
+  document.getElementById('slideNo').textContent=i+1;
+  document.getElementById('slideType').textContent=data.slides[i].tipo;
+  buildControls();
+  const f=document.getElementById('frame');
+  f.onload=()=>applyLive();
+  f.src='slides/'+PAD(i)+'.html';
+}
+function buildControls(){
+  const s=data.slides[cur], specs=D[s.tipo]||[], box=document.getElementById('controls');
+  box.innerHTML='';
+  specs.forEach(([key,label,min,max,step,def])=>{
+    const val=(s[key]!==undefined)?s[key]:def;
+    s[key]=val;
+    const c=document.createElement('div'); c.className='ctrl';
+    c.innerHTML=`<label>${label} <b id="v_${key}">${val}</b></label>
+      <input type="range" min="${min}" max="${max}" step="${step}" value="${val}" data-k="${key}">`;
+    box.appendChild(c);
+    c.querySelector('input').addEventListener('input',e=>{
+      const v=parseFloat(e.target.value); s[key]=v;
+      document.getElementById('v_'+key).textContent=v;
+      applyLive();
+    });
+  });
+}
+function doc(){ const f=document.getElementById('frame'); return f.contentDocument||f.contentWindow.document; }
+function applyLive(){
+  let d; try{ d=doc(); }catch(e){ return; }
+  if(!d) return;
+  const s=data.slides[cur], m=data.meta;
+  const slide=d.querySelector('.slide'); if(!slide) return;
+  slide.style.setProperty('--accent', m.accent);
+  slide.classList.toggle('accent-serif', !!m._serif);
+  const hl=d.querySelector('.headline'); if(hl && s.hsize) hl.style.fontSize=s.hsize+'px';
+  const sb2=d.querySelector('.sub'); if(sb2 && s.sub_size) sb2.style.fontSize=s.sub_size+'px';
+  const sc=d.querySelector('.scrim'); if(sc){ if(s.scrim_top!==undefined) sc.style.setProperty('--scrim-top',s.scrim_top); if(s.scrim_bot!==undefined) sc.style.setProperty('--scrim-bot',s.scrim_bot); }
+  const q=d.querySelector('.quote'); if(q && s.quote_size) q.style.fontSize=s.quote_size+'px';
+  const sh=d.querySelector('.shot'); if(sh && s.hero_w) sh.style.width=s.hero_w+'%';
+  const fg=d.querySelector('#cover-fig'); if(fg){ if(s.figure_h)fg.style.height=s.figure_h+'px'; fg.style.left='calc(50% + '+(s.figure_x||0)+'px)'; if(s.figure_bottom!==undefined)fg.style.bottom=s.figure_bottom+'px'; }
+  const ax=d.querySelector('#cover-aux'); if(ax){ if(s.aux_w)ax.style.width=s.aux_w+'px'; if(s.aux_x!==undefined)ax.style.left=s.aux_x+'px'; if(s.aux_bottom!==undefined)ax.style.bottom=s.aux_bottom+'px'; ax.style.transform='rotate('+(s.aux_rot||0)+'deg)'; }
+}
+document.getElementById('accent').addEventListener('input',e=>{
+  data.meta.accent=e.target.value; document.getElementById('accentHex').textContent=e.target.value; applyLive();
+});
+document.getElementById('serif').addEventListener('change',e=>{ data.meta._serif=e.target.checked; applyLive(); });
+document.getElementById('copy').addEventListener('click',()=>{
+  const clean=JSON.parse(JSON.stringify(data)); delete clean.meta._serif;
+  const txt=JSON.stringify(clean,null,2);
+  const o=document.getElementById('out'); o.style.display='block'; o.value=txt; o.select();
+  try{ navigator.clipboard.writeText(txt); }catch(e){}
+});
+// escala o palco pra caber
+function fit(){
+  const st=document.getElementById('stage'), w=document.getElementById('wrap');
+  const s=Math.min((st.clientWidth-60)/1080,(st.clientHeight-60)/1350);
+  w.style.transform='scale('+s+')';
+}
+window.addEventListener('resize',fit); setTimeout(fit,100);
+</script>
+</body>
+</html>

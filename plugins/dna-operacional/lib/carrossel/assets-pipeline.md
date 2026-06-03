@@ -22,12 +22,12 @@ Mapeia cada slot do roteiro pro processo de produção. Coluna "Slot" = onde ent
 
 | Ativo | Slot no JSON | Origem | Processo |
 |---|---|---|---|
-| **Pessoa / personagem** (Hormozi, criador, cliente) | `compo.left`, `compo.left2` | **Foto real → pixel via gerar-imagem `-i`** | Pega a foto real da pessoa, passa como `-i foto.jpg`, prompt pede recorte pixel-art/cut-out fundo croma. Remove croma via Pillow. |
-| **Logo de marca** (Instagram, GitHub, Claude, app de cliente) | `compo.right_icon`, `meta.icon_top` | **PNG oficial baixado** | Baixar o PNG/SVG oficial da marca (press kit / brand page). NUNCA recriar à mão nem gerar por IA — vira logo errado. Asterisco Claude = asset oficial Anthropic. |
+| **Pessoa / personagem** (criador, cliente, autor citado) | `compo.left`, `compo.left2` | **Foto real → pixel via gerar-imagem `-i`** | Pega a foto real da pessoa, passa como `-i foto.jpg`, prompt pede recorte pixel-art/cut-out fundo croma. Remove croma via Pillow. |
+| **Logo de marca** (do projeto, ou citada: Instagram, GitHub, app do cliente…) | `compo.right_icon`, `meta.icon_top` | **PNG oficial baixado** | Baixar o PNG/SVG oficial da marca (press kit / brand page). NUNCA recriar à mão nem gerar por IA — vira logo errado. O logo de topo é o **da marca do projeto** (vem do `CLAUDE.md` ou perguntado ao user — Passo 0). |
 | **Capa de livro / produto físico** | `compo.left`, `compo.left2`, `hero` | **Imagem real recortada** | Capa real do livro/produto (loja/press), recortar fundo (Pillow ou croma). Sobrepor em leque na composição da capa. Não gerar capa fake. |
 | **Screenshot de UI** (Claude.ai, terminal, dashboard, app) | `hero` | **Capturar real OU forjar tela PT-BR** | Ordem do `screenshot-engine.md`: captura real > réplica fiel em HTML→PNG > pedir ao user. Tela forjada = HTML em PT-BR renderizado como PNG, `data-replica="true"`. |
 | **Background da capa / CTA** | `meta.bg_photo`, `slides[].bg_photo` | **Foto do criador escurecida** | Foto real do criador (setup, rua, ambiente). Escurecer via `.bgphoto`+`.scrim` (já no `base.css` — não queimar a foto no Pillow, o scrim faz isso em CSS). |
-| **Ícone de topo** (asterisco Claude) | `meta.icon_top` | **PNG oficial baixado** | Mesmo que logo. Asterisco coral oficial, fundo transparente. |
+| **Ícone de topo** (logo da marca do projeto) | `meta.icon_top` | **PNG oficial baixado** | Mesmo que logo. PNG oficial da marca, fundo transparente. (Ex.: asterisco Claude, logo do GitHub, marca do cliente.) |
 | **Mascote / voxel / textura abstrata** | qualquer | **Gerar por IA (sem `-i`)** | Único caso de gerar do nada — não existe no mundo. Cor = `--accent`. PNG transparente. Ver MANIFESTO §6. |
 
 **Por que `-i` quase sempre:** o gpt-image-2 inventa rosto, marca e detalhe quando
@@ -138,6 +138,6 @@ Fluxo completo (ver `render.md` pro harness determinístico):
 - [ ] `getbbox`+`crop` aplicado → sujeito colado na borda, escala previsível.
 - [ ] Background da capa/CTA = foto do criador, escurecida por `.scrim` (CSS), não queimada no Pillow.
 - [ ] Screenshot UI = captura real; se forjado, `data-replica="true"` + PT-BR + fato real ou ilustrativo.
-- [ ] Asterisco Claude = asset oficial Anthropic (não o ASCII do CLI — ver MANIFESTO §7).
+- [ ] Logo de topo = PNG oficial da marca do projeto (baixado, não recriado/gerado por IA — ver MANIFESTO §7).
 - [ ] PNG transparente (fundo zerado) pra todo cut-out que entra em `compo`.
 - [ ] Revisor automático leu cada PNG e o slide final antes de declarar pronto.

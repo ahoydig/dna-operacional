@@ -8,3 +8,9 @@
 - [carrossel-loop-verificacao.md](carrossel-loop-verificacao.md) — loop obrigatório gerar→render→ler PNG→corrigir; agente revisor + auto-correção
 - [carrossel-bg-foto-criador.md](carrossel-bg-foto-criador.md) — background da capa/CTA = foto do próprio criador, tratada/escurecida
 - [carrossel-mascote-clawd.md](carrossel-mascote-clawd.md) — mascote CLAWD: cabeça-caixa fiel + corpo humano pixelado, nunca fofo/robozinho
+- [carrossel-capa-2-imagens.md](carrossel-capa-2-imagens.md) — capa pode pedir 2 imagens (herói + 2ª prova); loop detecta vazio e OFERECE preencher
+- [carrossel-repertorio-capa.md](carrossel-repertorio-capa.md) — abrir o repertório visual inteiro da capa, nunca estreitar num device só (ex: só mascote)
+- [carrossel-forjar-macos-atual.md](carrossel-forjar-macos-atual.md) — forjar SO/app na versão ATUAL (SVG, não emoji velho) + censura pixelada
+- [gerar-imagem-codex-home.md](gerar-imagem-codex-home.md) — gerar-imagem lê o token de $CODEX_HOME (não ~/.codex); token rotaciona, re-login pode precisar 2x
+- [carrossel-playground.md](carrossel-playground.md) — playground HTML ajusta o carrossel ao vivo (iframe dos slides reais + sliders + copiar JSON)
+- [carrossel-distribuicao-tamanho.md](carrossel-distribuicao-tamanho.md) — encher o slide (hero/headline grandes), respiro headline↔sub, accent flat (mesma fonte só cor), bg menos escuro

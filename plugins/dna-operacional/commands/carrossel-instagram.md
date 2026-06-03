@@ -22,6 +22,10 @@ Usuário invocou `/carrossel-instagram` com argumento: `$ARGUMENTS`
 1. Ler `CLAUDE.md` do projeto atual procurando `## Handle: @<x>`. Fixar em `${HANDLE}` pra toda a sessão.
    - Sem handle → perguntar **uma vez** ("Qual handle do Instagram assina este carrossel?"), usar a resposta e sugerir gravar em `CLAUDE.md` depois.
 2. Se existir `reference/voz-${HANDLE}.md`, ler o frontmatter (tom, formalidade, energia, vícios a evitar). Calibra a copy do roteiro e a caption. Sem arquivo de voz → tom "amigo que descobriu algo bom" (não guru, não professor).
+3. **Ativos da marca — PERGUNTAR, nunca assumir nem salvar.** Esta skill é genérica e multi-pessoa. Quando chegar a hora dos ativos (Passo 3), pedir ao user:
+   - uma **foto dele** (vira o `bg_photo` escurecido da capa/CTA — de lado, lifestyle, não encarando a câmera fica melhor);
+   - se a marca tiver um **mascote/personagem recorrente**, a imagem de **referência** dele (vira herói da capa, gerado fiel via `gerar-imagem -i ref` — mesmo estilo, não infantilizar).
+   Não guardar foto/mascote de ninguém no repo — usar só na sessão. (Se o projeto já tiver um asset de marca documentado no `CLAUDE.md`, usar esse.)
 
 ---
 
@@ -50,7 +54,7 @@ Propor o **roteiro completo em texto** — sem gerar uma única imagem ainda. **
 - **ativo visual:** QUAL prova visual real vai entrar (foto tratada, logo oficial, tela capturada/forjada, gráfico)
 
 Arco recomendado (do MANIFESTO, templates A/B/C):
-- **Slide 1 (cover):** hook mais agressivo, promessa quantificada. bg = **foto do criador** escurecida.
+- **Slide 1 (cover):** hook mais agressivo, promessa quantificada. bg = **foto do criador** escurecida. **Herói visual:** escolher do **repertório** (`forge-screen.md` §8) — perfil viralizando, pasta secreta/censurada, telas do produto, gráfico de crescimento, mascote da marca. **Apresentar 3-5 opções concretas de herói ao user e deixar ele escolher — nunca estreitar num device só** (ex: só mascote). A capa pode ter **até 2 imagens** (herói `figure` + 2ª prova `aux`) pra não ficar vazia. **Background da capa/CTA:** ofereça **opções/sugestões** de cenário e tratamento (ângulo, troca de roupa, mais/menos escuro via `scrim_top`/`scrim_bot`) e **pergunte como o user quer** — nunca reutilizar a foto no automático. Se ele quiser variar, gerar a partir da foto dele (`gerar-imagem -i`).
 - **Slides 2-6/7 (content/quote):** um passo/ideia por slide, 1 prova visual real cada.
 - **Último (cta):** headline maior do carrossel + `Comenta "TOKEN"`. bg = **foto do criador** (bookend, fecha o loop).
 
@@ -63,6 +67,9 @@ Arco recomendado (do MANIFESTO, templates A/B/C):
 > Só depois do roteiro aprovado.
 
 1. **Ativos** — seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/assets-pipeline.md` (foto real → pixel via `gerar-imagem`, remoção de croma, logos oficiais) e `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/forge-screen.md` (telas forjadas em PT-BR via HTML→PNG). Regra-mãe: **ativo real > gerado do nada**. bg da capa/CTA = **foto do criador**.
+   - **Herói da capa:** PNG transparente no campo `figure` (recortar croma se gerado). Se cobrir texto, deslocar com `figure_x`; o vazio que sobrar do outro lado vira a 2ª imagem `aux` (ver `schema.md`).
+   - **Forjar tela de SO/app:** sempre na **versão ATUAL** (`forge-screen.md` §6 — ex: pasta macOS Big Sur flat, não o emoji velho); pedir um print de referência se estiver em dúvida do design atual.
+   - **Censura "secreto":** mosaico **pixelado**, não tarja preta chapada (`forge-screen.md` §7).
 2. **Estrutura de trabalho** — criar `./carrossel-<slug>/` com:
    - `assets/` — todos os ativos (fotos, logos, telas, gráficos)
    - `fonts/` — copiar `Nofex.ttf`, `Crankdat-Bold.ttf`, `Crankdat-Regular.ttf` (de `~/Library/Fonts/`, fallback workdir/fonts) — `Nofex-Outline.ttf` não é registrada pelo render, não copiar
@@ -93,6 +100,20 @@ node ./render.mjs slides
 
 ---
 
+## Passo 4.5 — Playground de ajuste fino (recomendado)
+
+Antes do loop final, oferecer o playground pro user calibrar tamanho/posição de cada elemento ao vivo (ver `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render.md` § Playground):
+
+```bash
+cp ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/playground.html ./playground.html
+python3 -m http.server 8777 &   # no workdir
+open http://localhost:8777/playground.html
+```
+
+O user mexe nos sliders (headline/sub/quote/hero, figure/aux da capa, scrim, cor do accent), clica **Copiar carrossel.json**, cola de volta → re-render. Usar pra validar **distribuição e tamanho** (respiro headline↔sub, heróis enchendo o slide).
+
+---
+
 ## Passo 5 — Loop de verificação (OBRIGATÓRIO, nunca pular)
 
 Seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/verify.md`. Em resumo, o loop:
@@ -120,6 +141,10 @@ Seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/verify.md`. Em resumo, o loop:
 6. **PT-BR e R$** — público brasileiro, valores em reais, nunca dólar no texto. **Não fabricar dado.**
 7. **Capa e CTA: bg = foto do criador** (escurecida via `.bgphoto` + `.scrim`).
 8. **GATE do Passo 2** — nenhuma imagem antes da aprovação do roteiro.
+9. **Capa com herói do repertório (e até 2ª imagem).** Escolher o herói do repertório (`forge-screen.md` §8) e **apresentar opções ao user — nunca estreitar num device só**. Se o herói sair do centro pra largar o texto (`figure_x`), preencher o vazio com `aux` (perguntando qual 2ª imagem). **Capa sem buraco.**
+10. **Forjar SO/app sempre na versão ATUAL** — nunca emoji/asset de sistema velho; "secreto" = censura em **mosaico pixelado**.
+11. **Distribuição e tamanho — encher o slide.** Slides bem distribuídos, com **respiro entre headline e sub** (não amontoar). Headlines de conteúdo costumam ir **grandes** (100-140px), quote **grande** (80-100px), e o **hero enche o slide** — imagem pequena perdida no meio é defeito. Ajustar tamanho de cada elemento (`hsize`/`sub_size`/`quote_size`/`hero_w`) e a escuridão do bg (`scrim_top`/`scrim_bot`) por slide. Telas forjadas devem nascer **altas o suficiente** pra encher (mais conteúdo na tela), não curtas.
+12. **Playground antes do loop final.** Depois de renderizar, oferecer o **playground** (`lib/carrossel/playground.html`, ver `render.md`) pro user **ajustar cada elemento ao vivo** e copiar o JSON de volta. É a forma de validar distribuição/tamanho sem ping-pong.
 
 ---
 

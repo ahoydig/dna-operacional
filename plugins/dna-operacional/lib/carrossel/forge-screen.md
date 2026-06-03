@@ -235,7 +235,87 @@ node render.mjs out_dir/slides                        # gera *.png 1080x1350 @2x
 
 ---
 
-## 6. Regra de honestidade
+## 6. Forjar o SO/app na versão ATUAL (não a velha)
+
+Ao forjar tela de sistema operacional ou app conhecido (macOS Finder, iOS, Instagram, WhatsApp…),
+replique o **design atual**, não uma versão antiga. Erro recorrente: usar **emoji** pra ícone de
+sistema — o emoji renderiza o asset **velho/skeuomórfico** (ex: `📁` = a pasta cinza-azul antiga do
+macOS, não a flat de hoje). Para parecer um print real e recente, **desenhe o ícone em SVG** com as
+specs atuais, ou use o PNG oficial. Antes de forjar, peça uma referência real ao user ("manda um print
+de como tá hoje no teu Mac/celular") — a UI muda e você pode estar com o modelo defasado.
+
+### Pasta do macOS atual (Big Sur+) — referência
+
+Pasta moderna = **azul ciano vivo**, flap frontal com uma **linha branca de brilho no topo**, cantos
+arredondados, flat. NÃO o emoji `📁`. SVG fiel (front-facing):
+
+```html
+<svg viewBox="0 0 204 160" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="ff" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#5CC8FA"/><stop offset="1" stop-color="#41BAF4"/></linearGradient></defs>
+  <!-- back + aba -->
+  <path d="M16 32 h58 a10 10 0 0 1 7 3 l10 10 a6 6 0 0 0 4.2 1.8 H186 a15 15 0 0 1 15 15 V139 a15 15 0 0 1 -15 15 H16 a15 15 0 0 1 -15 -15 V47 a15 15 0 0 1 15 -15 z" fill="#2BA7E8"/>
+  <!-- flap frontal -->
+  <rect x="5" y="64" width="194" height="90" rx="15" fill="url(#ff)"/>
+  <!-- linha branca de brilho no topo do flap (a assinatura do ícone atual) -->
+  <rect x="22" y="68" width="150" height="5" rx="2.5" fill="#EEFAFF" opacity="0.92"/>
+</svg>
+```
+
+Janela do Finder: chrome com os 3 semáforos (`#ff5f57`/`#febc2e`/`#28c840`), título centralizado,
+corpo branco (modo claro — **pop** sobre capa escura) ou `#1e1e1e` (modo escuro, se quiser bater 1:1
+com um print real). Badge de cadeado moderno (não emoji dourado): círculo escuro `#1d1d1f` + cadeado
+branco em SVG. Capture o elemento `.win` com `omitBackground:true` (PNG transparente, sombra inclusa
+pelo `padding` do body).
+
+## 7. Censura / borrão pixelado (efeito "secreto")
+
+Pra esconder nomes/dados e provocar curiosidade (carrossel de "X secretos"), **não** use tarja preta
+chapada — use um **mosaico pixelado** (parece texto borrado/redigido de verdade). Técnica: um grid de
+células pequenas (~7px) com tons de cinza aleatórios.
+
+```js
+const PAL = ['#161616','#2b2b2b','#474747','#6c6c6c','#969696','#bdbdbd'];
+function pixel(w){                                    // w = largura aprox. do "texto" censurado
+  const cell=7, cols=Math.round(w/cell), rows=4, n=cols*rows;
+  let cells=''; for(let i=0;i<n;i++) cells+=`<i style="background:${PAL[Math.floor(Math.random()*PAL.length)]}"></i>`;
+  return `<div class="pix" style="width:${cols*cell}px;grid-template-columns:repeat(${cols},${cell}px);grid-auto-rows:${cell}px">${cells}</div>`;
+}
+// CSS: .pix{display:grid;gap:0;border-radius:3px;overflow:hidden} .pix i{width:7px;height:7px;display:block}
+```
+
+Varie a largura por item (nomes de tamanhos diferentes = mais real). O `gerar-imagem` também pode
+pixelar/censurar uma foto, mas pro caso de nomes/labels o mosaico HTML é mais limpo e controlável.
+
+## 8. Repertório de herói/prova pra capa (NUNCA estreitar num só)
+
+A capa pede uma imagem-herói forte (campo `figure`/`aux` do `cover`, ver `schema.md`). Há um
+**repertório** — ao propor a capa, abra TODAS as opções relevantes ao tema com exemplos concretos,
+nunca ofereça só uma (ex: só "mascote"). Devices que esta lib sabe forjar/gerar:
+
+- **Perfil de rede social viralizando** (forjado) — print de um perfil com **seguidores explodindo**
+  (seta ↑, "+52k essa semana", gráfico subindo). Prova de "viral". Forje em HTML (header do IG/X) ou
+  gere via `gerar-imagem`. Números: redondos/ilustrativos, nunca métrica inventada que pareça real (§9).
+- **Pasta/arquivos secretos censurados** (forjado) — Finder com N itens, nomes em **mosaico pixelado**
+  + cadeado (§6/§7). Ótimo pra tema "X secretos/escondidos".
+- **Telas reais do produto** (forjado, §1-5) — mosaico de telas do app em PT-BR, prova de "o trabalho".
+- **Enxurrada de notificações** (forjado) — pilha de toasts de curtida/seguidor/comentário subindo.
+- **Gráfico/curva de crescimento** (forjado ou gerado) — engajamento/receita disparando.
+- **Mascote/personagem de marca** (gerado, `gerar-imagem -i ref`) — herói recorrente da marca. Gere
+  **fiel à referência** (não infantilizar, mesmo estilo do mascote). Combina com qualquer device acima
+  (ex: mascote + perfil explodindo; mascote + pasta secreta). **NÃO é o default:** só entra quando a
+  marca do projeto JÁ tem um personagem. A skill é genérica/multi-pessoa — priorize sempre os devices
+  **agnósticos de marca** acima (perfil, telas, notificações, gráfico, cards), que servem pra qualquer
+  pessoa/nicho, e ofereça o mascote como **mais uma** opção, nunca como a principal.
+- **CTA com preview do brinde** — no slide `cta`, em vez de só texto, forjar um **mockup do que a pessoa vai receber** (o "passo a passo", o PDF, o guia) inclinado no centro, com a headline em cima e "Comenta TOKEN" embaixo. Mostra o valor concreto do que ela ganha ao comentar. (Padrão de criadores tipo @noevarner.)
+
+**Forje alto o suficiente pra ENCHER o slide.** Erro recorrente: tela forjada curta (wide) que, com `width:100%` no `.shot`, fica baixa e some no meio do slide. Pra preencher, faça a tela mais **alta** (mais conteúdo: mais mensagens no chat, mais linhas, mais itens) — a altura do PNG é o que dá presença. Ex: num chat, somar mensagens ("Você tem horário essa semana?", "Olá, tem alguém aí???", "👀") deixa a conversa mais alta e o slide mais cheio.
+
+Combos costumam bater mais forte que um device só: **2 imagens** na capa (`figure` herói +
+`aux` prova), equilibrando os dois lados (ver regra das 2 imagens em `schema.md`). Ao propor a capa,
+liste devices **agnósticos** primeiro; mascote/marca-específico só se o projeto tiver.
+
+## 9. Regra de honestidade
 
 A réplica reproduz a **forma** da UI, não fabrica **fato**.
 

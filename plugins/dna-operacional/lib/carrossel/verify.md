@@ -142,7 +142,7 @@ foram defeitos que de fato apareceram produzindo carrosséis com esta lib.
    que dominar. *Corrigir:* escolher palavra accent mais curta/forte no json (`{palavra}`), ou ajustar
    `hsize` pra a headline caber sem isolar o accent. Nunca duas palavras accent.
 
-4. **Ícone/logo pequeno demais** — `meta.icon_top` (asterisco Claude) ou `compo.right_icon` minúsculo,
+4. **Ícone/logo pequeno demais** — `meta.icon_top` (logo da marca do projeto) ou `compo.right_icon` minúsculo,
    perdido. MANIFESTO §7: asterisco do app "~120–130px (~11–12% da largura)", centralizado no topo.
    *Corrigir:* o template fixa `icon_top` em 84px (cover) / 104px (cta) e o `right_icon` em 210px num
    chip de 300px — se o PNG mostra logo apagado, normalmente é **asset com resolução baixa ou muito
@@ -191,10 +191,30 @@ foram defeitos que de fato apareceram produzindo carrosséis com esta lib.
 11. **PT-BR / acentos** — texto em inglês onde devia ser PT-BR, ou acento clipado/faltando
     (Nofex/Crankdat às vezes clipam acentos no topo — `base.css` já dá `padding-top:0.04em` na
     `.headline`). O revisor LÊ o texto do PNG e confere: idioma PT-BR, "não" com til, "ã/õ/ç/é/ê"
-    renderizando inteiros (sem corte no topo do glifo). MANIFESTO + voz do projeto: conteúdo do Flávio é
-    PT-BR. *Corrigir:* texto errado → editar o json; acento clipado → garantir que a headline usa a
+    renderizando inteiros (sem corte no topo do glifo). MANIFESTO + voz do projeto: conteúdo no idioma
+    do projeto (PT-BR no default), sem hardcode de pessoa. *Corrigir:* texto errado → editar o json; acento clipado → garantir que a headline usa a
     classe `.headline` (que tem o `padding-top`), ou subir levemente o `padding-top` via override só
     naquele slide se o glifo específico ainda cortar.
+
+12. **Herói (`figure`) sobre o texto** — a figura-herói da capa (mascote/personagem/objeto, campo
+    `figure`) subindo e cobrindo a `.headline` ou o `.sub`. É o mesmo pecado do item 2, mas pro `figure`
+    (não o `compo`). *Corrigir:* deslocar lateralmente com `figure_x` (negativo=esquerda, +=direita)
+    pra fugir do texto; descer com `figure_bottom` menor; ou reduzir `figure_h`. **O texto sempre
+    vence** — nunca deixar o herói tampar palavra/acento legível.
+
+13. **Buraco na capa depois de deslocar o herói** — quando o `figure` foi pro lado (`figure_x`) pra
+    largar o texto, sobra um **espaço vazio** do outro lado. Capa boa é densa e equilibrada, não tem
+    buraco. *Corrigir:* preencher com `aux` (2ª imagem — prova que reforça a headline; repertório em
+    `forge-screen.md` §8). **Defeito especial:** QUAL imagem entra é decisão criativa — o loop deve
+    **parar e oferecer ao user** preencher o vazio, com **2-3 sugestões concretas** de device (perfil
+    viralizando, pasta secreta/censurada, gráfico de crescimento, telas do produto…) + a opção de
+    enviar como está. Auto-corrige posição/tamanho (`aux_x`/`aux_w`/`aux_bottom`/`aux_rot`); o
+    **conteúdo** da 2ª imagem, pergunta — não inventa no escuro.
+
+14. **Contador sobre a logo** — `snum` (NN/NN) colidindo com `icon_top`/logo no mesmo canto. Na capa
+    isto não acontece (a capa não leva contador — `templates.py` removeu o `snum` do `_cover`), mas em
+    qualquer slide onde contador e logo caiam no mesmo canto é defeito. *Corrigir:* tirar o contador
+    daquele slide ou reposicionar a logo.
 
 Defeitos extras a varrer sempre que o PNG mostrar: **slide só-texto sem visual** (MANIFESTO §5/§10: todo
 content tem UM herói — se um content não tem `hero` nem motivo, é buraco), **duas palavras accent na
@@ -236,9 +256,15 @@ Para CADA slide, verifique e reporte qualquer um destes defeitos (use exatamente
   - NO_VISUAL           slide de conteúdo sem nenhum elemento herói (buraco)
   - DOUBLE_ACCENT       duas+ palavras accent na mesma headline
   - HERO_PROPORTION     herói fora de ~35-48% da altura (buraco ou esmagado)
+  - FIGURE_OVER_TEXT    herói da capa (figure) cobrindo headline/sub — deslocar via figure_x
+  - COVER_EMPTY_GAP     capa com vazio após o herói sair do centro — PARAR e oferecer 2ª imagem (aux) ao user
+  - COUNTER_OVER_LOGO   contador (snum) colidindo com a logo no mesmo canto
+  - CRAMPED_LAYOUT      headline e sub coladas / blocos amontoados — falta respiro (subir margem ou reduzir tamanho)
+  - HERO_TOO_SMALL      hero/imagem pequena perdida no slide — devia encher mais (subir hsize/quote_size, hero mais alto, ou hero_w)
 
 Para cada defeito inclua: code, e uma "obs" curta dizendo ONDE no slide e a correção sugerida
-na FONTE (carrossel.json/asset), nunca no HTML.
+na FONTE (carrossel.json/asset), nunca no HTML. **Exceção COVER_EMPTY_GAP:** não auto-preencher —
+sinalizar pro controlador parar e perguntar ao user qual 2ª imagem entra (com sugestões).
 
 Responda SÓ com JSON, sem markdown, sem cercas:
 [

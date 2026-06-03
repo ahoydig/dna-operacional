@@ -33,11 +33,17 @@ def slide(s, idx, total, meta):
 
 def _bg(d):
     p = d.get("bg_photo")
-    return ('<img class="bgphoto" src="%s"><div class="scrim"></div>' % asset(p)) if p else ""
+    if not p:
+        return ""
+    # capa/CTA menos escuros por padrão (0.42/0.72 vs 0.62/0.86 antigos); ajustável por slide/meta.
+    st = d.get("scrim_top", 0.42)
+    sb = d.get("scrim_bot", 0.72)
+    return '<img class="bgphoto" src="%s"><div class="scrim" style="--scrim-top:%s;--scrim-bot:%s"></div>' % (asset(p), st, sb)
 
 def _content(s, idx, total, meta):
     hsize = s.get("hsize", 104)
-    hero = '<div class="hero"><img class="shot" src="%s"></div>' % asset(s["hero"]) if s.get("hero") else ""
+    hw = s.get("hero_w", 100)  # largura do hero em % do eixo (ajustável; 100 = cheio)
+    hero = '<div class="hero"><img class="shot" src="%s" style="width:%s%%;"></div>' % (asset(s["hero"]), hw) if s.get("hero") else ""
     return f"""
 <div class="slide">
   <div class="ghost">{idx-1:02d}</div>
@@ -45,7 +51,7 @@ def _content(s, idx, total, meta):
   <div style="margin-top:30px">
     <div class="kicker">{s.get('kicker','')}</div>
     <div class="headline" style="font-size:{hsize}px;">{accent(s['headline'])}</div>
-    <div class="sub">{accent(s.get('sub',''))}</div>
+    <div class="sub" style="font-size:{s.get('sub_size',34)}px;">{accent(s.get('sub',''))}</div>
   </div>
   <div class="spacer"></div>
   {hero}
@@ -72,17 +78,22 @@ def _cover(s, idx, total, meta):
     icon_top = '<img src="%s" style="width:84px;height:84px;margin:8px 0 14px;z-index:1;display:block;">' % asset(meta["icon_top"]) if meta.get("icon_top") else ""
     # strip: imagem larga (ex: grade de previews) preenchendo o espaço entre o sub e o footer — evita capa vazia
     strip = ('<img src="%s" style="position:absolute;left:64px;right:64px;bottom:150px;width:calc(100%% - 128px);z-index:2;filter:drop-shadow(0 16px 36px rgba(0,0,0,0.5));">' % asset(s["strip"])) if s.get("strip") else ""
-    # figure: figura única (ex: mascote) centralizada no espaço inferior — herói da capa
-    fig = ('<img src="%s" style="position:absolute;left:50%%;bottom:130px;transform:translateX(-50%%);height:%dpx;z-index:2;filter:drop-shadow(0 18px 34px rgba(0,0,0,0.6));">' % (asset(s["figure"]), s.get("figure_h", 620))) if s.get("figure") else ""
+    # figure: figura única (ex: mascote) — herói da capa. figure_x desloca na horizontal
+    # (negativo=esquerda, positivo=direita) pra fugir de colisão com o texto; figure_bottom ajusta a altura.
+    fig = ('<img id="cover-fig" src="%s" style="position:absolute;left:calc(50%% + %dpx);bottom:%dpx;transform:translateX(-50%%);height:%dpx;z-index:2;filter:drop-shadow(0 18px 34px rgba(0,0,0,0.6));">' % (asset(s["figure"]), s.get("figure_x", 0), s.get("figure_bottom", 130), s.get("figure_h", 620))) if s.get("figure") else ""
+    # aux: 2ª imagem (ex: print/janela forjada) preenchendo o vazio que sobra quando figure foge do texto.
+    # Fica atrás da figure (z-index 1) pra dar profundidade. aux_w largura, aux_x esquerda, aux_bottom altura, aux_rot rotação.
+    aux = ('<img id="cover-aux" src="%s" style="position:absolute;left:%dpx;bottom:%dpx;width:%dpx;z-index:1;transform:rotate(%sdeg);filter:drop-shadow(0 18px 36px rgba(0,0,0,0.6));">' % (asset(s["aux"]), s.get("aux_x", 40), s.get("aux_bottom", 430), s.get("aux_w", 500), s.get("aux_rot", -5))) if s.get("aux") else ""
+    # capa não leva contador (é obviamente o slide 1) — ele competia com a logo no canto superior
     return f"""
 <div class="slide" style="justify-content:flex-start;text-align:left;align-items:flex-start;">
   {_bg(meta)}
-  <div class="snum" style="color:#cfc7bf">{idx:02d} / {total:02d}</div>
   {icon_top}
   <div class="kicker" style="margin:0 0 14px;">{s.get('kicker','')}</div>
   <div class="headline" style="font-size:{s.get('hsize',104)}px;text-align:left;">{accent(s['headline'])}</div>
-  <div class="sub" style="margin:22px 0 0;max-width:26ch;text-align:left;color:#e8e0d6;">{accent(s.get('sub',''))}</div>
+  <div class="sub" style="margin:22px 0 0;max-width:26ch;text-align:left;color:#e8e0d6;font-size:{s.get('sub_size',34)}px;">{accent(s.get('sub',''))}</div>
   {strip}
+  {aux}
   {fig}
   {compo}
   {footer(meta['handle'], swipe=True)}
@@ -97,9 +108,9 @@ def _quote(s, idx, total, meta):
     <div class="headline" style="font-size:{s.get('hsize',96)}px;">{accent(s['headline'])}</div>
   </div>
   <div class="spacer"></div>
-  <div class="quote">"{s['quote']}"</div>
+  <div class="quote" style="font-size:{s.get('quote_size',58)}px;">"{s['quote']}"</div>
   <div class="spacer"></div>
-  <div class="sub" style="max-width:34ch;">{accent(s.get('sub',''))}</div>
+  <div class="sub" style="max-width:34ch;font-size:{s.get('sub_size',34)}px;">{accent(s.get('sub',''))}</div>
   <div class="spacer"></div>
   {footer(meta['handle'], swipe=True)}
 </div>"""
