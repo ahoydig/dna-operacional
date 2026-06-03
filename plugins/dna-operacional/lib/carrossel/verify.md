@@ -50,7 +50,9 @@ automaticamente. Não escrever `../` no json.
 ```bash
 # render.mjs roda DE DENTRO do workdir (ESM resolve playwright a partir da pasta do script, não do cwd).
 cp <lib>/carrossel/render.mjs <workdir>/render.mjs
-ln -sfn /Users/flavioahoy/Documents/projects/propostas/node_modules <workdir>/node_modules
+# playwright no workdir: usa o local; senão instala; senão atalho da máquina do Flávio
+[ -d <workdir>/node_modules/playwright ] || (cd <workdir> && npm i playwright) \
+  || ln -sfn ~/Documents/projects/propostas/node_modules <workdir>/node_modules
 cd <workdir> && node ./render.mjs ./slides
 # rodar direto de <lib>/carrossel/render.mjs falha com ERR_MODULE_NOT_FOUND: playwright
 ```
@@ -216,6 +218,15 @@ foram defeitos que de fato apareceram produzindo carrosséis com esta lib.
     qualquer slide onde contador e logo caiam no mesmo canto é defeito. *Corrigir:* tirar o contador
     daquele slide ou reposicionar a logo.
 
+15. **Layout amontoado (sem respiro)** — headline e sub coladas, ou blocos espremidos sem espaço entre
+    eles. Carrossel bom respira (MANIFESTO: distribuição). *Corrigir:* na fonte, reduzir `hsize`/`sub_size`
+    ou abrir margem; deixar espaço entre headline e sub. Código: `CRAMPED_LAYOUT`.
+
+16. **Hero/imagem pequeno demais** — a prova visual (hero, quote, figure) pequena e perdida no meio do
+    slide, sobrando vazio em volta. Imagem tem que **encher** (regra 11 do command). *Corrigir:* subir
+    `hsize`/`quote_size`/`hero_w`, ou forjar a tela mais **alta** (mais conteúdo) pra ela ocupar a tela.
+    Código: `HERO_TOO_SMALL`.
+
 Defeitos extras a varrer sempre que o PNG mostrar: **slide só-texto sem visual** (MANIFESTO §5/§10: todo
 content tem UM herói — se um content não tem `hero` nem motivo, é buraco), **duas palavras accent na
 mesma headline** (proibido, §3), **mascote/compo competindo com a headline** (§6 "não saturar"),
@@ -239,7 +250,7 @@ Faça Read de cada arquivo:
 
 Referência de verdade: ${CLAUDE_PLUGIN_ROOT}/references/carrossel-lab/MANIFESTO-DIAGRAMACAO.md
 (eixo de coluna sagrado à esquerda; herói 35-48% da altura; EXATAMENTE 1 palavra accent por
-headline; footer idêntico em todos; capa/CTA com foto escurecida; CTA = headline maior; PT-BR).
+headline; footer idêntico em todos; capa/CTA com imagem de marca escurecida quando houver (não exigir foto de pessoa); CTA = headline maior; PT-BR).
 
 Para CADA slide, verifique e reporte qualquer um destes defeitos (use exatamente estes códigos):
   - NOTE_OVER_TEXT      anotação handwritten sobre texto/borda

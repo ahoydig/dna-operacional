@@ -40,9 +40,12 @@ no `border-box` do `.screen`, então o PNG já sai no tamanho certo, pronto pra 
 
 ---
 
-## 2. Specs do Claude.ai (alvo de referência)
+## 2. Extrair as specs da tela alvo (QUALQUER produto)
 
-Valores observados da UI real do Claude.ai. Use como ponto de partida; ajuste se o produto mudar.
+Pra forjar qualquer tela (app de dieta, CRM, portal jurídico, e-commerce, dashboard, agenda...), peça
+um **print / brand page do alvo real** e leia: cor de fundo, accent da marca, raio de canto, fonte,
+bordas, estados (repouso/focado/erro). A tabela abaixo é **só um EXEMPLO** (Claude.ai) de como anotar
+essas specs — **não é a referência da skill**, é o formato. Troque pelos valores do SEU alvo.
 
 | Token | Valor | Onde |
 |---|---|---|
@@ -194,8 +197,9 @@ Dependência Playwright: este `lib/carrossel/` não tem `node_modules` próprio.
 `propostas` (mesma estratégia do `render.mjs`):
 
 ```bash
-ln -sf /Users/flavioahoy/Documents/projects/propostas/node_modules \
-       /Users/flavioahoy/Documents/projects/dna-operacional/plugins/dna-operacional/lib/carrossel/node_modules
+# playwright no dir do script: instale (genérico) ou linke um node_modules que tenha
+npm i playwright   # OU atalho da máquina do Flávio:
+# ln -sf ~/Documents/projects/propostas/node_modules <lib>/carrossel/node_modules
 ```
 
 Depois:
@@ -326,11 +330,12 @@ A réplica reproduz a **forma** da UI, não fabrica **fato**.
   - **Números** (contadores, métricas, preços, "1.234 usuários") → ou são **reais** (você tem a fonte),
     ou são **claramente ilustrativos** (use valores redondos óbvios tipo `1.234`, `R$ 99`, ou rotule
     "exemplo"). Nunca um número específico inventado que pareça medido.
-  - **Citações/respostas do produto** → não coloque na boca do Claude/ChatGPT uma resposta que ele não
-    deu, apresentada como real. Se for exemplo, que fique óbvio que é exemplo.
+  - **Citações/respostas do produto** → não coloque na boca do produto/app forjado (assistente, CRM,
+    app de agenda, e-commerce, IA...) uma resposta/feature que ele não deu/não tem, como se fosse real.
+    Se for exemplo, que fique óbvio que é exemplo.
   - **UI que não existe** → não invente botão/feature que o produto não tem e venda como real. Se for
     conceito/mock, diga que é mock.
-- **Teste do print:** se alguém der screenshot da tela forjada e disser "olha, o Claude faz X" — isso
+- **Teste do print:** se alguém der screenshot da tela forjada e disser "olha, o app faz X" — isso
   está correto? Se a forma é fiel mas o fato é inventado, você criou desinformação. Recue pro ilustrativo.
 
 Resumo: imitar a **casca** da UI = honesto. Colocar **conteúdo falso** dentro dela como se fosse real =

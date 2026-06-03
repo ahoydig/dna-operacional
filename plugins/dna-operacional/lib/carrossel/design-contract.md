@@ -1,5 +1,12 @@
 # Contrato de Design do Carrossel-Lab
 
+> ⚠️ **LEGADO (carrossel-lab antigo).** Este doc descreve um contrato do laboratório que **não bate
+> 1:1 com a lib atual**: a fonte da verdade hoje é `base.css` (classes `.sub`/`.headline`/`.shot`/
+> `.scrim`/`.bgphoto`/`.snum`/`.swipe`/`.footer`) + `schema.md` + `qa_lint.py`. Classes como `.body`,
+> `.headline-group`, `.screenshot-frame`, `.progress` e a "escala modular obrigatória" descritas abaixo
+> NÃO refletem o engine atual (o lint não reprova por escala, e o body real é a `.sub`). Use só como
+> contexto histórico — pra produzir, siga `schema.md`/`base.css`/`verify.md`.
+
 Contrato que TODAS as teses do lab respeitam. O `base.css` implementa; o `qa_lint.py` valida.
 
 ## Canvas

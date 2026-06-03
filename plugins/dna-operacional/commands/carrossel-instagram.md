@@ -49,14 +49,14 @@ Propor o **roteiro completo em texto** — sem gerar uma única imagem ainda. **
 
 - **tipo:** `cover` | `content` | `quote` | `cta`
 - **kicker:** label curto (ex: "Passo 1", "O problema")
-- **headline:** com `{palavra accent}` (exatamente 1 trecho entre chaves — vira serif itálico colorido)
+- **headline:** com `{palavra accent}` (exatamente 1 trecho entre chaves → vira `.em`: **mesma fonte da headline, só muda a cor**; serif itálico é opt-in via `.accent-serif`)
 - **sub:** subtítulo / linha de impacto
 - **ativo visual:** QUAL prova visual real vai entrar (foto tratada, logo oficial, tela capturada/forjada, gráfico)
 
 Arco recomendado (do MANIFESTO, templates A/B/C):
-- **Slide 1 (cover):** hook mais agressivo, promessa quantificada. bg = **foto do criador** escurecida. **Herói visual:** escolher do **repertório** (`forge-screen.md` §8) — perfil viralizando, pasta secreta/censurada, telas do produto, gráfico de crescimento, mascote da marca. **Apresentar 3-5 opções concretas de herói ao user e deixar ele escolher — nunca estreitar num device só** (ex: só mascote). A capa pode ter **até 2 imagens** (herói `figure` + 2ª prova `aux`) pra não ficar vazia. **Background da capa/CTA:** ofereça **opções/sugestões** de cenário e tratamento (ângulo, troca de roupa, mais/menos escuro via `scrim_top`/`scrim_bot`) e **pergunte como o user quer** — nunca reutilizar a foto no automático. Se ele quiser variar, gerar a partir da foto dele (`gerar-imagem -i`).
+- **Slide 1 (cover):** hook mais agressivo, promessa quantificada. bg = **imagem de marca** (foto do criador OU cena/produto/textura temática) escurecida, opcional. **Herói visual:** escolher do **repertório** (`forge-screen.md` §8) — perfil viralizando, pasta secreta/censurada, telas do produto, gráfico de crescimento, mascote da marca. **Apresentar 3-5 opções concretas de herói ao user e deixar ele escolher — nunca estreitar num device só** (ex: só mascote). A capa pode ter **até 2 imagens** (herói `figure` + 2ª prova `aux`) pra não ficar vazia. **Background da capa/CTA:** ofereça **opções/sugestões** de cenário e tratamento (ângulo, troca de roupa, mais/menos escuro via `scrim_top`/`scrim_bot`) e **pergunte como o user quer** — nunca reutilizar a foto no automático. Se ele quiser variar, gerar a partir da foto dele (`gerar-imagem -i`).
 - **Slides 2-6/7 (content/quote):** um passo/ideia por slide, 1 prova visual real cada.
-- **Último (cta):** headline maior do carrossel + `Comenta "TOKEN"`. bg = **foto do criador** (bookend, fecha o loop).
+- **Último (cta):** headline maior do carrossel + `Comenta "TOKEN"`. bg = **mesma imagem de marca da capa** (bookend, fecha o loop). Pode mostrar um **preview do brinde** no centro (campo `preview` — ver `forge-screen.md` §8).
 
 **Apresentar o roteiro e AGUARDAR aprovação explícita do user antes de avançar.** Não gerar imagem, não montar `carrossel.json`, não renderizar nada antes do "ok".
 
@@ -66,7 +66,7 @@ Arco recomendado (do MANIFESTO, templates A/B/C):
 
 > Só depois do roteiro aprovado.
 
-1. **Ativos** — seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/assets-pipeline.md` (foto real → pixel via `gerar-imagem`, remoção de croma, logos oficiais) e `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/forge-screen.md` (telas forjadas em PT-BR via HTML→PNG). Regra-mãe: **ativo real > gerado do nada**. bg da capa/CTA = **foto do criador**.
+1. **Ativos** — seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/assets-pipeline.md` (foto real → pixel via `gerar-imagem`, remoção de croma, logos oficiais) e `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/forge-screen.md` (telas forjadas em PT-BR via HTML→PNG). Regra-mãe: **ativo real > gerado do nada**. bg da capa/CTA = **imagem de marca** (foto do criador, OU cena/produto/textura temática — opcional, sem rosto obrigatório).
    - **Herói da capa:** PNG transparente no campo `figure` (recortar croma se gerado). Se cobrir texto, deslocar com `figure_x`; o vazio que sobrar do outro lado vira a 2ª imagem `aux` (ver `schema.md`).
    - **Forjar tela de SO/app:** sempre na **versão ATUAL** (`forge-screen.md` §6 — ex: pasta macOS Big Sur flat, não o emoji velho); pedir um print de referência se estiver em dúvida do design atual.
    - **Censura "secreto":** mosaico **pixelado**, não tarja preta chapada (`forge-screen.md` §7).
@@ -75,7 +75,7 @@ Arco recomendado (do MANIFESTO, templates A/B/C):
    - `fonts/` — copiar `Nofex.ttf`, `Crankdat-Bold.ttf`, `Crankdat-Regular.ttf` (de `~/Library/Fonts/`, fallback workdir/fonts) — `Nofex-Outline.ttf` não é registrada pelo render, não copiar
    - `carrossel.json` — o roteiro (formato em `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/schema.md`)
 3. **Montar `carrossel.json`** seguindo o schema:
-   - `meta`: `handle` (= `${HANDLE}`), `accent` (default `#C4714A`), `tema` (`escuro`), `total`, `bg_photo` (foto do criador), `icon_top` opcional.
+   - `meta`: `handle` (= `${HANDLE}`), `accent` (default `#C4714A`), `tema` (`escuro`), `total`, `bg_photo` (imagem de marca da capa/CTA — opcional), `icon_top` (logo da marca — opcional).
    - `slides[]`: tipos `cover`/`content`/`quote`/`cta`. `{x}` = palavra accent (exatamente 1 por headline). `hero` (content) = caminho da tela/prova. `compo` (cover) = composição. Paths relativos `assets/...` (o gerador prefixa `../` sozinho).
 
 ---
@@ -85,11 +85,13 @@ Arco recomendado (do MANIFESTO, templates A/B/C):
 No diretório `./carrossel-<slug>/`:
 
 ```bash
+cd ./carrossel-<slug>/                       # TUDO roda de dentro do workdir
 cp ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/base.css ./base.css
-# render.mjs precisa rodar DE DENTRO do workdir (ESM resolve playwright a partir da pasta do script,
-# não do cwd) — por isso copiamos ele pra cá, junto do node_modules linkado:
+# render.mjs roda DE DENTRO do workdir (ESM resolve playwright a partir da pasta do script):
 cp ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render.mjs ./render.mjs
-ln -sfn /Users/flavioahoy/Documents/projects/propostas/node_modules ./node_modules   # se não houver playwright local
+# Playwright no workdir (genérico): usar local → senão instalar → senão atalho da máquina do Flávio.
+[ -d node_modules/playwright ] || npm i playwright >/dev/null 2>&1 \
+  || ln -sfn ~/Documents/projects/propostas/node_modules ./node_modules
 python3 ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render_carrossel.py carrossel.json slides
 node ./render.mjs slides
 ```
@@ -105,8 +107,9 @@ node ./render.mjs slides
 Antes do loop final, oferecer o playground pro user calibrar tamanho/posição de cada elemento ao vivo (ver `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/render.md` § Playground):
 
 ```bash
+cd ./carrossel-<slug>/                       # de dentro do workdir
 cp ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/playground.html ./playground.html
-python3 -m http.server 8777 &   # no workdir
+python3 -m http.server 8777 &                # serve o workdir (iframe same-origin + fontes)
 open http://localhost:8777/playground.html
 ```
 
@@ -118,8 +121,8 @@ O user mexe nos sliders (headline/sub/quote/hero, figure/aux da capa, scrim, cor
 
 Seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/verify.md`. Em resumo, o loop:
 
-1. **Lint determinístico** — `python3 ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/qa_lint.py slides/NN.html` em cada slide. Lê CSS de `<style>` inline, `base.css` linkado e atributos `style=`. Valida contraste WCAG (`--text`/`--bg`, `--accent`/`--bg`), `BODY_TOO_SMALL`, `HEADLINE_TOO_SMALL` (< 76px), `OBJECTFIT_CONTAIN_BG`, `HEADLINE_NO_ACCENT`. Exit ≠ 0 = violação.
-2. **Agente revisor automático** — `Read` cada PNG e checar o subjetivo que o lint não pega: hierarquia, respiro, palavra órfã, acentos PT-BR corretos, prova visual presente em todo slide de conteúdo, headline com exatamente 1 palavra accent, Crankdat só no handle/swipe, bg foto do criador na capa/CTA.
+1. **Lint determinístico** — `python3 ${CLAUDE_PLUGIN_ROOT}/lib/carrossel/qa_lint.py slides/NN.html` em cada slide. Lê CSS de `<style>` inline, `base.css` linkado e atributos `style=`. Valida contraste WCAG (`--text`/`--bg`, `--accent`/`--bg`), `BODY_TOO_SMALL`, `HEADLINE_TOO_SMALL` (< 76px), `OBJECTFIT_CONTAIN_BG`, `HEADLINE_NO_ACCENT`, `ASSET_MISSING` (img inexistente), `NO_VISUAL` (content sem hero). Exit ≠ 0 = violação.
+2. **Agente revisor automático** — `Read` cada PNG e checar o subjetivo que o lint não pega: hierarquia, respiro, palavra órfã, acentos PT-BR corretos, prova visual presente em todo slide de conteúdo, headline com exatamente 1 palavra accent, Crankdat só no handle/swipe, imagem de fundo de marca na capa/CTA (quando houver).
 3. **Auto-correção** — corrigir HTML/json/ativo e **re-renderizar**. Repetir lint + revisor **até zero defeitos**. Não mostrar ao user antes de zerar.
 
 ---
@@ -134,8 +137,8 @@ Seguir `${CLAUDE_PLUGIN_ROOT}/lib/carrossel/verify.md`. Em resumo, o loop:
 ## Regras invioláveis (do MANIFESTO)
 
 1. **Clonar geometria** — eixo de coluna (`--pad-x:64px`), headline gigante, elemento herói grande. Não reinventar layout; usar `base.css` + `templates.py`.
-2. **Headline:** Nofex + **exatamente 1 palavra** serif itálico accent (`{x}` → `.em`). **Crankdat só no handle e no swipe.**
-3. **Todo slide de conteúdo com ≥1 prova visual real.** Slide só-texto é proibido.
+2. **Headline:** Nofex + **exatamente 1 palavra accent** (`{x}` → `.em`: mesma fonte da headline, só muda a cor; serif itálico só com a classe `.accent-serif`). **Crankdat só no handle e no swipe.**
+3. **Todo slide de conteúdo com ≥1 prova visual real.** Slide só-texto é proibido (o `qa_lint` pega via `NO_VISUAL`).
 4. **Ativo real > gerado do nada.** Foto, logo oficial, tela capturada/forjada antes de qualquer coisa inventada.
 5. **Loop de verificação nunca pula** (Passo 5).
 6. **PT-BR e R$** — público brasileiro, valores em reais, nunca dólar no texto. **Não fabricar dado.**

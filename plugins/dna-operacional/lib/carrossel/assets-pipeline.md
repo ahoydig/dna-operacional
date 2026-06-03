@@ -123,8 +123,8 @@ Fluxo completo (ver `render.md` pro harness determinístico):
 5. QA lint **antes** de renderizar PNG:
    `python3 qa_lint.py <slide.html>` (exit≠0 = corrigir e repetir).
 6. Render PNG: `node render.mjs <dir>` (Playwright 1080×1350 @2x, captura por `clip`).
-   Precisa `node_modules` com playwright — linkar de
-   `/Users/flavioahoy/Documents/projects/propostas/node_modules`.
+   Precisa playwright no workdir — `npm i playwright` (ou atalho: linkar
+   `~/Documents/projects/propostas/node_modules`). Nunca depender só do path absoluto de uma máquina.
 7. Loop revisor: `Read` cada PNG, auto-corrigir defeito de ativo (croma residual,
    logo errado, tela em inglês, clipping), repetir até passar.
 

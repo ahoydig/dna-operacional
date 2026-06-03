@@ -17,11 +17,12 @@ Objeto com `meta` + lista `slides`. O gerador (`render_carrossel.py`) lê isto.
 ```
 
 ## Convenções
-- `{texto}` na headline/sub = palavra accent (vira serif itálico colorido). EXATAMENTE 1 por headline.
+- `{texto}` na headline/sub = palavra accent (**mesma fonte da headline, só muda a cor**; serif itálico só com a classe `.accent-serif`). EXATAMENTE 1 por headline.
 - `tipo`: cover | content | quote | cta.
 - Caminhos de imagem: relativos ao workdir (`assets/...`). O gerador prefixa `../` automaticamente (HTML vive em slides/).
 - `meta.tema`: escuro (default). `meta.total`: nº de slides (numeração).
-- `hero` (content): screenshot/réplica. `compo` (cover): personagem/objeto → logo/ícone (alternativa ao `figure`). `icon_top`: logo da marca do projeto (não fixar uma marca). `bg_photo`: foto de fundo (capa/CTA).
+- `hero` (content): screenshot/réplica. `compo` (cover): personagem/objeto → logo/ícone (alternativa ao `figure`). `icon_top`: logo da marca do projeto (não fixar uma marca). `bg_photo`: imagem de fundo (capa/CTA — opcional).
+- `preview` (cta): mockup do brinde/deliverable inclinado no centro (`preview_w`% largura, default 60; `preview_rot`° rotação, default -3).
 - **A capa NÃO tem contador** (`snum`). É obviamente o slide 1, e o contador competia com a logo (`icon_top`) no canto superior. Contador só nos slides de conteúdo/quote/cta.
 
 ## Capa: herói visual + 2ª imagem (até 2 imagens)

@@ -31,13 +31,16 @@ def slide(s, idx, total, meta):
     if t == "cta":     return _cta(s, idx, total, meta)
     raise ValueError("tipo desconhecido: %s" % t)
 
-def _bg(d):
+def _bg(d, scrim_src=None):
+    """Foto de fundo + scrim. A FOTO vem de `d`; o SCRIM vem de `scrim_src` (o slide), com
+    fallback pra `d` e pros defaults. Sem isso, o CTA/capa que herdam a foto do meta ignoravam
+    o scrim_top/scrim_bot setado no próprio slide. capa/CTA menos escuros por padrão (0.42/0.72)."""
     p = d.get("bg_photo")
     if not p:
         return ""
-    # capa/CTA menos escuros por padrão (0.42/0.72 vs 0.62/0.86 antigos); ajustável por slide/meta.
-    st = d.get("scrim_top", 0.42)
-    sb = d.get("scrim_bot", 0.72)
+    sc = scrim_src if scrim_src is not None else d
+    st = sc.get("scrim_top", d.get("scrim_top", 0.42))
+    sb = sc.get("scrim_bot", d.get("scrim_bot", 0.72))
     return '<img class="bgphoto" src="%s"><div class="scrim" style="--scrim-top:%s;--scrim-bot:%s"></div>' % (asset(p), st, sb)
 
 def _content(s, idx, total, meta):
@@ -87,7 +90,7 @@ def _cover(s, idx, total, meta):
     # capa não leva contador (é obviamente o slide 1) — ele competia com a logo no canto superior
     return f"""
 <div class="slide" style="justify-content:flex-start;text-align:left;align-items:flex-start;">
-  {_bg(meta)}
+  {_bg(meta, s)}
   {icon_top}
   <div class="kicker" style="margin:0 0 14px;">{s.get('kicker','')}</div>
   <div class="headline" style="font-size:{s.get('hsize',104)}px;text-align:left;">{accent(s['headline'])}</div>
@@ -118,11 +121,14 @@ def _quote(s, idx, total, meta):
 def _cta(s, idx, total, meta):
     icon = '<img src="%s" style="width:104px;height:104px;margin:0 auto 16px;z-index:1;display:block;">' % asset(meta["icon_top"]) if meta.get("icon_top") else ""
     bgsrc = s if s.get("bg_photo") else meta
+    # preview: mockup do brinde/deliverable (estilo @noevarner) — inclinado no centro, acima do CTA
+    prev = ('<img src="%s" style="display:block;margin:0 auto 26px;max-width:%s%%;border-radius:16px;transform:rotate(%sdeg);box-shadow:0 24px 60px rgba(0,0,0,0.6);z-index:1;">' % (asset(s["preview"]), s.get("preview_w", 60), s.get("preview_rot", -3))) if s.get("preview") else ""
     return f"""
 <div class="slide center" style="justify-content:center;text-align:center;">
-  {_bg(bgsrc)}
+  {_bg(bgsrc, s)}
   <div class="snum" style="color:#cfc7bf">{idx:02d} / {total:02d}</div>
   {icon}
+  {prev}
   <div class="cta-stack" style="text-align:center;">
     <div class="big" style="font-size:64px;color:#e8e0d6;">{s.get('headline_top','')}</div>
     <div class="big" style="font-size:120px;margin-top:8px;">Comenta</div>

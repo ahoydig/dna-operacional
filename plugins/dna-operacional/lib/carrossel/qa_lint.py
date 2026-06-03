@@ -73,12 +73,12 @@ def lint(html, base_dir="."):
             violations.append({"code": "CONTRAST_ACCENT_BG",
                 "msg": f"contraste accent/bg {contrast_ratio(accent, bg):.2f} < 3.0"})
 
-    # body font-size mínimo 24px (regra do contrato)
-    for m in re.finditer(r'\.body\s*\{[^}]*font-size\s*:\s*(\d+)px', css):
-        size = int(m.group(1))
-        if size < 24:
+    # sub (body text) com tamanho mínimo. A classe .body do contrato antigo nunca é emitida;
+    # o body real é a .sub (com font-size inline = sub_size). Floor 20px (mínimo legível no mobile).
+    for size in [int(s) for s in re.findall(r'class="sub[^"]*"[^>]*font-size\s*:\s*(\d+)px', html)]:
+        if size < 20:
             violations.append({"code": "BODY_TOO_SMALL",
-                "msg": f"body {size}px < 24px"})
+                "msg": f"sub {size}px < 20px (texto pequeno demais)"})
 
     # headline tem que ser GRANDE (regra dos virais: headline domina). Mínimo 76px.
     # Nota: NÃO travamos numa escala modular rígida — o design aprovado pelo user (96/104/112px)
@@ -100,6 +100,19 @@ def lint(html, base_dir="."):
         if 'class="em"' not in m.group(1):
             violations.append({"code": "HEADLINE_NO_ACCENT",
                 "msg": "headline sem palavra accent (<span class='em'>)"})
+
+    # asset faltando: <img src> apontando pra arquivo inexistente (figure/hero/bg/aux/preview)
+    for src in re.findall(r'<img[^>]+src="([^"]+)"', html):
+        if src.startswith(("http", "data:")):
+            continue
+        p = src if os.path.isabs(src) else os.path.normpath(os.path.join(base_dir, src))
+        if not os.path.exists(p):
+            violations.append({"code": "ASSET_MISSING", "msg": f"asset não encontrado: {src}"})
+
+    # slide de conteúdo (tem .ghost, exclusivo do _content) precisa de prova visual (.shot) — regra #3
+    if 'class="ghost"' in html and 'class="shot"' not in html:
+        violations.append({"code": "NO_VISUAL",
+            "msg": "slide de conteúdo sem hero/prova visual (.shot) — regra #3 (sem slide só-texto)"})
 
     return {"violations": violations}
 
