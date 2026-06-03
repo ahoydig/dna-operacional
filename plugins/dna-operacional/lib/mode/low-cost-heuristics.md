@@ -44,7 +44,7 @@ Ver `contract.md` pro padrão geral de detecção e sinalização.
 
 ## /carrossel-instagram
 
-- **Full:** Gate 1.5 Moodboard visual via agent-browser + auto-review de slides + regen de frames fracos
+- **Full:** Gate 1.5 Moodboard visual via Playwright MCP _(TODO: migrar pro `browser-harness`; `agent-browser` removido em 2026-06-02)_ + auto-review de slides + regen de frames fracos
 - **Lowcost:** usa voz + publico-alvo direto; skip Gate 1.5 Moodboard; skip auto-review
 - **Redução estimada:** ~50%
 - **Acceptance:** carrossel ainda é gerado com slides válidos usando paleta padrão do projeto

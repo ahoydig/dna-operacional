@@ -1,6 +1,8 @@
 # Pesquisa Visual Autônoma — Moodboard
 
-Este guia é lido pela skill durante o **Gate 1.5: Moodboard Visual**. Descreve como coletar referências visuais externas usando `agent-browser` (engine principal de pesquisa) e Playwright MCP (fallback e captura pontual).
+> **TODO — MIGRAR PARA `browser-harness` (pendente desde 2026-06-02).** Este guia foi escrito sobre o `agent-browser` (Vercel Labs), que foi **removido da máquina** em favor do `browser-harness` (CDP direto — mesmo ecossistema do app desktop Browser Use). **Enquanto a reescrita não acontece, o Gate 1.5 usa o fallback Playwright MCP** (seção "Fluxo com Playwright MCP" abaixo). Ao migrar, traduzir os comandos `agent-browser` (`open` / `batch` / `snapshot -i` / `screenshot --full` / `click @eN` / `back`) para os helpers do harness (`new_tab` / `wait_for_load` / `capture_screenshot(full_page=True)` / `click_at_xy`). Ref: `~/Developer/browser-harness/SKILL.md`.
+
+Este guia é lido pela skill durante o **Gate 1.5: Moodboard Visual**. Descreve como coletar referências visuais externas. **Engine atual: Playwright MCP** (fallback) — a seção "Fluxo com `agent-browser`" abaixo está **obsoleta**, mantida só como mapa de comandos a traduzir.
 
 ## Quando aplicar
 
