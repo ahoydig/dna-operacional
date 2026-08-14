@@ -1,5 +1,5 @@
 ---
-name: landing-page-builder
+name: landing-page-builder-dna
 description: Framework completo para criar landing pages de alta performance com design diferenciado. Use SEMPRE que o usuario pedir para criar, editar, otimizar ou revisar uma landing page, pagina de vendas, pagina de captura, waitlist, ou qualquer pagina web estatica. Tambem use quando mencionar copy de landing page, layout de pagina, formulario de captura, deploy de pagina, ou quando estiver trabalhando dentro do projeto landing-pages. Inclui workflow de 4 etapas (copy, design, layout, desenvolver), regras anti-slop, arquetipos criativos, padroes de formulario, animacao, performance e deploy via Netlify.
 ---
 
